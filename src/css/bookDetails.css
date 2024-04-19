@@ -1,0 +1,34 @@
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.book-content {
+    display: flex;
+}
+  
+.book-card {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+  
+.book-image {
+    flex: 0 0 28%;
+    margin-right: 20px;
+}
+  
+.book-info {
+    flex: 1;
+}
+  
+.book-description {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 10px;
+}
+  
+.book-description h3 {
+    margin-bottom: 0;
+}  
