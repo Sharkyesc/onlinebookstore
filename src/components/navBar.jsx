@@ -23,16 +23,16 @@ const NavBar = ({ username, avatarSrc }) => {
 
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-      <Menu.Item className="homeItem" key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/">首页</Link>
       </Menu.Item>
-      <Menu.Item className="homeItem" key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
         书籍
       </Menu.Item>
-      <Menu.Item className="homeItem" key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/cart">购物车</Link>
       </Menu.Item>
-      <Menu.Item className="homeItem" key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
         我的订单
       </Menu.Item> 
       <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>

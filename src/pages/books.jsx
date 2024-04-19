@@ -15,7 +15,7 @@ const BookPage = () => {
     const { id } = useParams();
 
     return (
-        <Layout className="layout">
+        <Layout>
             <Header>
                 <NavBar username={userInfo.username} avatarSrc={userInfo.avatarSrc} />
             </Header>
