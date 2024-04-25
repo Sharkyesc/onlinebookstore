@@ -24,7 +24,7 @@ const NavBar = ({ username, avatarSrc }) => {
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
       <Menu.Item key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>
-        <Link to="/">首页</Link>
+        <Link to="/home">首页</Link>
       </Menu.Item>
       <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
         书籍
