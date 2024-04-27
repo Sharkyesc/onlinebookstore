@@ -1,6 +1,4 @@
 
-// src/main/java/com/example/demo/entity/Book.java
-
 package com.example.demo;
 
 public class Book {

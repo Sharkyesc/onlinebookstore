@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import NavBar from '../components/navBar'; 
-import { Layout, Form, Input, Button, Checkbox, Card, Flex } from 'antd';
+import { Layout, Form, Input, Button, Checkbox, Card, Flex, Menu, Avatar } from 'antd';
 import WindowWidth from '../utils/getWidth';  
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { LockOutlined, UserOutlined,HomeOutlined, 
+        BookOutlined, 
+        ShoppingCartOutlined, 
+        OrderedListOutlined,
+        DownOutlined,
+        SearchOutlined
+    } from '@ant-design/icons';
 
 const { Header, Content, Footer } = Layout;
 
@@ -40,7 +47,27 @@ const LoginPage = () => {
     return (
         <Layout>
             <Header>
-                <NavBar username={unknownInfo.username} avatarSrc={unknownInfo.avatarSrc} />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>首页</Menu.Item>
+                    <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>书籍</Menu.Item>
+                    <Menu.Item key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>购物车</Menu.Item>
+                    <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>我的订单</Menu.Item> 
+                    <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
+                        <Input
+                          placeholder="搜索"
+                          prefix={<SearchOutlined />}
+                          style={{ width: 700 }}
+                        />
+                    </Menu.Item>
+                    <Menu.Item key="profile" style={{ marginRight: 20, backgroundColor:'transparent' }}>
+                        <span className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+                            {unknownInfo.username}
+                            <Avatar src={unknownInfo.avatarSrc} style={{ marginLeft: 6, marginRight: 4 }} />
+                            <DownOutlined />
+                        </span>
+                    </Menu.Item>
+                </Menu>
+
             </Header>
             <Content>
                 <Card hoverable style={{ width: WindowWidth() * 0.8, margin: 'auto', marginTop: 20 }}>

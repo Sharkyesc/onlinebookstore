@@ -17,7 +17,7 @@ const NavBar = ({ username, avatarSrc }) => {
         <Link to="/user">个人中心</Link>
       </Menu.Item>
       <Menu.Item key="passwd">修改密码</Menu.Item>
-      <Menu.Item key="logout">退出登录</Menu.Item>
+      <Menu.Item key="logout"><Link to="/">退出登录</Link></Menu.Item>
     </Menu>
   );
 
