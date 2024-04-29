@@ -33,7 +33,7 @@ const NavBar = ({ username, avatarSrc }) => {
         <Link to="/cart">购物车</Link>
       </Menu.Item>
       <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
-        我的订单
+        <Link to="/order">我的订单</Link>
       </Menu.Item> 
       <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
         <Input

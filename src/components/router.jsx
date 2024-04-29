@@ -4,8 +4,7 @@ import BookPage from "../pages/books";
 import CartPage from "../pages/cart";
 import UserPage from "../pages/user";
 import LoginPage from "../pages/login";
-/*
-import OrderPage from "../page/order";*/
+import OrderPage from "../pages/order";
 
 export default function AppRouter() {
     return <BrowserRouter>
@@ -15,6 +14,7 @@ export default function AppRouter() {
             <Route path="/book/:id" element={<BookPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/user" element={<UserPage />} />
+            <Route path="/order" element={<OrderPage />} />
             <Route path="/*" element={<LoginPage />} />
         </Routes>
     </BrowserRouter>

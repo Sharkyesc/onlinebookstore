@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import NavBar from '../components/navBar'; 
 import { Layout, Form, Input, Button, Checkbox, Card, Flex, Menu, Avatar } from 'antd';
 import WindowWidth from '../utils/getWidth';  
-import { Link } from 'react-router-dom';
 import { LockOutlined, UserOutlined,HomeOutlined, 
         BookOutlined, 
         ShoppingCartOutlined, 
@@ -120,7 +118,7 @@ const LoginPage = () => {
                             />
                         </Form.Item>
                         <Form.Item style={{ margin: 0, display: 'flex', justifyContent: 'flex-end' }}>
-                            <a className="login-form-forgot" href="">忘记密码</a>
+                            <a className="login-form-forgot" href="/">忘记密码</a>
                         </Form.Item>
                         <Form.Item name="remember" valuePropName="checked" >
                             <Checkbox>保持登录状态</Checkbox>
@@ -136,7 +134,7 @@ const LoginPage = () => {
                             
                         </Form.Item>
                         <Form.Item style={{ margin: 0, display: 'flex', justifyContent: 'center' }}>
-                            还没有账号？ <a href="">立即注册</a>
+                            还没有账号？ <a href="/">立即注册</a>
                         </Form.Item>
                     </Form>
                     </Flex>
