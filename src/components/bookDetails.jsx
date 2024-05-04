@@ -52,6 +52,26 @@ const BookDetail = ({ id }) => {
     },
   ];
 
+  const handleBuy = () => {
+    const orderData = { 
+        orderNumber: 5, orderTime: "2024-05-04", bookName: bookInfo.title, quantity: 1, shippingAddress: "China", totalPrice: bookInfo.price 
+    };
+
+    fetch('http://localhost:8080/orders/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message); 
+    })
+    .catch(error => console.error('There was a problem with your fetch operation:', error));
+  }
+
+
   
   return (
     <div className="book-card">
@@ -72,7 +92,7 @@ const BookDetail = ({ id }) => {
         </div>
         <div className="button-container">
             <Button type="primary" style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>加入购物车</Button>
-            <Button type="primary" style={{ backgroundColor: '#000000', color: 'white' }}>立即购买</Button>
+            <Button type="primary" onClick={handleBuy} style={{ backgroundColor: '#000000', color: 'white' }}>立即购买</Button>
         </div>
       </Card>
     </div>

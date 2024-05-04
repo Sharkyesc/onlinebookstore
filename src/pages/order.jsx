@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Table, Button, Space, Typography, Divider } from 'antd';
 import NavBar from '../components/navBar';
+import $ from 'jquery';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -46,23 +47,21 @@ const columns = [
 
 const OrderPage = () => {
   const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
-    try {
-      const response = await fetch('localhost:8080/orders');
-      if (!response.ok) {
-        throw new Error('Failed to fetch orders');
-      }
-      const data = await response.json();
-      setOrders(data);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
+  
+  fetch('http://localhost:8080/orders')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
-  };
+    return response.json();
+  })
+  .then(data => {
+    setOrders(data);
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+  });
+
 
   return (
     <Layout>
@@ -87,5 +86,6 @@ const OrderPage = () => {
 };
 
 export default OrderPage;
+
 
 
