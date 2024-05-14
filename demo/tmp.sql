@@ -1,0 +1,69 @@
+
+CREATE TABLE `books`  (
+    `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `ISBN` VARCHAR(255) NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `img` VARCHAR(255) NOT NULL DEFAULT NULL,
+    `author` VARCHAR(100) NULL DEFAULT NULL,
+    `price` DOUBLE NULL DEFAULT 0,
+    `press` VARCHAR(255) NULL DEFAULT NULL,
+    `pubTime` DATE,
+    `stocks` INT UNSIGNED NULL DEFAULT 0,
+    `salesvolume` INT UNSIGNED NULL DEFAULT 0,
+    `description` VARCHAR(3000) DEFAULT NULL
+);
+
+
+CREATE TABLE `users`  (
+    `userID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `nickname` VARCHAR(100) NULL DEFAULT NULL,
+    `email` VARCHAR(255) NULL DEFAULT NULL,
+    `address` VARCHAR(255) NULL DEFAULT NULL,
+    `phonenumber` VARCHAR(255) NULL DEFAULT NULL
+);
+
+
+CREATE TABLE `userAuth` (
+    `userID` INT UNSIGNED PRIMARY KEY,
+    `username` VARCHAR(50) NOT NULL,
+    `passwordHash` VARCHAR(255) NOT NULL,
+    FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
+);
+
+
+CREATE TABLE `orders`  (
+    `orderID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `userID` INT UNSIGNED NOT NULL,
+    `orderTime` DATETIME DEFAULT NULL,
+    `recipient` VARCHAR(255) DEFAULT NULL,
+    `contactPhone` VARCHAR(255) DEFAULT NULL,
+    `destination` VARCHAR(255) DEFAULT NULL,
+    `totalPrice` DECIMAL(10, 2) DEFAULT NULL,
+    FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
+);
+
+
+CREATE TABLE `orderitems`  (
+    `itemID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `status` INT NOT NULL DEFAULT -1 COMMENT '1-未支付 2-已支付，3-已完成，-1-取消',
+    `userID` INT UNSIGNED NOT NULL,
+    `orderID` INT UNSIGNED NOT NULL,
+    `bookID` INT UNSIGNED NOT NULL,
+    `quantity` INT NOT NULL,
+    `price` DECIMAL(10, 2) NOT NULL,
+    `create_itemtime` DATETIME NULL DEFAULT NULL,
+    `comment` VARCHAR(1000) NULL DEFAULT NULL,
+    FOREIGN KEY (`userID`) REFERENCES `users` (`nameID`),
+    FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`),
+    FOREIGN KEY (`bookID`) REFERENCES `books` (`ID`)
+);
+
+
+CREATE TABLE `cart`  (
+  `cartID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `userID` INT UNSIGNED NOT NULL,
+  `bookID` INT UNSIGNED NOT NULL,
+  `quantity` INT UNSIGNED NOT NULL DEFAULT 1,
+  FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
+  FOREIGN KEY (`bookID`) REFERENCES `books` (`bookID`)
+);

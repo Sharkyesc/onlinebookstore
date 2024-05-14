@@ -134,7 +134,7 @@ const LoginPage = () => {
                             
                         </Form.Item>
                         <Form.Item style={{ margin: 0, display: 'flex', justifyContent: 'center' }}>
-                            还没有账号？ <a href="/">立即注册</a>
+                            还没有账号？ <a href="/register">立即注册</a>
                         </Form.Item>
                     </Form>
                     </Flex>

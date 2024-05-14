@@ -5,6 +5,7 @@ import CartPage from "../pages/cart";
 import UserPage from "../pages/user";
 import LoginPage from "../pages/login";
 import OrderPage from "../pages/order";
+import RegisterPage from "../pages/register";
 
 export default function AppRouter() {
     return <BrowserRouter>
@@ -15,6 +16,7 @@ export default function AppRouter() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/order" element={<OrderPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/*" element={<LoginPage />} />
         </Routes>
     </BrowserRouter>
