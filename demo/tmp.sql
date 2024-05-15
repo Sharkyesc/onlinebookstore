@@ -3,7 +3,7 @@ CREATE TABLE `books`  (
     `ID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `ISBN` VARCHAR(255) NOT NULL,
     `title` VARCHAR(255) NOT NULL,
-    `img` VARCHAR(255) NOT NULL DEFAULT NULL,
+    `img` VARCHAR(255) NULL DEFAULT NULL,
     `author` VARCHAR(100) NULL DEFAULT NULL,
     `price` DOUBLE NULL DEFAULT 0,
     `press` VARCHAR(255) NULL DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `orderitems`  (
     `price` DECIMAL(10, 2) NOT NULL,
     `create_itemtime` DATETIME NULL DEFAULT NULL,
     `comment` VARCHAR(1000) NULL DEFAULT NULL,
-    FOREIGN KEY (`userID`) REFERENCES `users` (`nameID`),
+    FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
     FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`),
     FOREIGN KEY (`bookID`) REFERENCES `books` (`ID`)
 );
@@ -65,5 +65,5 @@ CREATE TABLE `cart`  (
   `bookID` INT UNSIGNED NOT NULL,
   `quantity` INT UNSIGNED NOT NULL DEFAULT 1,
   FOREIGN KEY (`userID`) REFERENCES `users` (`userID`),
-  FOREIGN KEY (`bookID`) REFERENCES `books` (`bookID`)
+  FOREIGN KEY (`bookID`) REFERENCES `books` (`ID`)
 );

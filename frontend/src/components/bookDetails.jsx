@@ -1,12 +1,10 @@
 import React from 'react';
 import WindowWidth from '../utils/getWidth';  
-import getBookInfoById from '../utils/getBookInfo'; 
 import { Card, Button, Table } from 'antd';
 import '../css/bookDetails.css';
 
-const BookDetail = ({ id }) => {
+const BookDetail = ({ bookInfo }) => {
 
-  const bookInfo = getBookInfoById(id);
   
   const columns = [
     {
@@ -57,7 +55,7 @@ const BookDetail = ({ id }) => {
         orderNumber: 5, orderTime: "2024-05-04", bookName: bookInfo.title, quantity: 1, shippingAddress: "China", totalPrice: bookInfo.price 
     };
 
-    fetch('http://localhost:8080/orders/checkout', {
+    fetch('http://localhost:8080/api/orders/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

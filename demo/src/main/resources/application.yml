@@ -6,3 +6,17 @@ spring:
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show-sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  mvc:
+    static-path-pattern: /Data/**
+  
+  web:
+    resources:
+      static-locations: classpath:/static, classpath:/public, classpath:/resources, classpath:/META-INF/resources, file:/Data
