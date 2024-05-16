@@ -47,7 +47,7 @@ public class CartController {
         Confirmation confirmation = new Confirmation();
         cartService.changeCartItemNumber(id, number);
         Book bookChanged = cartService.getByCartId(id).getBook();
-        confirmation.setMessage(bookChanged.getTitle() + "加购数量已更新为：" + number + "本");
+        confirmation.setMessage("《" + bookChanged.getTitle() + "》加购数量已更新为：" + number + "本");
 
         return confirmation;
     }

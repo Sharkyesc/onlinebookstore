@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @Table(name = "orders")
 public class Order {
     @Id
+    @Column(name = "order_id")
     private int orderId;
 
     private int userId;
@@ -41,7 +43,7 @@ public class Order {
         this.destination = destination;
     }
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
     public BigDecimal getTotalPrice() {

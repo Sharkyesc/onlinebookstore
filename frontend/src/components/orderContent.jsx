@@ -66,14 +66,14 @@ const OrderContent = ({ orderInfo }) => {
             <p>订单时间：{selectedOrder.orderTime}</p>
             <p>收货地址：{selectedOrder.destination}</p>
             <p>总价：{selectedOrder.totalPrice}</p>
-            selectedOrder.orderItems.map((item, index) => (
+            {selectedOrder.orderItems.map((item, index) => (
                 <div key={index}>
-                    <p>订单项编号: {item.itemId}</p>
+                    <h4>订单项编号: {item.itemId}</h4>
                     <p>书籍编号: {item.bookId}</p>
                     <p>数量: {item.quantity}</p>
                     <p>单项总价: {item.price}</p>
                 </div>
-            ))
+            ))}
 
           </>
         )}
