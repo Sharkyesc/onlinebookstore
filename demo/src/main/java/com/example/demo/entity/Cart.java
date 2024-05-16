@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @Table(name = "cart")
@@ -11,16 +13,30 @@ public class Cart {
     @Id
     private int cartId;
 
-    private int bookId, userId, quantity;
+    private int userId, quantity;
+
+    @OneToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     public Cart() {
     }
 
-    public Cart(int cartId, int bookId, int userId, int quantity) {
+    public Cart(int cartId, Book book, int userId, int quantity) {
         this.cartId = cartId;
-        this.bookId = bookId;
+        this.book = book;
         this.userId = userId;
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "cartId=" + cartId +
+                ", bookId=" + book.getId() +
+                ", userId=" + userId +
+                ", quantity=" + quantity +
+                '}';
     }
 
     public int getCartId() {
@@ -31,12 +47,8 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public Book getBook() {
+        return book;
     }
 
     public int getUserId() {

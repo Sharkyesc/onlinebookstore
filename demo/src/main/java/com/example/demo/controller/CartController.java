@@ -14,7 +14,6 @@ import com.example.demo.entity.Cart;
 import com.example.demo.service.CartService;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -23,7 +22,7 @@ public class CartController {
     private CartService cartService;
 
     // Get cart data
-    @GetMapping("/all")
+    @GetMapping
     public List<Cart> getAllCartItems() {
         return cartService.getAllCartItems();
     }

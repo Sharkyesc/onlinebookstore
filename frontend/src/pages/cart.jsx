@@ -104,14 +104,7 @@ const CartPage = () => {
       title: '数量',
       dataIndex: 'quantity',
       key: 'quantity',
-      render: (text, record) => (
-        <InputNumber
-            min={1}
-            max={record.stocks}
-            defaultValue={text}
-            onChange={(value) => handleQuantityChange(record.id, value)}
-        />
-      ),
+      render: (record) => record.quantity
     },
     {
       title: '金额',
@@ -131,7 +124,7 @@ const CartPage = () => {
     },
   ];
   
-    return (
+    return ( cartData && 
         <Layout className="layout">
             <Header>
                 <NavBar username={userInfo.username} avatarSrc={userInfo.avatarSrc} />
