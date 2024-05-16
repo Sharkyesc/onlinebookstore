@@ -31,7 +31,7 @@ public class OrderController {
         Confirmation confirmation = new Confirmation();
 
         orderService.addOrder(orderData);
-        confirmation.setMessage("请确认订单信息：" + orderData);
+        confirmation.setMessage("请确认订单信息：" + orderData.toString());
 
         System.out.println("订单信息：" + orderData);
 

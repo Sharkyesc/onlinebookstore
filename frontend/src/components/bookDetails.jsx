@@ -3,6 +3,7 @@ import WindowWidth from '../utils/getWidth';
 import { Card, Button, Table } from 'antd';
 import '../css/bookDetails.css';
 import { addCartItem } from '../service/cart';
+import { addOrder } from '../service/order';
 
 const BookDetail = ({ bookInfo }) => {
 
@@ -53,21 +54,13 @@ const BookDetail = ({ bookInfo }) => {
 
   const handleBuy = () => {
     const orderData = { 
-        orderNumber: 5, orderTime: "2024-05-04", bookName: bookInfo.title, quantity: 1, shippingAddress: "China", totalPrice: bookInfo.price 
-    };
-
-    fetch('http://localhost:8080/api/orders/checkout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(orderData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message); 
-    })
-    .catch(error => console.error('There was a problem with your fetch operation:', error));
+      userId: 1, bookId: bookInfo.id, quantity: 1, destination: "China", totalPrice: bookInfo.price , recipient: "luo", contactPhone: "12345678910"
+  };
+    addOrder(orderData)
+      .then(response => {
+        alert(response.message);
+      })
+      .catch(error => console.error('There was a problem with creating order:', error));
   }
 
   const handleAddtoCart = () => {

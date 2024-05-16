@@ -9,6 +9,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -22,6 +24,7 @@ import lombok.Setter;
 public class Order {
     @Id
     @Column(name = "order_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
     private int userId;
@@ -46,25 +49,24 @@ public class Order {
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
-    public BigDecimal getTotalPrice() {
+    public void setTotalPrice() {
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (OrderItem orderItem : orderItems) {
             totalPrice = totalPrice.add(orderItem.getPrice());
         }
-        return totalPrice;
+        this.totalPrice = totalPrice;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", userId=" + userId +
-                ", totalPrice=" + totalPrice +
-                ", orderTime=" + orderTime +
-                ", recipient='" + recipient + '\'' +
-                ", contactPhone='" + contactPhone + '\'' +
-                ", destination='" + destination + '\'' +
-                '}';
+        return "\n" +
+                "订单编号：" + orderId +
+                "\n用户ID：" + userId +
+                "\n总价：" + totalPrice +
+                "\n下单时间：" + orderTime +
+                "\n收货人：'" + recipient + '\'' +
+                "\n联系电话：'" + contactPhone + '\'' +
+                "\n收货地址：'" + destination + '\'';
     }
 
 }

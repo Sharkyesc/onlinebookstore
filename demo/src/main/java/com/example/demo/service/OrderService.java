@@ -3,6 +3,7 @@ package com.example.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.demo.entity.Order;
@@ -23,6 +24,7 @@ public class OrderService {
     }
 
     public void addOrder(Order order) {
+        order.setOrderTime(LocalDateTime.now());
         orderRepository.save(order);
     }
 
