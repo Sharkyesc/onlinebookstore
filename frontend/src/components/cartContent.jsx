@@ -8,11 +8,12 @@ const { Search } = Input;
 const { confirm } = Modal;
 
 
-const CartContent = ({ cartData }) => {
+const CartContent = ({ cartData, onMutate }) => {
   const handleDelete = (id) => {
     deleteCartItem(id)
     .then(response => {
       alert(response.message); 
+      onMutate();
     })
     .catch(error => console.error('There was a problem with deleting item from cart:', error));
   };
@@ -26,7 +27,7 @@ const CartContent = ({ cartData }) => {
   
   };
   
-  const showDeleteConfirm = (productId) => {
+  const showDeleteConfirm = (Id) => {
     confirm({
       title: '确定从购物车删除这本书吗?',
       content: '删除后将无法恢复',
@@ -35,7 +36,7 @@ const CartContent = ({ cartData }) => {
       cancelText: '否',
       onOk() {
         console.log('OK');
-        handleDelete(productId);
+        handleDelete(Id);
       },
       onCancel() {
         console.log('Cancel');
@@ -47,7 +48,7 @@ const CartContent = ({ cartData }) => {
       {
         title: '封面',
         dataIndex: 'coverSrc',
-        key: 'cover',
+        key: 'coverSrc',
         render: (coverSrc) => <img src={coverSrc} alt="Cover" style={{ width: 80 }} />,
       },
       {
@@ -77,13 +78,14 @@ const CartContent = ({ cartData }) => {
         title: '金额',
         dataIndex: 'total',
         key: 'total',
+        render: (text, record) => record.quantity * record.price, 
       },
       {
         title: '操作',
         key: 'action',
         render: (record) => (
         <Space size="middle">
-          <Button icon={<DeleteOutlined /> } type="link" onClick={() => showDeleteConfirm(record.id)}  danger>
+          <Button icon={<DeleteOutlined /> } type="link" onClick={() => showDeleteConfirm(record.cartId)}  danger>
             删除
           </Button>
         </Space>

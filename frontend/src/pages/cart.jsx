@@ -31,7 +31,7 @@ const CartPage = () => {
             </Header>
             <Content className="shoppingcart-container" style={{width: '90%', marginLeft: '5%'}} >
                 <CartContent 
-                  cartData={ cartData }
+                  cartData={ cartData } onMutate={getCartData}
                 />
             </Content>
             <Footer style={{ textAlign: 'center' }}>©2024</Footer>

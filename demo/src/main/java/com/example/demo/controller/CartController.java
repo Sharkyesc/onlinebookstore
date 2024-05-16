@@ -50,9 +50,12 @@ public class CartController {
 
     // Delete cart item
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCartItem(@PathVariable int id) {
+    public Confirmation deleteCartItem(@PathVariable int id) {
+        Confirmation confirmation = new Confirmation();
         cartService.deleteCartItem(id);
-        return ResponseEntity.ok("Cart item with ID " + id + " has been deleted.");
+
+        confirmation.setMessage("已删除！");
+        return confirmation;
     }
 
 }

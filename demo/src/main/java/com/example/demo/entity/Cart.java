@@ -4,11 +4,15 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "cart")
 public class Cart {
 
@@ -21,7 +25,7 @@ public class Cart {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private String title;
+    private String title, coverSrc;
     private BigDecimal price;
 
     public Cart() {
@@ -34,6 +38,7 @@ public class Cart {
         this.quantity = quantity;
         this.title = book.getTitle();
         this.price = book.getPrice();
+        this.coverSrc = book.getCoverSrc();
     }
 
     @Override
@@ -46,51 +51,16 @@ public class Cart {
                 '}';
     }
 
-    public int getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle() {
         this.title = book.getTitle();
-    }
-
-    public BigDecimal getPrice() {
-        return price;
     }
 
     public void setPrice() {
         this.price = book.getPrice();
     }
 
-    public int getUserId() {
-        return userId;
+    public void setCoverSrc() {
+        this.coverSrc = book.getCoverSrc();
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }
