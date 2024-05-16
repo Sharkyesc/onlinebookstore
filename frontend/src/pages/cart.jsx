@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import { React, useState, useEffect } from 'react';
 import NavBar from '../components/navBar'; 
 import { Layout, InputNumber, Checkbox } from 'antd';
 import { Input, Table, Space, Button, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import getCartInfo from '../utils/getCartInfo';
+import { getCartItems } from '../service/cart';
 
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
@@ -15,14 +15,16 @@ const CartPage = () => {
         avatarSrc: 'https://q5.itc.cn/q_70/images03/20240205/9bbcd6c4ff4146b79dc47dd4ff8d7026.jpeg',
     };
 
-    const [cartData, setCartData] = useState(() => {
-      const initialData = getCartInfo(); 
-      return initialData.map(item => ({
-        ...item,
-        total: `￥${(parseFloat(item.price.replace('￥', '')) * item.quantity).toFixed(2)}`,
-        selected: false,
-      }));
-    });
+    const [cartData, setCartData] = useState([]);
+
+    const getCartData = async () => {
+        let cartData = await getCartItems();
+        setCartData(cartData);
+    }
+
+    useEffect(() => {
+        getCartData();
+    }, []);
   
     const handleQuantityChange = (productId, quantity) => {
       const updatedCartData = cartData.map(item => {
@@ -46,11 +48,7 @@ const CartPage = () => {
       setCartData(updatedCartData);
     };
     
-    const handleDelete = (productId) => {
-      const updatedCartData = cartData.filter(item => item.id !== productId);
-      setCartData(updatedCartData);
-    };
-    
+
     const showDeleteConfirm = (productId) => {
       confirm({
         title: '确定从购物车删除这本书吗?',
@@ -60,7 +58,6 @@ const CartPage = () => {
         cancelText: '否',
         onOk() {
           console.log('OK');
-          handleDelete(productId);
         },
         onCancel() {
           console.log('Cancel');

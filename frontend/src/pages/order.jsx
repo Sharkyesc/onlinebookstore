@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Table, Button, Space, Typography, Divider } from 'antd';
+import { Layout, Table, Button, Typography, Divider } from 'antd';
 import NavBar from '../components/navBar';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 
 const { Header, Content, Footer } = Layout;
@@ -74,9 +75,9 @@ const OrderPage = () => {
             <Divider />
             <Table columns={columns} dataSource={orders} />
             <div style={{ marginTop: 20 }}>
-              <Space>
+              <Link to = "/home">
                 <Button type="primary">继续购物</Button>
-              </Space>
+              </Link>
             </div>
           </div>
         </Content>
