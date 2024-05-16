@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Cart;
+import com.example.demo.entity.Book;
 import com.example.demo.service.CartService;
 
 import java.util.List;
@@ -29,9 +30,15 @@ public class CartController {
 
     // Add to cart
     @PutMapping
-    public ResponseEntity<String> addCartItem(@RequestParam("bookId") int bookId) {
+    public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
+        Confirmation confirmation = new Confirmation();
+
         cartService.addCartItem(bookId);
-        return ResponseEntity.ok().body("Item added to cart successfully.");
+        Book bookAdded = cartService.getBookByBookId(bookId);
+
+        confirmation.setMessage(bookAdded.getTitle() + "已成功加入购物车");
+
+        return confirmation;
     }
 
     // Change cart item number

@@ -33,9 +33,9 @@ public class orderController {
     }
 
     @PostMapping("/checkout")
-    public OrderConfirmation checkout(@RequestBody Order orderData) {
+    public Confirmation checkout(@RequestBody Order orderData) {
 
-        OrderConfirmation confirmation = new OrderConfirmation();
+        Confirmation confirmation = new Confirmation();
 
         orders.add(orderData);
         confirmation.setMessage("请确认订单信息：" + orderData);

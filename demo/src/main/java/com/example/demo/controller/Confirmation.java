@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-public class OrderConfirmation {
+public class Confirmation {
     private String message;
 
-    public OrderConfirmation() {
+    public Confirmation() {
     }
 
     public String getMessage() {
