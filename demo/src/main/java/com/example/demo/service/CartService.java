@@ -22,6 +22,10 @@ public class CartService {
         return bookService.findBookById(bookId);
     }
 
+    public Cart getByCartId(int cartId) {
+        return cartRepository.findByCartId(cartId);
+    }
+
     public List<Cart> getAllCartItems() {
         return cartRepository.findAll();
     }

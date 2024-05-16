@@ -22,6 +22,7 @@ const CartContent = ({ cartData, onMutate }) => {
     changeCartItemNumber(id, value)
     .then(response => {
       alert(response.message); 
+      onMutate();
     })
     .catch(error => console.error('There was a problem with changing number of item:', error));
   
@@ -70,7 +71,7 @@ const CartContent = ({ cartData, onMutate }) => {
             min={1}
             max={record.stocks}
             defaultValue={text}
-            onChange={(value) => handleQuantityChange(record.id, value)}
+            onChange={(value) => handleQuantityChange(record.cartId, value)}
           />
         ),
       },

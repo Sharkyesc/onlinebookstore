@@ -43,9 +43,13 @@ public class CartController {
 
     // Change cart item number
     @PutMapping("/{id}")
-    public ResponseEntity<Void> changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
+    public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
+        Confirmation confirmation = new Confirmation();
         cartService.changeCartItemNumber(id, number);
-        return ResponseEntity.ok().build();
+        Book bookChanged = cartService.getByCartId(id).getBook();
+        confirmation.setMessage(bookChanged.getTitle() + "加购数量已更新为：" + number + "本");
+
+        return confirmation;
     }
 
     // Delete cart item
