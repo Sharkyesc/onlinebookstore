@@ -70,7 +70,7 @@ const UserPage = () => {
                 
                 <div className="button-container" style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <Button type="primary" style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>保存修改</Button>
-                    <Button type="primary" onClick={() =>window.location.href = '/'} style={{ backgroundColor: '#000000', color: 'white' }}>返回首页</Button>
+                    <Button type="primary" onClick={() =>window.location.href = '/home'} style={{ backgroundColor: '#000000', color: 'white' }}>返回首页</Button>
                 </div>
 
             </Content>
