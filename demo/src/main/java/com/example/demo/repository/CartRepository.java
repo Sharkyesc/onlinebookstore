@@ -7,5 +7,7 @@ import com.example.demo.entity.Cart;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
+    Cart findByBookId(int bookId);
 
+    Cart findByCartId(int cartId);
 }
