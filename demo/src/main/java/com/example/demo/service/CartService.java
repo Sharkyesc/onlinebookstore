@@ -40,6 +40,7 @@ public class CartService {
             newCartItem.setBook(getBookByBookId(bookId));
             newCartItem.setPrice();
             newCartItem.setTitle();
+            newCartItem.setCoverSrc();
             newCartItem.setUserId(1);
             newCartItem.setQuantity(1);
             cartRepository.save(newCartItem);

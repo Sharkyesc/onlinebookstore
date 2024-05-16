@@ -14,14 +14,14 @@ export async function getCartItems() {
 
 export async function deleteCartItem(id) {
     const url = `${PREFIX}/cart/${id}`;
-    let res;
+    let response;
     try {
-        res = await del(url);
+        response = await del(url);
     } catch (e) {
         console.log(e);
-        res = DUMMY_RESPONSE;
+        response = DUMMY_RESPONSE;
     }
-    return res;
+    return response;
 }
 
 export async function addCartItem(bookId) {

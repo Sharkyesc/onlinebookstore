@@ -1,5 +1,5 @@
-import React from 'react';
-import getBookInfoById from '../utils/getBookInfo'; 
+import { React, useState, useEffect } from 'react';
+import { getAllBooks } from '../service/book';
 import NavBar from "../components/navBar";
 import MyCarousel from "../components/carousel";
 import BookCard from "../components/bookCard";
@@ -20,26 +20,19 @@ function HomePage() {
     ];
 
     
-    const books = [
-        getBookInfoById(1),
-        getBookInfoById(2),
-        getBookInfoById(3),
-        getBookInfoById(4),
-        getBookInfoById(5),
-        getBookInfoById(6),
-        getBookInfoById(7),
-        getBookInfoById(8),
-        getBookInfoById(9),
-        getBookInfoById(10),
-        getBookInfoById(11),
-        getBookInfoById(12),
-        getBookInfoById(13),
-        getBookInfoById(14),
-        getBookInfoById(15),
-    ];
+    const [books, setBooks] = useState(null);
+
+    const getBook = async () => {
+        let books = await getAllBooks();
+        setBooks(books);
+    }
+
+    useEffect(() => {
+        getBook();
+    }, []);
 
 
-    return (
+    return (books && 
         <Layout className="layout">
             <Header>
                 <NavBar username={userInfo.username} avatarSrc={userInfo.avatarSrc} />
@@ -60,6 +53,3 @@ function HomePage() {
     );
 };
 export default HomePage;
-
-
-

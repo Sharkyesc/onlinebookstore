@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
 
@@ -20,6 +22,11 @@ public class BookController {
     public Book findBook(@PathVariable("id") Integer id) {
         System.out.println("Searching Book: " + id);
         return bookService.findBookById(id);
+    }
+
+    @GetMapping(value = "")
+    public List<Book> getAllBooks() {
+        return bookService.findAllBooks();
     }
 
 }

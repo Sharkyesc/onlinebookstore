@@ -27,17 +27,14 @@ public class BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    // 添加书籍
     public void addBook(Book book) {
         bookRepository.save(book);
     }
 
-    // 更新书籍信息
     public void updateBook(Book book) {
         bookRepository.save(book);
     }
 
-    // 删除书籍
     public void deleteBook(Integer id) {
         bookRepository.deleteById(id);
     }

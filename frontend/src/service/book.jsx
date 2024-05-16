@@ -11,3 +11,15 @@ export async function getBookById(id) {
     }
     return book;
 }
+
+export async function getAllBooks() {
+    const url = `${PREFIX}/books`;
+    let books;
+    try {
+        books = await getJson(url);
+    } catch (e) {
+        console.log(e);
+        books = [];
+    }
+    return books;
+}
