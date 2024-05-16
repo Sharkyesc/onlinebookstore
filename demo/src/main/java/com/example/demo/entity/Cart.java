@@ -51,6 +51,10 @@ public class Cart {
         return book;
     }
 
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     public int getUserId() {
         return userId;
     }

@@ -31,7 +31,6 @@ public class CartController {
     @PutMapping
     public ResponseEntity<String> addCartItem(@RequestParam("bookId") int bookId) {
         cartService.addCartItem(bookId);
-
         return ResponseEntity.ok().body("Item added to cart successfully.");
     }
 

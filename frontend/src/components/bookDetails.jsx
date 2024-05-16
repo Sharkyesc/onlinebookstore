@@ -2,6 +2,7 @@ import React from 'react';
 import WindowWidth from '../utils/getWidth';  
 import { Card, Button, Table } from 'antd';
 import '../css/bookDetails.css';
+import { addCartItem } from '../service/cart';
 
 const BookDetail = ({ bookInfo }) => {
 
@@ -69,7 +70,13 @@ const BookDetail = ({ bookInfo }) => {
     .catch(error => console.error('There was a problem with your fetch operation:', error));
   }
 
-
+  const handleAddtoCart = () => {
+    addCartItem(bookInfo.id)
+      .then(response => {
+        alert(response.message); 
+      })
+      .catch(error => console.error('There was a problem with adding item to cart:', error));
+  }
   
   return (
     <div className="book-card">
@@ -89,7 +96,7 @@ const BookDetail = ({ bookInfo }) => {
           <p style={{ whiteSpace: 'pre-line' }}>{bookInfo.description}</p>          
         </div>
         <div className="button-container">
-            <Button type="primary" style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>加入购物车</Button>
+            <Button type="primary" onClick={handleAddtoCart} style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>加入购物车</Button>
             <Button type="primary" onClick={handleBuy} style={{ backgroundColor: '#000000', color: 'white' }}>立即购买</Button>
         </div>
       </Card>
