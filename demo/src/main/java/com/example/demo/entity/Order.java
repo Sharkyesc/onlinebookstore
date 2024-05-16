@@ -1,78 +1,50 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "orders")
 public class Order {
+    @Id
+    private int orderId;
 
-    private long orderNumber;
-    private String orderTime;
-    private String bookName;
-    private int quantity;
-    private String shippingAddress;
-    private String totalPrice;
+    private int userId, totalPrice;
+    private LocalDateTime orderTime;
+    private String recipient, contactPhone, destination;
 
-    public Order(long orderNumber, String orderTime, String bookName, int quantity, String shippingAddress,
-            String totalPrice) {
-        this.orderNumber = orderNumber;
-        this.orderTime = orderTime;
-        this.bookName = bookName;
-        this.quantity = quantity;
-        this.shippingAddress = shippingAddress;
+    public Order() {
+    }
+
+    public Order(int orderId, int userId, int totalPrice, LocalDateTime orderTime,
+            String recipient, String contactPhone, String destination) {
+        this.orderId = orderId;
+        this.userId = userId;
         this.totalPrice = totalPrice;
+        this.orderTime = orderTime;
+        this.recipient = recipient;
+        this.contactPhone = contactPhone;
+        this.destination = destination;
     }
 
     @Override
     public String toString() {
-        return "\n下单时间：" + orderTime + '\n' +
-                "书名：" + bookName + '\n' +
-                "数量：" + quantity + '\n' +
-                "收货地址：" + shippingAddress + '\n' +
-                "总价：" + totalPrice;
+        return "Order{" +
+                "orderId=" + orderId +
+                ", userId=" + userId +
+                ", totalPrice=" + totalPrice +
+                ", orderTime=" + orderTime +
+                ", recipient='" + recipient + '\'' +
+                ", contactPhone='" + contactPhone + '\'' +
+                ", destination='" + destination + '\'' +
+                '}';
     }
 
-    public long getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(long orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public String getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(String orderTime) {
-        this.orderTime = orderTime;
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public String getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(String totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 }

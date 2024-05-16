@@ -1,7 +1,7 @@
 import { DUMMY_RESPONSE, PREFIX, getJson, post } from "./common";
 
-export async function placeOrder(orderInfo) {
-    const url = `${PREFIX}/order`;
+export async function addOrder(orderInfo) {
+    const url = `${PREFIX}/orders/checkout`;
     let res;
     try {
         res = post(url, orderInfo);
@@ -12,8 +12,8 @@ export async function placeOrder(orderInfo) {
     return res;
 }
 
-export async function getOrders() {
-    const url = `${PREFIX}/order`;
+export async function getAllOrders() {
+    const url = `${PREFIX}/orders`;
     let orders;
     try {
         orders = await getJson(url);
