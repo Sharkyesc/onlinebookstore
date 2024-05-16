@@ -36,7 +36,7 @@ public class CartController {
         cartService.addCartItem(bookId);
         Book bookAdded = cartService.getBookByBookId(bookId);
 
-        confirmation.setMessage(bookAdded.getTitle() + "已成功加入购物车");
+        confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
 
         return confirmation;
     }

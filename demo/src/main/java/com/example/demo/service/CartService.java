@@ -34,6 +34,8 @@ public class CartService {
         } else {
             Cart newCartItem = new Cart();
             newCartItem.setBook(getBookByBookId(bookId));
+            newCartItem.setPrice();
+            newCartItem.setTitle();
             newCartItem.setUserId(1);
             newCartItem.setQuantity(1);
             cartRepository.save(newCartItem);

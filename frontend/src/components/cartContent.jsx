@@ -3,6 +3,7 @@ import { InputNumber, Checkbox } from 'antd';
 import { Input, Table, Space, Button, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
+import { renderMatches } from 'react-router-dom';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -17,8 +18,8 @@ const CartContent = ({ cartData }) => {
     .catch(error => console.error('There was a problem with deleting item from cart:', error));
   };
   
-  const handleQuantityChange = (id) => {
-    changeCartItemNumber(id, 1)
+  const handleQuantityChange = (id, value) => {
+    changeCartItemNumber(id, value)
     .then(response => {
       alert(response.message); 
     })
@@ -66,10 +67,10 @@ const CartContent = ({ cartData }) => {
         key: 'quantity',
         render: (text, record) => (
           <InputNumber
-              min={1}
-              max={record.stocks}
-              defaultValue={text}
-              onChange={(value) => handleQuantityChange(record.id, value)}
+            min={1}
+            max={record.stocks}
+            defaultValue={text}
+            onChange={(value) => handleQuantityChange(record.id, value)}
           />
         ),
       },
@@ -95,7 +96,7 @@ const CartContent = ({ cartData }) => {
         <div>
             <h1 style={{marginLeft: 10}}>购物车</h1>
             <Search placeholder="输入书名搜索" style={{ width: 200, marginBottom: 16, marginLeft: 10 }} />
-            <Table columns={columns} dataSource={cartData} pagination={{ pageSize: 5 }} />
+            <Table columns={columns} dataSource={cartData} pagination={{ pageSize: 10 }} />
             {/*<div style={{ position: 'fixed', bottom: 0, right: '5%', width:'100vh' }}>
                 <h2>总计：{calculateTotalPrice()} 点击结算</h2>
             </div>*/}

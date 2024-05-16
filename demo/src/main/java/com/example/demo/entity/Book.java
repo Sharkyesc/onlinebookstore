@@ -1,12 +1,16 @@
 package com.example.demo.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "books")
 public class Book {
     @Id
@@ -51,91 +55,4 @@ public class Book {
                 '}';
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getSalesVolume() {
-        return salesvolume;
-    }
-
-    public void setSalesVolume(int salesvolume) {
-        this.salesvolume = salesvolume;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getCoverSrc() {
-        return coverSrc;
-    }
-
-    public void setCoverSrc(String coverSrc) {
-        this.coverSrc = coverSrc;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getPubTime() {
-        return pubTime;
-    }
-
-    public void setPubTime(Date pubTime) {
-        this.pubTime = pubTime;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getPress() {
-        return press;
-    }
-
-    public void setPress(String press) {
-        this.press = press;
-    }
-
-    public int getStocks() {
-        return stocks;
-    }
-
-    public void setStocks(int stocks) {
-        this.stocks = stocks;
-    }
 }

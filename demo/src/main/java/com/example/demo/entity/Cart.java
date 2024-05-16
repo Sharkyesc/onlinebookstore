@@ -19,6 +19,8 @@ public class Cart {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    private String title, price;
+
     public Cart() {
     }
 
@@ -27,6 +29,8 @@ public class Cart {
         this.book = book;
         this.userId = userId;
         this.quantity = quantity;
+        this.title = book.getTitle();
+        this.price = book.getPrice();
     }
 
     @Override
@@ -53,6 +57,22 @@ public class Cart {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle() {
+        this.title = book.getTitle();
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice() {
+        this.price = book.getPrice();
     }
 
     public int getUserId() {
