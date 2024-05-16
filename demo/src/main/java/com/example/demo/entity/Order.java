@@ -1,9 +1,15 @@
 package com.example.demo.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,14 +22,15 @@ public class Order {
     @Id
     private int orderId;
 
-    private int userId, totalPrice;
+    private int userId;
+    private BigDecimal totalPrice;
     private LocalDateTime orderTime;
     private String recipient, contactPhone, destination;
 
     public Order() {
     }
 
-    public Order(int orderId, int userId, int totalPrice, LocalDateTime orderTime,
+    public Order(int orderId, int userId, BigDecimal totalPrice, LocalDateTime orderTime,
             String recipient, String contactPhone, String destination) {
         this.orderId = orderId;
         this.userId = userId;
@@ -32,6 +39,17 @@ public class Order {
         this.recipient = recipient;
         this.contactPhone = contactPhone;
         this.destination = destination;
+    }
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderItem> orderItems;
+
+    public BigDecimal getTotalPrice() {
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice = totalPrice.add(orderItem.getPrice());
+        }
+        return totalPrice;
     }
 
     @Override

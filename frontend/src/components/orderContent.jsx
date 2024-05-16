@@ -1,87 +1,54 @@
-import React from 'react';
-import WindowWidth from '../utils/getWidth';  
-import { Card, Button, Table } from 'antd';
-import { addCartItem } from '../service/cart';
+import React, { useState } from 'react';
+import { Table, Button, Typography, Divider, Modal } from 'antd';
+import { Link } from 'react-router-dom';
 
-const OrderContent = ({ bookInfo }) => {
+const { Title } = Typography;
 
-  
-  const columns = [
-    {
-      dataIndex: 'attribute',
-      key: 'attribute',
-    },
-    {
-      dataIndex: 'content',
-      key: 'content',
-    },
-  ];
+const OrderContent = ({ orderInfo }) => {
 
-  const data = [
-    {
-      key: '1',
-      attribute: '书名',
-      content: bookInfo.title,
-    },
-    {
-      key: '2',
-      attribute: '作者',
-      content: bookInfo.author,
-    },
-    {
-      key: '3',
-      attribute: '出版社',
-      content: bookInfo.press,
-    },
-    {
-      key: '4',
-      attribute: '出版时间',
-      content: bookInfo.pubTime,
-    },
-    {
-      key: '5',
-      attribute: '价格',
-      content: `${bookInfo.price} 元`,
-    },
-    {
-      key: '6',
-      attribute: '库存',
-      content: `${bookInfo.stocks} 件`,
-    },
-  ];
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const handleBuy = () => {
-    const orderData = { 
-        orderNumber: 5, orderTime: "2024-05-04", bookName: bookInfo.title, quantity: 1, shippingAddress: "China", totalPrice: bookInfo.price 
-    };
-
-    fetch('http://localhost:8080/api/orders/checkout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(orderData)
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message); 
-    })
-    .catch(error => console.error('There was a problem with your fetch operation:', error));
-  }
-
-  const handleAddtoCart = () => {
-    addCartItem(bookInfo.id)
-      .then(response => {
-        alert(response.message); 
-      })
-      .catch(error => console.error('There was a problem with adding item to cart:', error));
-  }
+    const handleViewDetails = (order) => {
+        setSelectedOrder(order);
+        setModalVisible(true);
+      };
+    
+      const columns = [
+        {
+          title: '订单编号',
+          dataIndex: 'orderId',
+          key: 'orderId',
+        },
+        {
+          title: '订单时间',
+          dataIndex: 'orderTime',
+          key: 'orderTime',
+        },
+        {
+          title: '收货地址',
+          dataIndex: 'destination',
+          key: 'destination',
+        },
+        {
+          title: '总价',
+          dataIndex: 'totalPrice',
+          key: 'totalPrice',
+        },
+        {
+          title: '详情',
+          key: 'action',
+          render: (text, record) => (
+            <Button type="link" onClick={() => handleViewDetails(record)}>查看详情</Button>
+          ),
+        },
+      ];
   
   return (
     <div className="site-layout-content">
       <Title level={2}>订单详情</Title>
       <Divider />
-      <Table columns={columns} dataSource={orders} />
+      <Table columns={columns} dataSource={orderInfo} />
       <div style={{ marginTop: 20 }}>
         <Link to="/home">
           <Button type="primary">继续购物</Button>
@@ -89,20 +56,25 @@ const OrderContent = ({ bookInfo }) => {
       </div>
       <Modal
         title="订单详情"
-        visible={modalVisible}
+        open={modalVisible}
         onCancel={() => setModalVisible(false)}
         footer={null}
       >
-        {/* 在这里渲染订单详情，使用 selectedOrder */}
         {selectedOrder && (
           <>
-            <p>订单编号：{selectedOrder.orderNumber}</p>
+            <p>订单编号：{selectedOrder.orderId}</p>
             <p>订单时间：{selectedOrder.orderTime}</p>
-            <p>收货地址：{selectedOrder.shippingAddress}</p>
+            <p>收货地址：{selectedOrder.destination}</p>
             <p>总价：{selectedOrder.totalPrice}</p>
-            {/* 在这里渲染订单中的书籍详情 */}
-            {/* 这里根据 selectedOrder 中的书籍信息渲染 */}
-            {/* 例如：selectedOrder.books.map(book => (<p>{book.name} - {book.quantity} - {book.price}</p>)) */}
+            selectedOrder.orderItems.map((item, index) => (
+                <div key={index}>
+                    <p>订单项编号: {item.itemId}</p>
+                    <p>书籍编号: {item.bookId}</p>
+                    <p>数量: {item.quantity}</p>
+                    <p>单项总价: {item.price}</p>
+                </div>
+            ))
+
           </>
         )}
       </Modal>
