@@ -19,4 +19,4 @@ spring:
   
   web:
     resources:
-      static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources,file:Data
+      static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources,file:D:/projects/onlinebookstore/demo/Data/

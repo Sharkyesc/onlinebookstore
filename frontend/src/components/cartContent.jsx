@@ -1,9 +1,8 @@
-import { React, useState, useEffect } from 'react';
-import { InputNumber, Checkbox } from 'antd';
+import { React } from 'react';
+import { InputNumber } from 'antd';
 import { Input, Table, Space, Button, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
-import { renderMatches } from 'react-router-dom';
 
 const { Search } = Input;
 const { confirm } = Modal;

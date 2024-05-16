@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -19,7 +21,8 @@ public class Cart {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private String title, price;
+    private String title;
+    private BigDecimal price;
 
     public Cart() {
     }
@@ -67,7 +70,7 @@ public class Cart {
         this.title = book.getTitle();
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
