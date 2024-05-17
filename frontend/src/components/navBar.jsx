@@ -20,6 +20,8 @@ const NavBar = ({ username, avatarSrc }) => {
         sessionStorage.removeItem('user');
         alert('已登出');
         window.location.href = '/login';
+      } else if (result.status === 401) {
+        alert('登出失败');
       }
     } catch (error) {
       console.error('Logout Error:', error);

@@ -19,7 +19,7 @@ public class LogoutController {
             session.invalidate();
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 }

@@ -6,7 +6,7 @@ const ProtectedRoute = ({ component: Component }) => {
 
     if (!isLoggedIn) {
         alert("请先登录！");
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/login" />;
     }
 
     return <Component />;

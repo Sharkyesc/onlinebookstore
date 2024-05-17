@@ -1,6 +1,6 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { InputNumber } from 'antd';
-import { Input, Table, Space, Button, Modal } from 'antd';
+import { Input, Table, Space, Button, Modal, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
 
@@ -9,6 +9,9 @@ const { confirm } = Modal;
 
 
 const CartContent = ({ cartData, onMutate }) => {
+  
+  const [selectedItems, setSelectedItems] = useState([]);
+
   const handleDelete = (id) => {
     deleteCartItem(id)
     .then(response => {
@@ -27,7 +30,7 @@ const CartContent = ({ cartData, onMutate }) => {
     .catch(error => console.error('There was a problem with changing number of item:', error));
   
   };
-  
+
   const showDeleteConfirm = (Id) => {
     confirm({
       title: '确定从购物车删除这本书吗?',
@@ -46,6 +49,23 @@ const CartContent = ({ cartData, onMutate }) => {
   }
   
   const columns = [
+      {
+        title: '选择',
+        dataIndex: 'cartId',
+        key: 'select',
+        render: (text, record) => (
+          <Checkbox
+            checked={selectedItems.includes(record)}
+            onChange={e => {
+              const { checked } = e.target;
+              setSelectedItems(current => 
+                checked ? [...current, record.cartId] : current.filter(id => id !== record.cartId)
+              );
+            }}
+            
+          />
+        ),
+      },
       {
         title: '封面',
         dataIndex: 'coverSrc',
@@ -99,9 +119,14 @@ const CartContent = ({ cartData, onMutate }) => {
             <h1 style={{marginLeft: 10}}>购物车</h1>
             <Search placeholder="输入书名搜索" style={{ width: 200, marginBottom: 16, marginLeft: 10 }} />
             <Table columns={columns} dataSource={cartData} pagination={{ pageSize: 10 }} />
+            
+            <Button type="primary" disabled={!selectedItems.length} style={{ marginTop: 16 }}>
+              下单选中项
+            </Button>
             {/*<div style={{ position: 'fixed', bottom: 0, right: '5%', width:'100vh' }}>
                 <h2>总计：{calculateTotalPrice()} 点击结算</h2>
             </div>*/}
+
         </div>
     );
 }
