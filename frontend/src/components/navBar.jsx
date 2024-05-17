@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu, Dropdown, Avatar, Input } from 'antd';
 import { Link } from 'react-router-dom';
+import { logout } from '../service/logout';
 import { 
     HomeOutlined, 
     BookOutlined, 
@@ -11,13 +12,24 @@ import {
 } from '@ant-design/icons';
 
 const NavBar = ({ username, avatarSrc }) => {
+
+  const handleLogout = async () => {
+    const result = await logout();
+    if (result.error) {
+        console.error('Logout Error:', result.error);
+    } else {
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+    }
+  }
+
   const menu = (
     <Menu>
       <Menu.Item key="profile">
         <Link to="/user">个人中心</Link>
       </Menu.Item>
       <Menu.Item key="passwd">修改密码</Menu.Item>
-      <Menu.Item key="logout"><Link to="/">退出登录</Link></Menu.Item>
+      <Menu.Item key="logout" onClick={handleLogout}>退出登录</Menu.Item>
     </Menu>
   );
 

@@ -16,12 +16,7 @@ export async function login(username, password) {
 
 /*
 
-export async function logout() {
-  const url = `${PREFIX}/logout`;
-  let result;
-  result = await get(url);
-  return result;
-}
+
 
 export async function register({ username, password, email, code }) {
   const url = `${PREFIX}/register`;
