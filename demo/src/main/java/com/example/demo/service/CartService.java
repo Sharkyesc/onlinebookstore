@@ -1,61 +1,19 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
-import com.example.demo.repository.CartRepository;
-
 import java.util.List;
 
-@Service
-public class CartService {
+public interface CartService {
+    Book getBookByBookId(int bookId);
 
-    @Autowired
-    private CartRepository cartRepository;
+    Cart getByCartId(int cartId);
 
-    @Autowired
-    private BookService bookService;
+    List<Cart> getAllCartItems();
 
-    public Book getBookByBookId(int bookId) {
-        return bookService.findBookById(bookId);
-    }
+    void addCartItem(int bookId);
 
-    public Cart getByCartId(int cartId) {
-        return cartRepository.findByCartId(cartId);
-    }
+    void changeCartItemNumber(int id, int number);
 
-    public List<Cart> getAllCartItems() {
-        return cartRepository.findAll();
-    }
-
-    public void addCartItem(int bookId) {
-        Cart cartItem = cartRepository.findByBookId(bookId);
-        if (cartItem != null) {
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-            cartRepository.save(cartItem);
-        } else {
-            Cart newCartItem = new Cart();
-            newCartItem.setBook(getBookByBookId(bookId));
-            newCartItem.setPrice();
-            newCartItem.setTitle();
-            newCartItem.setCoverSrc();
-            newCartItem.setUserId(1);
-            newCartItem.setQuantity(1);
-            cartRepository.save(newCartItem);
-        }
-    }
-
-    public void changeCartItemNumber(int id, int number) {
-        Cart cartItem = cartRepository.findByCartId(id);
-        if (cartItem != null) {
-            cartItem.setQuantity(number);
-            cartRepository.save(cartItem);
-        }
-    }
-
-    public void deleteCartItem(int id) {
-        cartRepository.deleteById(id);
-    }
+    void deleteCartItem(int id);
 }

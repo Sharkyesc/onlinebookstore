@@ -1,35 +1,12 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import com.example.demo.entity.Order;
 import java.util.List;
 
-import com.example.demo.entity.Order;
-import com.example.demo.repository.OrderRepository;
+public interface OrderService {
+    List<Order> findAllOrders();
 
-@Service
-public class OrderService {
+    void addOrder(Order order);
 
-    @Autowired
-    private OrderRepository orderRepository;
-
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    public List<Order> findAllOrders() {
-        return orderRepository.findAll();
-    }
-
-    public void addOrder(Order order) {
-        order.setOrderTime(LocalDateTime.now());
-        orderRepository.save(order);
-    }
-
-    public void updateOrder(Order order) {
-        orderRepository.save(order);
-    }
-
+    void updateOrder(Order order);
 }

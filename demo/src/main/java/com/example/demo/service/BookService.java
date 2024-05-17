@@ -1,41 +1,16 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.demo.entity.Book;
 import java.util.List;
 
-import com.example.demo.entity.Book;
-import com.example.demo.repository.BookRepository;
+public interface BookService {
+    List<Book> findAllBooks();
 
-@Service
-public class BookService {
+    Book findBookById(Integer id);
 
-    @Autowired
-    private BookRepository bookRepository;
+    void addBook(Book book);
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    void updateBook(Book book);
 
-    public List<Book> findAllBooks() {
-        return bookRepository.findAll();
-    }
-
-    public Book findBookById(Integer id) {
-        System.out.println(bookRepository.findById(id).orElse(null).toString());
-        return bookRepository.findById(id).orElse(null);
-    }
-
-    public void addBook(Book book) {
-        bookRepository.save(book);
-    }
-
-    public void updateBook(Book book) {
-        bookRepository.save(book);
-    }
-
-    public void deleteBook(Integer id) {
-        bookRepository.deleteById(id);
-    }
+    void deleteBook(Integer id);
 }
