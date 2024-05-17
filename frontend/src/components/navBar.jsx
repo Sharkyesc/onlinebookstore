@@ -14,12 +14,16 @@ import {
 const NavBar = ({ username, avatarSrc }) => {
 
   const handleLogout = async () => {
-    const result = await logout();
-    if (result.error) {
-        console.error('Logout Error:', result.error);
-    } else {
-        localStorage.removeItem('user');
+    try {
+      const result = await logout();
+      if (result.status === 200) {
+        sessionStorage.removeItem('user');
+        alert('已登出');
         window.location.href = '/login';
+      }
+    } catch (error) {
+      console.error('Logout Error:', error);
+      alert('登出失败');
     }
   }
 

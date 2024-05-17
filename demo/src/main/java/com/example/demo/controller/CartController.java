@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +21,11 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    // Get cart data
     @GetMapping
     public List<Cart> getAllCartItems() {
         return cartService.getAllCartItems();
     }
 
-    // Add to cart
     @PutMapping
     public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
         Confirmation confirmation = new Confirmation();
@@ -41,7 +38,6 @@ public class CartController {
         return confirmation;
     }
 
-    // Change cart item number
     @PutMapping("/{id}")
     public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
         Confirmation confirmation = new Confirmation();
@@ -52,7 +48,6 @@ public class CartController {
         return confirmation;
     }
 
-    // Delete cart item
     @DeleteMapping("/{id}")
     public Confirmation deleteCartItem(@PathVariable int id) {
         Confirmation confirmation = new Confirmation();

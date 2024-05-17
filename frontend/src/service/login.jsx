@@ -16,8 +16,6 @@ export async function login(username, password) {
 
 /*
 
-
-
 export async function register({ username, password, email, code }) {
   const url = `${PREFIX}/register`;
   try {

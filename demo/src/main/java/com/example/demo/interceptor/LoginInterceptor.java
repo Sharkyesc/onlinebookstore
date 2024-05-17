@@ -24,7 +24,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             System.out.println("Session is already logged in");
             return true;
         }
-        response.sendRedirect("/login");
         return false;
     }
 }

@@ -17,7 +17,9 @@ public class LogoutController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        response.setStatus(HttpServletResponse.SC_OK);
     }
 }
