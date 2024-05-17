@@ -1,12 +1,20 @@
-/*
-import { BASEURL, get, post, postUrlencoded } from "./common";
-const PREFIX = `${BASEURL}/api/user`;
-export async function login({ username, password }) {
-  const url = `${PREFIX}/login`;
-  let result;
-  result = await postUrlencoded(url, { username, password });
-  return result;
+import { PREFIX, post, DUMMY_RESPONSE } from "./common";
+
+export async function login(username, password) {
+    const url = `${PREFIX}/login`;
+    let result;
+
+    try {
+        result = await post(url, { username, password });
+    } catch (e) {
+        console.log(e);
+        result = DUMMY_RESPONSE;
+    }
+    return result;
 }
+
+
+/*
 
 export async function logout() {
   const url = `${PREFIX}/logout`;

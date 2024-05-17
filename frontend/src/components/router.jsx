@@ -17,7 +17,7 @@ export default function AppRouter() {
             <Route path="/user" element={<UserPage />} />
             <Route path="/order" element={<OrderPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/*" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
         </Routes>
     </BrowserRouter>
 }

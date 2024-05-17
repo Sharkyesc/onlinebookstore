@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Layout, Form, Input, Button, Checkbox, Card, Flex, Menu, Avatar } from 'antd';
+import { Layout, Form, Input, Button, Checkbox, Card, Flex } from 'antd';
 import WindowWidth from '../utils/getWidth';  
-import { LockOutlined, UserOutlined,HomeOutlined, 
-        BookOutlined, 
-        ShoppingCartOutlined, 
-        OrderedListOutlined,
-        DownOutlined,
-        SearchOutlined
-    } from '@ant-design/icons';
+import NavBar from '../components/navBar';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { login } from '../service/login';
+import { useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer } = Layout;
 
@@ -25,6 +22,8 @@ const LoginPage = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
   
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
@@ -34,38 +33,25 @@ const LoginPage = () => {
         setPassword(e.target.value);
     };
 
-    const handleLogin = () => {
-      if (username === 'luoyiyu' && password === userInfo.password) {
-        window.location.href = '/home';
-      } else {
-        alert('用户名或密码错误，请重新输入！');
-      }
+    const handleLogin = async () => {
+        try {
+            console.log(username,password);
+            const response = await login(username, password);
+            if (response.success) {
+                alert('登录成功');
+                navigate('/home'); 
+            } else {
+                alert('用户名或密码错误');
+            }
+        } catch (error) {
+            alert('登录失败，请稍后再试');
+        }
     };
   
     return (
         <Layout>
             <Header>
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>首页</Menu.Item>
-                    <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>书籍</Menu.Item>
-                    <Menu.Item key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>购物车</Menu.Item>
-                    <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>我的订单</Menu.Item> 
-                    <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
-                        <Input
-                          placeholder="搜索"
-                          prefix={<SearchOutlined />}
-                          style={{ width: 700 }}
-                        />
-                    </Menu.Item>
-                    <Menu.Item key="profile" style={{ marginRight: 20, backgroundColor:'transparent' }}>
-                        <span className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                            {unknownInfo.username}
-                            <Avatar src={unknownInfo.avatarSrc} style={{ marginLeft: 6, marginRight: 4 }} />
-                            <DownOutlined />
-                        </span>
-                    </Menu.Item>
-                </Menu>
-
+                <NavBar username={unknownInfo.username} avatarSrc={unknownInfo.avatarSrc}/>
             </Header>
             <Content>
                 <Card hoverable style={{ width: WindowWidth() * 0.8, margin: 'auto', marginTop: 20 }}>
