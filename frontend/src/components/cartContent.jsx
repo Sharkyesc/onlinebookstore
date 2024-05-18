@@ -3,6 +3,7 @@ import { InputNumber } from 'antd';
 import { Input, Table, Space, Button, Modal, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
+import { debounce } from 'lodash';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -21,7 +22,7 @@ const CartContent = ({ cartData, onMutate }) => {
     .catch(error => console.error('There was a problem with deleting item from cart:', error));
   };
   
-  const handleQuantityChange = (id, value) => {
+  const handleQuantityChange = debounce((id, value) => {
     changeCartItemNumber(id, value)
     .then(response => {
       alert(response.message); 
@@ -29,7 +30,7 @@ const CartContent = ({ cartData, onMutate }) => {
     })
     .catch(error => console.error('There was a problem with changing number of item:', error));
   
-  };
+  }, 300);
 
   const showDeleteConfirm = (Id) => {
     confirm({
