@@ -56,7 +56,7 @@ const CartContent = ({ cartData, onMutate }) => {
         key: 'select',
         render: (text, record) => (
           <Checkbox
-            checked={selectedItems.includes(record)}
+            checked={selectedItems.includes(record.cartId)}
             onChange={e => {
               const { checked } = e.target;
               setSelectedItems(current => 
