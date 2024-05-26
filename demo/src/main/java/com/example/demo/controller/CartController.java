@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Cart;
-import com.example.demo.entity.Book;
+import com.example.demo.entity.User;
 import com.example.demo.service.CartService;
+import com.example.demo.service.UserService;
 
 import java.util.List;
 
@@ -21,40 +24,53 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping
-    public List<Cart> getAllCartItems() {
-        return cartService.getAllCartItems();
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/api/cart")
+    public List<Cart> viewCart(@AuthenticationPrincipal UserDetails currentUser) {
+        User user = userService.findByUsername(currentUser.getUsername());
+
+        return cartService.findCartsByUser(user);
     }
 
-    @PutMapping
-    public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
-        Confirmation confirmation = new Confirmation();
-
-        cartService.addCartItem(bookId);
-        Book bookAdded = cartService.getBookByBookId(bookId);
-
-        confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
-
-        return confirmation;
-    }
-
-    @PutMapping("/{id}")
-    public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
-        Confirmation confirmation = new Confirmation();
-        cartService.changeCartItemNumber(id, number);
-        Book bookChanged = cartService.getByCartId(id).getBook();
-        confirmation.setMessage("《" + bookChanged.getTitle() + "》加购数量已更新为：" + number + "本");
-
-        return confirmation;
-    }
-
-    @DeleteMapping("/{id}")
-    public Confirmation deleteCartItem(@PathVariable int id) {
-        Confirmation confirmation = new Confirmation();
-        cartService.deleteCartItem(id);
-
-        confirmation.setMessage("已删除！");
-        return confirmation;
-    }
-
+    /*
+     * @GetMapping
+     * public List<Cart> getAllCartItems() {
+     * return cartService.getAllCartItems();
+     * }
+     * 
+     * @PutMapping
+     * public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
+     * Confirmation confirmation = new Confirmation();
+     * 
+     * cartService.addCartItem(bookId);
+     * Book bookAdded = cartService.getBookByBookId(bookId);
+     * 
+     * confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
+     * 
+     * return confirmation;
+     * }
+     * 
+     * @PutMapping("/{id}")
+     * public Confirmation changeCartItemNumber(@PathVariable("id") int
+     * id, @RequestParam("number") int number) {
+     * Confirmation confirmation = new Confirmation();
+     * cartService.changeCartItemNumber(id, number);
+     * Book bookChanged = cartService.getByCartId(id).getBook();
+     * confirmation.setMessage("《" + bookChanged.getTitle() + "》加购数量已更新为：" + number
+     * + "本");
+     * 
+     * return confirmation;
+     * }
+     * 
+     * @DeleteMapping("/{id}")
+     * public Confirmation deleteCartItem(@PathVariable int id) {
+     * Confirmation confirmation = new Confirmation();
+     * cartService.deleteCartItem(id);
+     * 
+     * confirmation.setMessage("已删除！");
+     * return confirmation;
+     * }
+     */
 }

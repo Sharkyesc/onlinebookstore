@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
-import com.example.demo.repository.CartRepository;
+import com.example.demo.entity.User;
+import com.example.demo.dao.CartDao;
 
 import java.util.List;
 
@@ -13,56 +14,62 @@ import java.util.List;
 public class CartServiceImpl implements CartService {
 
     @Autowired
-    private CartRepository cartRepository;
+    private CartDao cartDao;
 
     @Autowired
     private BookService bookService;
 
     @Override
+    public List<Cart> findCartsByUser(User user) {
+        return cartDao.findByUser(user);
+    }
+
+    @Override
     public Book getBookByBookId(int bookId) {
         return bookService.findBookById(bookId);
     }
-
-    @Override
-    public Cart getByCartId(int cartId) {
-        return cartRepository.findByCartId(cartId);
-    }
-
-    @Override
-    public List<Cart> getAllCartItems() {
-        return cartRepository.findAll();
-    }
-
-    @Override
-    public void addCartItem(int bookId) {
-        Cart cartItem = cartRepository.findByBookId(bookId);
-        if (cartItem != null) {
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-            cartRepository.save(cartItem);
-        } else {
-            Cart newCartItem = new Cart();
-            Book book = getBookByBookId(bookId);
-            newCartItem.setBook(book);
-            newCartItem.setPrice(book.getPrice());
-            newCartItem.setTitle(book.getTitle());
-            newCartItem.setCoverSrc(book.getCoverSrc());
-            newCartItem.setUserId(1);
-            newCartItem.setQuantity(1);
-            cartRepository.save(newCartItem);
-        }
-    }
-
-    @Override
-    public void changeCartItemNumber(int id, int number) {
-        Cart cartItem = cartRepository.findByCartId(id);
-        if (cartItem != null) {
-            cartItem.setQuantity(number);
-            cartRepository.save(cartItem);
-        }
-    }
-
-    @Override
-    public void deleteCartItem(int id) {
-        cartRepository.deleteById(id);
-    }
+    /*
+     * @Override
+     * public Cart getByCartId(int cartId) {
+     * return cartRepository.findByCartId(cartId);
+     * }
+     * 
+     * @Override
+     * public List<Cart> getAllCartItems() {
+     * return cartRepository.findAll();
+     * }
+     * 
+     * @Override
+     * public void addCartItem(int bookId) {
+     * Cart cartItem = cartRepository.findByBookId(bookId);
+     * if (cartItem != null) {
+     * cartItem.setQuantity(cartItem.getQuantity() + 1);
+     * cartRepository.save(cartItem);
+     * } else {
+     * Cart newCartItem = new Cart();
+     * Book book = getBookByBookId(bookId);
+     * newCartItem.setBook(book);
+     * newCartItem.setPrice(book.getPrice());
+     * newCartItem.setTitle(book.getTitle());
+     * newCartItem.setCoverSrc(book.getCoverSrc());
+     * newCartItem.setUserId(1);
+     * newCartItem.setQuantity(1);
+     * cartRepository.save(newCartItem);
+     * }
+     * }
+     * 
+     * @Override
+     * public void changeCartItemNumber(int id, int number) {
+     * Cart cartItem = cartRepository.findByCartId(id);
+     * if (cartItem != null) {
+     * cartItem.setQuantity(number);
+     * cartRepository.save(cartItem);
+     * }
+     * }
+     * 
+     * @Override
+     * public void deleteCartItem(int id) {
+     * cartRepository.deleteById(id);
+     * }
+     */
 }

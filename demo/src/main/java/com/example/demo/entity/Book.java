@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
@@ -17,16 +16,15 @@ public class Book {
     @Id
     private int id;
 
-    private int stocks, salesvolume;
+    private int stocks, salesvolume, price;
     private String isbn, title, coverSrc, author, press, description;
     private Date pubTime;
-    private BigDecimal price;
 
     public Book() {
     }
 
     public Book(int id, String isbn, String title, String coverSrc, String author,
-            BigDecimal price, String press, Date pubTime, int stocks, int salesvolume, String description) {
+            int price, String press, Date pubTime, int stocks, int salesvolume, String description) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
