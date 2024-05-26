@@ -9,11 +9,6 @@ import { useNavigate } from 'react-router-dom';
 const { Header, Content, Footer } = Layout;
 
 const LoginPage = () => {
-    const userInfo = {
-        username: '玉皇大帝',
-        password: '123456',
-        avatarSrc: 'https://q5.itc.cn/q_70/images03/20240205/9bbcd6c4ff4146b79dc47dd4ff8d7026.jpeg',
-    };
     
     const unknownInfo = {
         username: '请登录',
@@ -69,6 +64,7 @@ const LoginPage = () => {
                         name="normal_login" 
                         className="login-form" 
                         initialValues={{remember: true,}}
+                        onFinish={handleLogin}
                         style={{ flex: 1, padding: '0 20px' }}
                     >
                         <h2 style={{ marginBottom: 20 }}>账号密码登录</h2>
@@ -115,7 +111,6 @@ const LoginPage = () => {
                                 type="primary" 
                                 htmlType="submit" 
                                 className="login-form-button" 
-                                onClick={handleLogin}
                                 style={{ width: '100%' }}
                             > 登录</Button>
                             

@@ -1,53 +1,83 @@
-CREATE TABLE books (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255),
-    price DOUBLE,
-    author VARCHAR(100),
-    press VARCHAR(100),
-    pub_time DATE,
-    stocks INT,
-    description TEXT
-);
 
-CREATE TABLE Users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL,
-    email VARCHAR(100),
-    address VARCHAR(255),
-    phone VARCHAR(20)
-);
-
-CREATE TABLE Orders (
-    order_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
-    order_time DATETIME,
-    book_id INT,
-    FOREIGN KEY (book_id) REFERENCES Books(book_id),
-    quantity INT,
-    total_price DECIMAL(10, 2),
-    shipping_address VARCHAR(255)
-);
+CREATE DATABASE IF NOT EXISTS bookstore;
+USE bookstore;
 
 
-CREATE TABLE `orders` (
-  `orderID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `userID` INT UNSIGNED NOT NULL,
-  `orderTime` DATETIME NOT NULL,
-  `totalPrice` DECIMAL(10, 2) NOT NULL,
-  PRIMARY KEY (`orderID`),
-  FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
-);
+CREATE TABLE IF NOT EXISTS users (
+    `user_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `nickname` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `phonenumber` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 
-CREATE TABLE `orderitems` (
-  `itemID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `orderID` INT UNSIGNED NOT NULL,
-  `bookID` INT UNSIGNED NOT NULL,
-  `quantity` INT UNSIGNED NOT NULL,
-  `price` DECIMAL(10, 2) NOT NULL,
-  PRIMARY KEY (`itemID`),
-  FOREIGN KEY (`orderID`) REFERENCES `orders` (`orderID`),
-  FOREIGN KEY (`bookID`) REFERENCES `books` (`bookID`)
-);
+CREATE TABLE IF NOT EXISTS userauth (
+  `user_id` int UNSIGNED NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `passwordHash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE,
+  CONSTRAINT `userauth_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `bookstore`.`users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
+CREATE TABLE IF NOT EXISTS books (
+    `ID` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ISBN` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `cover_src` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `author` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `price` int NULL DEFAULT NULL,
+    `press` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `pub_time` date NULL DEFAULT NULL,
+    `stocks` int UNSIGNED NULL DEFAULT 100,
+    `salesvolume` int UNSIGNED NULL DEFAULT 0,
+    `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    PRIMARY KEY (`ID` DESC) USING BTREE,
+    INDEX `ID`(`ID` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
+CREATE TABLE IF NOT EXISTS orders (
+    `order_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id` int UNSIGNED NOT NULL,
+    `order_time` datetime(6) NULL DEFAULT NULL,
+    `recipient` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `contact_phone` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `destination` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `total_price` int NULL DEFAULT NULL,
+    PRIMARY KEY (`order_id`) USING BTREE,
+    INDEX `userID`(`user_id` ASC) USING BTREE,
+    CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `bookstore`.`users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
+CREATE TABLE IF NOT EXISTS orderitems (
+  `item_id` int UNSIGNED NOT NULL,
+  `order_id` int UNSIGNED NOT NULL,
+  `book_id` int UNSIGNED NOT NULL,
+  `quantity` int NULL DEFAULT NULL,
+  `price` int NULL DEFAULT NULL,
+  PRIMARY KEY (`item_id`, `order_id`) USING BTREE,
+  INDEX `bookID`(`book_id` ASC) USING BTREE,
+  INDEX `orderitems_ibfk_2`(`order_id` ASC) USING BTREE,
+  CONSTRAINT `orderitems_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `bookstore`.`orders` (`order_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `orderitems_ibfk_3` FOREIGN KEY (`book_id`) REFERENCES `bookstore`.`books` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+
+CREATE TABLE IF NOT EXISTS cart (
+  `cart_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` int UNSIGNED NOT NULL,
+  `book_id` int UNSIGNED NOT NULL,
+  `quantity` int UNSIGNED NOT NULL DEFAULT 1,
+  `price` decimal(38, 2) NULL DEFAULT NULL,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `cover_src` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`cart_id` DESC) USING BTREE,
+  INDEX `cart_ibfk_1`(`user_id` ASC) USING BTREE,
+  INDEX `book_id`(`book_id` ASC) USING BTREE,
+  CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `bookstore`.`users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `bookstore`.`books` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
