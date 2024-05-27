@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
+import com.example.demo.repository.CartRepository;
 import com.example.demo.dao.CartDao;
 
 import java.util.List;
@@ -28,48 +29,42 @@ public class CartServiceImpl implements CartService {
     public Book getBookByBookId(int bookId) {
         return bookService.findBookById(bookId);
     }
-    /*
-     * @Override
-     * public Cart getByCartId(int cartId) {
-     * return cartRepository.findByCartId(cartId);
-     * }
-     * 
-     * @Override
-     * public List<Cart> getAllCartItems() {
-     * return cartRepository.findAll();
-     * }
-     * 
-     * @Override
-     * public void addCartItem(int bookId) {
-     * Cart cartItem = cartRepository.findByBookId(bookId);
-     * if (cartItem != null) {
-     * cartItem.setQuantity(cartItem.getQuantity() + 1);
-     * cartRepository.save(cartItem);
-     * } else {
-     * Cart newCartItem = new Cart();
-     * Book book = getBookByBookId(bookId);
-     * newCartItem.setBook(book);
-     * newCartItem.setPrice(book.getPrice());
-     * newCartItem.setTitle(book.getTitle());
-     * newCartItem.setCoverSrc(book.getCoverSrc());
-     * newCartItem.setUserId(1);
-     * newCartItem.setQuantity(1);
-     * cartRepository.save(newCartItem);
-     * }
-     * }
-     * 
-     * @Override
-     * public void changeCartItemNumber(int id, int number) {
-     * Cart cartItem = cartRepository.findByCartId(id);
-     * if (cartItem != null) {
-     * cartItem.setQuantity(number);
-     * cartRepository.save(cartItem);
-     * }
-     * }
-     * 
-     * @Override
-     * public void deleteCartItem(int id) {
-     * cartRepository.deleteById(id);
-     * }
-     */
+
+    @Override
+    public Cart getByCartId(int cartId) {
+        return cartDao.findByCartId(cartId);
+    }
+
+    @Override
+    public void addCartItem(int bookId) {
+        Cart cartItem = cartDao.findByBookId(bookId);
+        if (cartItem != null) {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartDao.save(cartItem);
+        } else {
+            Cart newCartItem = new Cart();
+            Book book = getBookByBookId(bookId);
+            newCartItem.setBook(book);
+            newCartItem.setPrice(book.getPrice());
+            newCartItem.setTitle(book.getTitle());
+            newCartItem.setCoverSrc(book.getCoverSrc());
+            newCartItem.setQuantity(1);
+            cartDao.save(newCartItem);
+        }
+    }
+
+    @Override
+    public void changeCartItemNumber(int id, int number) {
+        Cart cartItem = cartDao.findByCartId(id);
+        if (cartItem != null) {
+            cartItem.setQuantity(number);
+            cartDao.save(cartItem);
+        }
+    }
+
+    @Override
+    public void deleteCartItem(int id) {
+        cartDao.delete(id);
+    }
+
 }

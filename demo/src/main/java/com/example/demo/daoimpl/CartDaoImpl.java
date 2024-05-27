@@ -21,6 +21,11 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
+    public Cart findByCartId(int cartId) {
+        return cartRepository.findByCartId(cartId);
+    }
+
+    @Override
     public void save(Cart cart) {
         cartRepository.save(cart);
     }

@@ -9,15 +9,13 @@ public interface CartService {
     Book getBookByBookId(int bookId);
 
     List<Cart> findCartsByUser(User user);
-    /*
-     * Cart getByCartId(int cartId);
-     * 
-     * List<Cart> getAllCartItems();
-     * 
-     * void addCartItem(int bookId);
-     * 
-     * void changeCartItemNumber(int id, int number);
-     * 
-     * void deleteCartItem(int id);
-     */
+
+    Cart getByCartId(int cartId);
+
+    void addCartItem(int bookId);
+
+    void changeCartItemNumber(int id, int number);
+
+    void deleteCartItem(int id);
+
 }

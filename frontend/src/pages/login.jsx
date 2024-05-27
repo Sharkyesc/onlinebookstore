@@ -34,7 +34,7 @@ const LoginPage = () => {
             const response = await login(username, password);
             if (response.success) {
                 alert('登录成功');
-                sessionStorage.setItem("user", "luoyiyu");
+                sessionStorage.setItem("username", username);
                 navigate('/home'); 
             } else {
                 alert('用户名或密码错误');

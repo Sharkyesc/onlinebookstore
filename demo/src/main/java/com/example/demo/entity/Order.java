@@ -12,6 +12,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -27,7 +29,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     private BigDecimal totalPrice;
     private LocalDateTime orderTime;
     private String recipient, contactPhone, destination;
@@ -35,10 +40,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, int userId, BigDecimal totalPrice, LocalDateTime orderTime,
+    public Order(int orderId, User user, BigDecimal totalPrice, LocalDateTime orderTime,
             String recipient, String contactPhone, String destination) {
         this.orderId = orderId;
-        this.userId = userId;
+        this.user = user;
         this.totalPrice = totalPrice;
         this.orderTime = orderTime;
         this.recipient = recipient;
@@ -61,7 +66,7 @@ public class Order {
     public String toString() {
         return "\n" +
                 "订单编号：" + orderId +
-                "\n用户ID：" + userId +
+                "\n用户ID：" + user.getUser_id() +
                 "\n总价：" + totalPrice +
                 "\n下单时间：" + orderTime +
                 "\n收货人：'" + recipient + '\'' +

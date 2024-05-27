@@ -11,7 +11,7 @@ import lombok.Setter;
 public class UserAuth {
     @Id
     @Column(name = "user_id")
-    private int userId;
+    private int user_id;
 
     private String username;
     private String password;
@@ -20,4 +20,14 @@ public class UserAuth {
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
+
+    public UserAuth() {
+    }
+
+    public UserAuth(int user_id, String username, String password, User user) {
+        this.user_id = user_id;
+        this.username = username;
+        this.password = password;
+        this.user = user;
+    }
 }

@@ -15,19 +15,24 @@ const NavBar = ({ username, avatarSrc }) => {
 
   const handleLogout = async () => {
     try {
-      const result = await logout();
-      if (result.status === 200) {
-        sessionStorage.removeItem('user');
-        alert('已登出');
-        window.location.href = '/login';
-      } else if (result.status === 401) {
-        alert('登出失败');
-      }
+        const response = await logout();
+        if (response.ok) { 
+            sessionStorage.removeItem('username');
+            alert('已登出');
+            const redirectUrl = response.headers.get('Location');
+            if (redirectUrl) {
+                window.location.href = redirectUrl; 
+            } else {
+                window.location.href = '/login'; 
+            }
+        } else {
+            alert('登出失败');
+        }
     } catch (error) {
-      console.error('Logout Error:', error);
-      alert('登出失败');
+        console.error('Logout Error:', error);
+        alert('登出失败');
     }
-  }
+  };
 
   const menu = (
     <Menu>

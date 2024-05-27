@@ -3,7 +3,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ component: Component }) => {
-    const isLoggedIn = sessionStorage.getItem('user'); 
+    const isLoggedIn = sessionStorage.getItem('username'); 
 
     if (!isLoggedIn) {
         message.warning("请先登录！");

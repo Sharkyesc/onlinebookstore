@@ -8,9 +8,12 @@ import java.util.List;
 public interface CartDao {
     List<Cart> findByUser(User user);
 
+    Cart findByCartId(int cartId);
+
     void save(Cart cart);
 
     void update(Cart cart);
 
     void delete(Integer id);
+
 }
