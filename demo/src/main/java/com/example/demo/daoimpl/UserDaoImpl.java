@@ -27,4 +27,14 @@ public class UserDaoImpl implements UserDao {
         UserAuth userAuth = userAuthRepository.findByUsername(username);
         return userAuth != null ? userAuth.getUser() : null;
     }
+
+    @Override
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public void saveAuth(UserAuth userAuth) {
+        userAuthRepository.save(userAuth);
+    }
 }

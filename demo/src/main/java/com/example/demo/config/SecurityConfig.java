@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+import com.example.demo.security.CustomAuthenticationFailureHandler;
+import com.example.demo.security.CustomAuthenticationSuccessHandler;
 import com.example.demo.service.CustomUserDetailsService;
 
 import java.util.List;
@@ -19,6 +21,16 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    public SecurityConfig(CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
+            CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,7 +50,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("http://localhost:3000/login")
-                        .defaultSuccessUrl("http://localhost:3000/", true)
+                        .loginProcessingUrl("/api/login")
+                        .successHandler(customAuthenticationSuccessHandler)
+                        .failureHandler(customAuthenticationFailureHandler)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")

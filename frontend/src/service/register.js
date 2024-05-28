@@ -1,14 +1,14 @@
 import { PREFIX, post } from './common';
 
-export async function register(username, password) {
+export async function register(username, nickname, password) {
     const url = `${PREFIX}/register`;
-    let result;
+    let response;
 
     try {
-        result = await post(url, { username, password });
+        response = await post(url, { username, nickname, password });
     } catch (e) {
         console.log(e);
-        result = { success: false };  
+        response = { success: false };  
     }
-    return result;
+    return response;
 }

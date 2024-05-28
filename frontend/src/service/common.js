@@ -37,7 +37,13 @@ export async function post(url, data) {
       credentials: "include"
   };
   let res = await fetch(url, opts);
-  return res.json();
+
+  if (res.status === 204 || res.headers.get('content-length') === '0') {
+      return { ok: res.ok };
+  }
+
+  const result = await res.json();
+  return { ok: res.ok, ...result };
 }
 
 export const BASEURL = 'http://localhost:8080';

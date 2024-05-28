@@ -32,7 +32,7 @@ const LoginPage = () => {
         try {
             console.log(username,password);
             const response = await login(username, password);
-            if (response.success) {
+            if (response.ok) {
                 alert('登录成功');
                 sessionStorage.setItem("username", username);
                 navigate('/home'); 
