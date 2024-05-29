@@ -10,6 +10,8 @@ public interface CartDao {
 
     Cart findByCartId(int cartId);
 
+    Cart findByBookId(int bookId);
+
     void save(Cart cart);
 
     void update(Cart cart);

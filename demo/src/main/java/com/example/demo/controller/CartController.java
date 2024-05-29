@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Cart;
-import com.example.demo.entity.User;
 import com.example.demo.entity.Book;
 import com.example.demo.service.CartService;
 import com.example.demo.service.UserService;
@@ -20,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
+
     @Autowired
     private CartService cartService;
 
@@ -27,25 +27,21 @@ public class CartController {
     private UserService userService;
 
     @GetMapping("")
-    public List<Cart> viewCart(String username) {
-        User user = userService.findByUsername(username);
-
-        return cartService.findCartsByUser(user);
+    public List<Cart> viewCart() {
+        return cartService.findCartsByUser(userService.getCurUser());
     }
 
-    /*
-     * @PutMapping
-     * public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
-     * Confirmation confirmation = new Confirmation();
-     * 
-     * cartService.addCartItem(bookId);
-     * Book bookAdded = cartService.getBookByBookId(bookId);
-     * 
-     * confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
-     * 
-     * return confirmation;
-     * }
-     */
+    @PutMapping
+    public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
+        Confirmation confirmation = new Confirmation();
+
+        cartService.addCartItem(bookId, userService.getCurUser().getUser_id());
+        Book bookAdded = cartService.getBookByBookId(bookId);
+
+        confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
+
+        return confirmation;
+    }
 
     @PutMapping("/{id}")
     public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {

@@ -12,7 +12,7 @@ public interface CartService {
 
     Cart getByCartId(int cartId);
 
-    // void addCartItem(int bookId);
+    void addCartItem(int bookId, int userId);
 
     void changeCartItemNumber(int id, int number);
 

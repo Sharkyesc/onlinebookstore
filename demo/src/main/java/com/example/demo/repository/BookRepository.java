@@ -7,5 +7,4 @@ import com.example.demo.entity.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-
 }

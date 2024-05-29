@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
-import com.example.demo.repository.CartRepository;
 import com.example.demo.dao.CartDao;
+import com.example.demo.dao.UserDao;
 
 import java.util.List;
 
@@ -16,6 +16,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartDao cartDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private BookService bookService;
@@ -35,25 +38,24 @@ public class CartServiceImpl implements CartService {
         return cartDao.findByCartId(cartId);
     }
 
-    /*
-     * @Override
-     * public void addCartItem(int bookId) {
-     * Cart cartItem = cartDao.findByBookId(bookId);
-     * if (cartItem != null) {
-     * cartItem.setQuantity(cartItem.getQuantity() + 1);
-     * cartDao.save(cartItem);
-     * } else {
-     * Cart newCartItem = new Cart();
-     * Book book = getBookByBookId(bookId);
-     * newCartItem.setBook(book);
-     * newCartItem.setPrice(book.getPrice());
-     * newCartItem.setTitle(book.getTitle());
-     * newCartItem.setCoverSrc(book.getCoverSrc());
-     * newCartItem.setQuantity(1);
-     * cartDao.save(newCartItem);
-     * }
-     * }
-     */
+    @Override
+    public void addCartItem(int bookId, int userId) {
+        Cart cartItem = cartDao.findByBookId(bookId);
+        if (cartItem != null) {
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            cartDao.save(cartItem);
+        } else {
+            Cart newCartItem = new Cart();
+            Book book = getBookByBookId(bookId);
+            newCartItem.setBook(book);
+            newCartItem.setUser(userDao.findById(userId));
+            newCartItem.setPrice(book.getPrice());
+            newCartItem.setTitle(book.getTitle());
+            newCartItem.setCoverSrc(book.getCoverSrc());
+            newCartItem.setQuantity(1);
+            cartDao.save(newCartItem);
+        }
+    }
 
     @Override
     public void changeCartItemNumber(int id, int number) {

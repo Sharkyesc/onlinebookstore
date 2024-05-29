@@ -4,6 +4,8 @@ import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserAuth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -48,6 +50,18 @@ public class UserServiceImpl implements UserService {
         userAuth.setUsername(username);
         userAuth.setPassword(encodePassword(password));
         userDao.saveAuth(userAuth);
+    }
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Override
+    public User getCurUser() {
+        HttpSession session = request.getSession(false);
+
+        String username = (String) session.getAttribute("user");
+
+        return findByUsername(username);
     }
 
 }
