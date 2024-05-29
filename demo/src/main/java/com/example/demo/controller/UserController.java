@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.UserAuth;
 import com.example.demo.repository.UserAuthRepository;
+import com.example.demo.service.UserService;
 import com.example.demo.entity.User;
+import com.example.demo.dto.UserDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api")
@@ -22,6 +27,9 @@ public class UserController {
 
     @Autowired
     private HttpServletRequest request;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private UserAuthRepository userAuthRepository;
@@ -62,6 +70,43 @@ public class UserController {
                 "https://img0.baidu.com/it/u=1849651366,4275781386&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=500");
         response.put("nickname", "请登录");
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/usercompleteinfo")
+    public ResponseEntity<Object> getUserCompleteInfo() {
+        User user = userService.getCurUser();
+        if (user != null) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setAddress(user.getAddress());
+            userDTO.setAvatarSrc(user.getAvatarSrc());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setNickname(user.getNickname());
+            userDTO.setPhonenumber(user.getPhonenumber());
+            userDTO.setUsername(user.getUserAuth().getUsername());
+
+            return ResponseEntity.ok(userDTO);
+        }
+        return ResponseEntity.status(401).body("User not logged in");
+    }
+
+    @PutMapping("/updateuserinfo")
+    public ResponseEntity<String> updateUserInfo(@RequestBody UserDTO userDetails) {
+        try {
+            User user = userService.getCurUser();
+            user.setAddress(userDetails.getAddress());
+            user.setAvatarSrc(userDetails.getAvatarSrc());
+            user.setEmail(userDetails.getEmail());
+            user.setNickname(userDetails.getNickname());
+            user.setPhonenumber(userDetails.getPhonenumber());
+
+            System.out.println(user.toString());
+            userService.updateUser(user);
+
+            return ResponseEntity.ok(" " + userDetails.getUsername() + " 的个人信息已更新！");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新用户信息时出错: " + e.getMessage());
+        }
     }
 
 }

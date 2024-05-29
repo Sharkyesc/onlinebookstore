@@ -14,4 +14,6 @@ public interface UserService {
     public boolean matchesPassword(String rawPassword, String hashedPassword);
 
     User getCurUser();
+
+    void updateUser(User user);
 }

@@ -39,4 +39,16 @@ public class User {
         this.avatarSrc = avatarSrc;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "user_id=" + user_id +
+                ", nickname='" + nickname + '\'' +
+                ", address='" + address + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", email='" + email + '\'' +
+                ", avatarSrc='" + avatarSrc + '\'' +
+                '}';
+    }
+
 }

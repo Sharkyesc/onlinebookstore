@@ -3,7 +3,7 @@ import NavBar from '../components/navBar';
 //import AvatarUpload from '../components/avatarUpload';
 import { Layout, Input, Button, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { getUserInfo } from '../service/user';
+import { getUserCompleteInfo, updateUserInfo } from '../service/user';
 
 const { Header, Content, Footer } = Layout;
 const { TextArea } = Input;
@@ -28,17 +28,35 @@ const props = {
 
 
 const UserPage = () => {
-    const [userInfo, setUserInfo] = useState({ nickname: '', avatarSrc: '' });
+    const [userInfo, setUserInfo] = useState({ username: '', nickname: '', email: '', address: '', phonenumber: '', avatarSrc: '' });
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            const data = await getUserInfo();
+            const data = await getUserCompleteInfo();
+            console.log(data);
             if (data) {
                 setUserInfo(data);
             }
         };
         fetchUserInfo();
     }, []);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserInfo((prevInfo) => ({
+            ...prevInfo,
+            [name]: value,
+        }));
+    };
+
+    const handleSave = async () => {
+        const response = await updateUserInfo(userInfo);
+        if (response.success) {
+            message.success('用户信息更新成功');
+        } else {
+            message.error('用户信息更新失败');
+        }
+    };
 
     return (
         <Layout className="layout">
@@ -57,27 +75,44 @@ const UserPage = () => {
                     </Upload>
 
                 </div>
-                <div className="username" style={{marginBottom: 10}}>
+                <div style={{marginBottom: 10}}>
                     <span>用户名：</span>
-                    <Input value={userInfo.nickname} style={{width: '50vh'}}/>
+                    <Input
+                        name="username"
+                        value={userInfo.username}
+                        disabled
+                        style={{width: '50vh'}}
+                    />
+                </div>
+                <div style={{marginBottom: 10}}>
+                    <span>昵称：</span>
+                    <Input name="nickname" value={userInfo.nickname} placeholder='请输入昵称' 
+                        onChange={handleInputChange} style={{width: '50vh'}}/>
                 </div>
                 <div style={{marginBottom: 10}}>
                     <span>邮箱：</span>
-                    <Input placeholder='请输入常用邮箱' style={{width: '60vh'}}/>
+                    <Input name="email" value={userInfo.email} placeholder='请输入常用邮箱' 
+                        onChange={handleInputChange} style={{width: '60vh'}}/>
                 </div>
                 <div style={{marginBottom: 10}}>
                     <span>收货地址：</span>
-                    <Input placeholder='请输入常用地址' style={{width: '80vh'}}/>
+                    <Input name="address" value={userInfo.address} placeholder='请输入常用地址' 
+                        onChange={handleInputChange} style={{width: '80vh'}}/>
                 </div>
-                <div>
+                <div style={{marginBottom: 10}}>
+                    <span>联系电话：</span>
+                    <Input name="phonenumber" value={userInfo.phonenumber} placeholder='请输入联系电话' 
+                        onChange={handleInputChange} style={{width: '80vh'}}/>
+                </div>
+{/*                 <div>
                     <span>简介：</span>
                     <TextArea rows={4} placeholder='请输入简介' style={{marginTop: 5}}/>
                     <br />
                     <br />
-                </div>
+                </div> */}
                 
                 <div className="button-container" style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <Button type="primary" style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>保存修改</Button>
+                    <Button type="primary" onClick={handleSave} style={{ marginRight: 10, backgroundColor: '#000000', color: 'white' }}>保存修改</Button>
                     <Button type="primary" onClick={() =>window.location.href = '/home'} style={{ backgroundColor: '#000000', color: 'white' }}>返回首页</Button>
                 </div>
 
