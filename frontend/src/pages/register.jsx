@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Form, Input, Button, Card } from 'antd';
+import { Layout, Form, Input, Button, Card, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../service/register';
 import NavBar from '../components/navBar';
@@ -11,6 +11,8 @@ const RegisterPage = () => {
     const [username, setUsername] = useState('');
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
     const handleUsernameChange = (e) => {
@@ -25,19 +27,34 @@ const RegisterPage = () => {
         setPassword(e.target.value);
     };
 
+    const handleConfirmPasswordChange = (e) => {
+        setConfirmPassword(e.target.value);
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+
     const handleRegister = async () => {
+        if (password !== confirmPassword) {
+            message.error('密码和重复密码不匹配');
+            return;
+        }
+
         try {
-            const response = await register(username, nickname, password);
+            const response = await register(username, nickname, password, email);
             if (response.ok) {
-                alert('注册成功');
+                message.success('注册成功');
                 navigate('/login');
             } else {
-                alert('注册失败');
+                message.error('注册失败');
             }
         } catch (error) {
-            alert('注册失败，请稍后再试');
+            message.error('注册失败，请稍后再试');
         }
     };
+
 
     return (
         <Layout>
@@ -66,6 +83,15 @@ const RegisterPage = () => {
                             />
                         </Form.Item>
                         <Form.Item
+                            name="email"
+                            rules={[{ required: true, message: '请输入你的邮箱!', type: 'email' }]}
+                        >
+                            <Input
+                                placeholder="邮箱"
+                                onChange={handleEmailChange}
+                            />
+                        </Form.Item>
+                        <Form.Item
                             name="password"
                             rules={[{ required: true, message: '请输入你的密码!' }]}
                         >
@@ -73,6 +99,16 @@ const RegisterPage = () => {
                                 type="password"
                                 placeholder="密码"
                                 onChange={handlePasswordChange}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name="confirmPassword"
+                            rules={[{ required: true, message: '请再次输入你的密码!' }]}
+                        >
+                            <Input
+                                type="password"
+                                placeholder="重复密码"
+                                onChange={handleConfirmPasswordChange}
                             />
                         </Form.Item>
                         <Form.Item>
