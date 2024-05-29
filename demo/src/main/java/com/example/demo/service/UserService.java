@@ -8,4 +8,9 @@ public interface UserService {
     User findByUsername(String username);
 
     void registerUser(String nickname, String username, String password);
+
+    public String encodePassword(String rawPassword);
+
+    public boolean matchesPassword(String rawPassword, String hashedPassword);
+
 }

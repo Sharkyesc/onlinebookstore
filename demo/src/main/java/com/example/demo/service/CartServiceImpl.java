@@ -35,23 +35,25 @@ public class CartServiceImpl implements CartService {
         return cartDao.findByCartId(cartId);
     }
 
-    @Override
-    public void addCartItem(int bookId) {
-        Cart cartItem = cartDao.findByBookId(bookId);
-        if (cartItem != null) {
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-            cartDao.save(cartItem);
-        } else {
-            Cart newCartItem = new Cart();
-            Book book = getBookByBookId(bookId);
-            newCartItem.setBook(book);
-            newCartItem.setPrice(book.getPrice());
-            newCartItem.setTitle(book.getTitle());
-            newCartItem.setCoverSrc(book.getCoverSrc());
-            newCartItem.setQuantity(1);
-            cartDao.save(newCartItem);
-        }
-    }
+    /*
+     * @Override
+     * public void addCartItem(int bookId) {
+     * Cart cartItem = cartDao.findByBookId(bookId);
+     * if (cartItem != null) {
+     * cartItem.setQuantity(cartItem.getQuantity() + 1);
+     * cartDao.save(cartItem);
+     * } else {
+     * Cart newCartItem = new Cart();
+     * Book book = getBookByBookId(bookId);
+     * newCartItem.setBook(book);
+     * newCartItem.setPrice(book.getPrice());
+     * newCartItem.setTitle(book.getTitle());
+     * newCartItem.setCoverSrc(book.getCoverSrc());
+     * newCartItem.setQuantity(1);
+     * cartDao.save(newCartItem);
+     * }
+     * }
+     */
 
     @Override
     public void changeCartItemNumber(int id, int number) {

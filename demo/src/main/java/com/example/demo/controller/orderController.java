@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,18 +25,9 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
-    /*
-     * @GetMapping("")
-     * public List<Order> getAllOrders() {
-     * return orderService.findAllOrders();
-     * }
-     */
-
     @GetMapping("")
-    public List<Order> viewOrders(@AuthenticationPrincipal UserDetails currentUser) {
-        User user = userService.findByUsername(currentUser.getUsername());
-
-        return orderService.findOrdersByUser(user);
+    public List<Order> getAllOrders() {
+        return orderService.findAllOrders();
     }
 
     @PostMapping("/checkout")

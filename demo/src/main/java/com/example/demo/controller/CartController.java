@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,23 +27,25 @@ public class CartController {
     private UserService userService;
 
     @GetMapping("")
-    public List<Cart> viewCart(@AuthenticationPrincipal UserDetails currentUser) {
-        User user = userService.findByUsername(currentUser.getUsername());
+    public List<Cart> viewCart(String username) {
+        User user = userService.findByUsername(username);
 
         return cartService.findCartsByUser(user);
     }
 
-    @PutMapping
-    public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
-        Confirmation confirmation = new Confirmation();
-
-        cartService.addCartItem(bookId);
-        Book bookAdded = cartService.getBookByBookId(bookId);
-
-        confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
-
-        return confirmation;
-    }
+    /*
+     * @PutMapping
+     * public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
+     * Confirmation confirmation = new Confirmation();
+     * 
+     * cartService.addCartItem(bookId);
+     * Book bookAdded = cartService.getBookByBookId(bookId);
+     * 
+     * confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
+     * 
+     * return confirmation;
+     * }
+     */
 
     @PutMapping("/{id}")
     public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {

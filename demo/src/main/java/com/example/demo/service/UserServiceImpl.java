@@ -6,10 +6,10 @@ import com.example.demo.entity.UserAuth;
 
 import jakarta.transaction.Transactional;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,8 +17,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public String encodePassword(String rawPassword) {
+        return BCrypt.hashpw(rawPassword, BCrypt.gensalt());
+    }
+
+    public boolean matchesPassword(String rawPassword, String hashedPassword) {
+        return BCrypt.checkpw(rawPassword, hashedPassword);
+    }
 
     @Override
     public User findById(Integer id) {
@@ -41,7 +46,8 @@ public class UserServiceImpl implements UserService {
         UserAuth userAuth = new UserAuth();
         userAuth.setUser(user);
         userAuth.setUsername(username);
-        userAuth.setPassword(passwordEncoder.encode(password));
+        userAuth.setPassword(encodePassword(password));
         userDao.saveAuth(userAuth);
     }
+
 }
