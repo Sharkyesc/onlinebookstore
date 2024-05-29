@@ -1,10 +1,17 @@
 package com.example.demo.controller;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.UserAuth;
+import com.example.demo.repository.UserAuthRepository;
+import com.example.demo.entity.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +23,9 @@ public class UserController {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private UserAuthRepository userAuthRepository;
+
     @GetMapping("/current")
     public ResponseEntity<Object> getCurrentUser() {
         HttpSession session = request.getSession(false);
@@ -26,6 +36,29 @@ public class UserController {
             }
         }
         return ResponseEntity.status(401).body("No user logged in");
+    }
+
+    @GetMapping("/userinfo")
+    public ResponseEntity<Object> getUserInfo() {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            String username = (String) session.getAttribute("user");
+            if (username != null) {
+                UserAuth userAuth = userAuthRepository.findByUsername(username);
+                if (userAuth != null) {
+                    User user = userAuth.getUser();
+                    if (user != null) {
+                        Map<String, String> response = new HashMap<>();
+                        response.put("avatarSrc", user.getAvatarSrc());
+                        response.put("nickname", user.getNickname());
+                        System.out.println(user.getNickname());
+                        System.out.println(user.getAvatarSrc());
+                        return ResponseEntity.ok(response);
+                    }
+                }
+            }
+        }
+        return ResponseEntity.status(401).body("No user logged in or user data invalid");
     }
 
 }

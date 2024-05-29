@@ -10,11 +10,6 @@ const { Header, Content, Footer } = Layout;
 
 const LoginPage = () => {
     
-    const unknownInfo = {
-        username: '请登录',
-        avatarSrc: 'https://img0.baidu.com/it/u=1849651366,4275781386&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=500',
-    };
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -47,7 +42,7 @@ const LoginPage = () => {
     return (
         <Layout>
             <Header>
-                <NavBar username={unknownInfo.username} avatarSrc={unknownInfo.avatarSrc}/>
+                <NavBar />
             </Header>
             <Content>
                 <Card hoverable style={{ width: WindowWidth() * 0.8, margin: 'auto', marginTop: 20 }}>

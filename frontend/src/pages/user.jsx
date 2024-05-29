@@ -1,8 +1,9 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import NavBar from '../components/navBar'; 
 //import AvatarUpload from '../components/avatarUpload';
 import { Layout, Input, Button, message, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import { getUserInfo } from '../service/user';
 
 const { Header, Content, Footer } = Layout;
 const { TextArea } = Input;
@@ -27,15 +28,22 @@ const props = {
 
 
 const UserPage = () => {
-    const userInfo = {
-        username: '玉皇大帝',
-        avatarSrc: 'https://q5.itc.cn/q_70/images03/20240205/9bbcd6c4ff4146b79dc47dd4ff8d7026.jpeg',
-    };
+    const [userInfo, setUserInfo] = useState({ nickname: '', avatarSrc: '' });
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            const data = await getUserInfo();
+            if (data) {
+                setUserInfo(data);
+            }
+        };
+        fetchUserInfo();
+    }, []);
 
     return (
         <Layout className="layout">
             <Header>
-                <NavBar username={userInfo.username} avatarSrc={userInfo.avatarSrc} />
+                <NavBar />
             </Header>
             <Content className="user-detail-container" style={{width: '90%', marginLeft: '5%'}} >
                 <h1> 个人中心 </h1>
@@ -51,7 +59,7 @@ const UserPage = () => {
                 </div>
                 <div className="username" style={{marginBottom: 10}}>
                     <span>用户名：</span>
-                    <Input value={userInfo.username} style={{width: '50vh'}}/>
+                    <Input value={userInfo.nickname} style={{width: '50vh'}}/>
                 </div>
                 <div style={{marginBottom: 10}}>
                     <span>邮箱：</span>

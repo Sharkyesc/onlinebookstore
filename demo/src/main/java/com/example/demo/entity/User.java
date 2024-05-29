@@ -22,7 +22,7 @@ public class User {
     @Column(name = "user_id")
     private int user_id;
 
-    private String nickname, address, phonenumber, email;
+    private String nickname, address, phonenumber, email, avatarSrc;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserAuth userAuth;
@@ -30,12 +30,13 @@ public class User {
     public User() {
     }
 
-    public User(int user_id, String nickname, String email, String address, String phonenumber) {
+    public User(int user_id, String nickname, String email, String address, String phonenumber, String avatarSrc) {
         this.user_id = user_id;
         this.nickname = nickname;
         this.email = email;
         this.address = address;
         this.phonenumber = phonenumber;
+        this.avatarSrc = avatarSrc;
     }
 
 }

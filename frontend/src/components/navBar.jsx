@@ -1,7 +1,8 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import { Menu, Dropdown, Avatar, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { logout } from '../service/logout';
+import { getUserInfo } from '../service/user';
 import { 
     HomeOutlined, 
     BookOutlined, 
@@ -11,7 +12,21 @@ import {
     SearchOutlined
 } from '@ant-design/icons';
 
-const NavBar = ({ username, avatarSrc }) => {
+
+const NavBar = () => {   
+
+  const [userInfo, setUserInfo] = useState({ nickname: '请登录', 
+      avatarSrc: 'https://img0.baidu.com/it/u=1849651366,4275781386&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=500' });
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const data = await getUserInfo();
+      if (data) {
+        setUserInfo(data);
+      }
+    };
+    fetchUserInfo();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -68,8 +83,8 @@ const NavBar = ({ username, avatarSrc }) => {
       <Menu.Item key="profile" style={{ marginRight: 20, backgroundColor:'transparent' }}>
         <Dropdown overlay={menu} trigger={['click']}>
           <span className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            {username}
-            <Avatar src={avatarSrc} style={{ marginLeft: 6, marginRight: 4 }} />
+            {userInfo.nickname}
+            <Avatar src={userInfo.avatarSrc} style={{ marginLeft: 6, marginRight: 4 }} />
             <DownOutlined />
           </span>
         </Dropdown>

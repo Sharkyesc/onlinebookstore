@@ -7,11 +7,6 @@ import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 
 function HomePage() {
-    const userInfo = {
-        username: '玉皇大帝',
-        avatarSrc: 'https://q5.itc.cn/q_70/images03/20240205/9bbcd6c4ff4146b79dc47dd4ff8d7026.jpeg',
-    };
-    
     const carouselImages = [
         'https://m.360buyimg.com/babel/jfs/t20270307/155902/8/41629/50401/65e96e13Ff109a1f0/93089ba3607bae4d.jpg',
         'https://m.360buyimg.com/babel/jfs/t20270318/104149/31/39027/196535/65f7ebb9F84b29e1b/ad1353ba5f80fcea.png',
@@ -35,7 +30,7 @@ function HomePage() {
     return (books && 
         <Layout className="layout">
             <Header>
-                <NavBar username={userInfo.username} avatarSrc={userInfo.avatarSrc} />
+                <NavBar />
             </Header>
             <Content style={{ padding: '0 50px' }}>
                 <div className="site-layout-content">
