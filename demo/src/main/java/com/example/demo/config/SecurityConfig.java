@@ -3,6 +3,8 @@ package com.example.demo.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -10,10 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.demo.security.CustomAuthenticationFailureHandler;
-import com.example.demo.security.CustomAuthenticationSuccessHandler;
+import com.example.demo.security.JwtAuthenticationFilter;
 import com.example.demo.service.CustomUserDetailsService;
 
 import java.util.List;
@@ -22,14 +23,10 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
-            CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
-        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
-        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -47,13 +44,8 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/login", "/api/register", "/api/logout").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("http://localhost:3000/login")
-                        .loginProcessingUrl("/api/login")
-                        .successHandler(customAuthenticationSuccessHandler)
-                        .failureHandler(customAuthenticationFailureHandler)
-                        .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/api/logout")
                         .invalidateHttpSession(true)
@@ -62,12 +54,9 @@ public class SecurityConfig {
                             response.setStatus(HttpStatus.OK.value());
                             response.setHeader("Location", "http://localhost:3000/login");
                         }))
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true))
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilter(jwtAuthenticationFilter(http));
+
         return http.build();
     }
 
@@ -80,4 +69,11 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 }
