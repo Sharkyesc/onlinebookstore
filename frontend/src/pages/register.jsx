@@ -43,12 +43,12 @@ const RegisterPage = () => {
         }
 
         try {
-            const response = await register(username, nickname, password, email);
+            const response = await register(username, nickname, email, password);
             if (response.ok) {
-                message.success('注册成功');
+                message.success(response.message);
                 navigate('/login');
             } else {
-                message.error('注册失败');
+                message.error(response.message);
             }
         } catch (error) {
             message.error('注册失败，请稍后再试');

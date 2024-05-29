@@ -7,7 +7,7 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    void registerUser(String nickname, String username, String password);
+    void registerUser(String nickname, String username, String email, String password);
 
     public String encodePassword(String rawPassword);
 

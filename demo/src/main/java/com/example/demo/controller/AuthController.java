@@ -29,15 +29,17 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
+            if (userAuthRepository.findByUsername(registerRequest.getUsername()) != null)
+                return ResponseEntity.status(500).body("用户名不可用！");
 
             userService.registerUser(registerRequest.getNickname(), registerRequest.getUsername(),
-                    registerRequest.getPassword());
+                    registerRequest.getEmail(), registerRequest.getPassword());
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("注册成功！");
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(500).body("注册失败");
         }
     }
 
