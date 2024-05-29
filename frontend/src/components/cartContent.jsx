@@ -4,6 +4,7 @@ import { Input, Table, Space, Button, Modal, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
 import { debounce } from 'lodash';
+import { createOrder } from '../service/order';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -47,6 +48,17 @@ const CartContent = ({ cartData, onMutate }) => {
         console.log('Cancel');
       },
     });
+  }
+
+  const handleOrder = () => {
+    const selectedCartItems = cartData.filter(item => selectedItems.includes(item.cartId));
+    console.log(selectedCartItems);
+    createOrder(selectedCartItems)
+    .then(response => {
+      alert('Order created successfully');
+      onMutate();
+    })
+    .catch(error => console.error('There was a problem creating the order:', error));
   }
   
   const columns = [
@@ -121,7 +133,7 @@ const CartContent = ({ cartData, onMutate }) => {
             <Search placeholder="输入书名搜索" style={{ width: 200, marginBottom: 16, marginLeft: 10 }} />
             <Table columns={columns} dataSource={cartData} pagination={{ pageSize: 10 }} />
             
-            <Button type="primary" disabled={!selectedItems.length} style={{ marginTop: 16 }}>
+            <Button type="primary" disabled={!selectedItems.length} style={{ marginTop: 16 }} onClick={handleOrder} >
               下单选中项
             </Button>
             {/*<div style={{ position: 'fixed', bottom: 0, right: '5%', width:'100vh' }}>

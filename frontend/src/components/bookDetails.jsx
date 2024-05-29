@@ -53,10 +53,7 @@ const BookDetail = ({ bookInfo }) => {
   ];
 
   const handleBuy = () => {
-    const orderData = { 
-      userId: 1, bookId: bookInfo.id, quantity: 1, destination: "China", totalPrice: bookInfo.price , recipient: "luo", contactPhone: "12345678910"
-  };
-    addOrder(orderData)
+    addOrder(bookInfo.id)
       .then(response => {
         alert(response.message);
       })

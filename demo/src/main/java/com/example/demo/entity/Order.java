@@ -1,21 +1,9 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,14 +21,17 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private BigDecimal totalPrice;
+    private int totalPrice;
     private LocalDateTime orderTime;
     private String recipient, contactPhone, destination;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
     public Order() {
     }
 
-    public Order(int orderId, User user, BigDecimal totalPrice, LocalDateTime orderTime,
+    public Order(int orderId, User user, int totalPrice, LocalDateTime orderTime,
             String recipient, String contactPhone, String destination) {
         this.orderId = orderId;
         this.user = user;
@@ -51,13 +42,10 @@ public class Order {
         this.destination = destination;
     }
 
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderItem> orderItems;
-
     public void setTotalPrice() {
-        BigDecimal totalPrice = BigDecimal.ZERO;
+        int totalPrice = 0;
         for (OrderItem orderItem : orderItems) {
-            totalPrice = totalPrice.add(orderItem.getPrice());
+            totalPrice += (orderItem.getPrice());
         }
         this.totalPrice = totalPrice;
     }
@@ -73,5 +61,4 @@ public class Order {
                 "\n联系电话：'" + contactPhone + '\'' +
                 "\n收货地址：'" + destination + '\'';
     }
-
 }

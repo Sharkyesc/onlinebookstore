@@ -15,8 +15,7 @@ import {
 
 const NavBar = () => {   
 
-  const [userInfo, setUserInfo] = useState({ nickname: '请登录', 
-      avatarSrc: 'https://img0.baidu.com/it/u=1849651366,4275781386&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=500' });
+  const [userInfo, setUserInfo] = useState({ nickname: '', avatarSrc: '' });
 
   useEffect(() => {
     const fetchUserInfo = async () => {

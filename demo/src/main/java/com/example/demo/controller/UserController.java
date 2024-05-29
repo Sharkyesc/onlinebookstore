@@ -41,6 +41,7 @@ public class UserController {
     @GetMapping("/userinfo")
     public ResponseEntity<Object> getUserInfo() {
         HttpSession session = request.getSession(false);
+        Map<String, String> response = new HashMap<>();
         if (session != null) {
             String username = (String) session.getAttribute("user");
             if (username != null) {
@@ -48,7 +49,6 @@ public class UserController {
                 if (userAuth != null) {
                     User user = userAuth.getUser();
                     if (user != null) {
-                        Map<String, String> response = new HashMap<>();
                         response.put("avatarSrc", user.getAvatarSrc());
                         response.put("nickname", user.getNickname());
                         System.out.println(user.getNickname());
@@ -58,7 +58,10 @@ public class UserController {
                 }
             }
         }
-        return ResponseEntity.status(401).body("No user logged in or user data invalid");
+        response.put("avatarSrc",
+                "https://img0.baidu.com/it/u=1849651366,4275781386&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=500");
+        response.put("nickname", "请登录");
+        return ResponseEntity.ok(response);
     }
 
 }

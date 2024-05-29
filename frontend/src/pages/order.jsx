@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Button } from 'antd';
+import { Layout } from 'antd';
 import NavBar from '../components/navBar';
-import { getAllOrders } from '../service/order';
+import { getOrders } from '../service/order';
 import OrderContent from '../components/orderContent';
 
 const { Header, Content, Footer } = Layout;
@@ -11,8 +11,8 @@ const OrderPage = () => {
   const [orders, setOrders] = useState([]);
 
   const getOrder = async () => {
-    let orders = await getAllOrders();
-    setOrders(orders);
+    let order = await getOrders();
+    setOrders(order);
   }
 
   useEffect(() => {
