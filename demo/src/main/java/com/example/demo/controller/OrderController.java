@@ -13,6 +13,8 @@ import com.example.demo.service.BookService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
 import com.example.demo.dto.CheckoutRequest;
+import com.example.demo.dto.OrderDTO;
+import com.example.demo.dto.OrderItemDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -37,8 +40,13 @@ public class OrderController {
     private BookService bookService;
 
     @GetMapping("")
-    public List<Order> getOrders() {
-        return orderService.findOrdersByUser(userService.getCurUser());
+    public List<OrderDTO> getOrders() {
+        List<Order> orders = orderService.findOrdersByUser(userService.getCurUser());
+        List<OrderDTO> orderDTOs = new ArrayList<>();
+        for (Order order : orders) {
+            orderDTOs.add(convertDTO(order));
+        }
+        return orderDTOs;
     }
 
     @PostMapping("/checkout")
@@ -81,6 +89,27 @@ public class OrderController {
             }
         }
         return ResponseEntity.status(401).body("User not logged in");
+    }
+
+    private OrderDTO convertDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setDestination(order.getDestination());
+        orderDTO.setOrderId(order.getOrderId());
+        orderDTO.setOrderTime(order.getOrderTime());
+        orderDTO.setTotalPrice(order.getTotalPrice());
+
+        List<OrderItemDTO> orderItemDTOs = order.getOrderItems().stream().map(item -> {
+            OrderItemDTO itemDTO = new OrderItemDTO();
+            itemDTO.setItemId(item.getId().getItemId());
+            itemDTO.setBookName(item.getBook().getTitle());
+            itemDTO.setQuantity(item.getQuantity());
+            itemDTO.setPrice(item.getPrice());
+            return itemDTO;
+        }).collect(Collectors.toList());
+
+        orderDTO.setOrderItems(orderItemDTOs);
+
+        return orderDTO;
     }
 
 }
