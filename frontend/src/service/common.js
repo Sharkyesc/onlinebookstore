@@ -41,9 +41,16 @@ export async function post(url, data) {
   if (res.status === 204 || res.headers.get('content-length') === '0') {
       return { ok: res.ok };
   }
+  
+  const contentType = res.headers.get('content-type');
+  let result;
+  if (contentType && contentType.includes('application/json')) {
+      result = await res.json();
+  } else {
+      result = await res.text();
+  }
 
-  const result = await res.json();
-  return { ok: res.ok, ...result };
+  return { ok: res.ok, message: result };
 }
 
 export const BASEURL = 'http://localhost:8080';

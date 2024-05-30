@@ -37,7 +37,7 @@ public class AuthController {
             userService.registerUser(registerRequest.getNickname(), registerRequest.getUsername(),
                     registerRequest.getEmail(), registerRequest.getPassword());
 
-            return ResponseEntity.ok("注册成功！");
+            return ResponseEntity.ok("注册成功！请登录");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("注册失败");
         }

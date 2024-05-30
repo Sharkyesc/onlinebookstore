@@ -44,6 +44,7 @@ const RegisterPage = () => {
 
         try {
             const response = await register(username, nickname, email, password);
+            console.log(response);
             if (response.ok) {
                 message.success(response.message);
                 navigate('/login');
