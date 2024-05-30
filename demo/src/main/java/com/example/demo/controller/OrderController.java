@@ -18,9 +18,6 @@ import com.example.demo.dto.CheckoutRequest;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -85,30 +82,20 @@ public class OrderController {
     }
 
     @PostMapping("/checkoutfromcart")
-    public ResponseEntity<Object> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests,
-            HttpServletRequest httpRequest) {
-        HttpSession session = httpRequest.getSession(false);
-        if (session != null) {
-            String username = (String) session.getAttribute("user");
-            if (username != null) {
-                List<Cart> cartItems = new ArrayList<>();
-                for (CheckoutRequest checkoutRequest : checkoutRequests) {
-                    Cart cartItem = new Cart();
-                    cartItem.setBook(checkoutRequest.getBook());
-                    cartItem.setCartId(checkoutRequest.getCartId());
-                    cartItem.setCoverSrc(checkoutRequest.getCoverSrc());
-                    cartItem.setPrice(checkoutRequest.getPrice());
-                    cartItem.setQuantity(checkoutRequest.getQuantity());
-                    cartItem.setTitle(checkoutRequest.getTitle());
-                    cartItem.setUser(userService.getCurUser());
-                    System.out.println(cartItem.toString());
-                    cartItems.add(cartItem);
-                }
-                orderService.createOrder(username, cartItems);
-                return ResponseEntity.ok("Order created successfully");
-            }
+    public ResponseEntity<Object> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
+
+        List<Cart> cartItems = new ArrayList<>();
+
+        for (CheckoutRequest checkoutRequest : checkoutRequests) {
+            Cart cartItem = new Cart(checkoutRequest.getCartId(), checkoutRequest.getBook(),
+                    userService.getCurUser(), checkoutRequest.getQuantity());
+            cartItems.add(cartItem);
+            System.out.println(cartItem.toString());
         }
-        return ResponseEntity.status(401).body("User not logged in");
+        System.out.println(userService.getCurUser().toString());
+        orderService.createOrder(userService.getCurUser(), cartItems);
+        return ResponseEntity.ok("Order created successfully");
+
     }
 
     @GetMapping("/statistics")

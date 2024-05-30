@@ -65,8 +65,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void createOrder(String username, List<Cart> cartItems) {
-        User user = userDao.findByUsername(username);
+    public void createOrder(User user, List<Cart> cartItems) {
 
         Order order = new Order();
         order.setUser(user);
@@ -75,23 +74,25 @@ public class OrderServiceImpl implements OrderService {
         order.setContactPhone(user.getPhonenumber());
         order.setDestination(user.getAddress());
 
-        int totalPrice = 0;
+        orderDao.saveOrder(order);
+
+        int totalPrice = 0, id = 0;
         List<OrderItem> orderItems = new ArrayList<>();
         for (Cart item : cartItems) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setOrder(order);
-            orderItem.setBook(item.getBook());
-            orderItem.setPrice(item.getPrice());
-            orderItem.setQuantity(item.getQuantity());
+            id++;
+            OrderItemId orderItemId = new OrderItemId(order.getOrderId(), id);
+            int price = item.getPrice() * item.getQuantity();
+            OrderItem orderItem = new OrderItem(order, item.getBook(), item.getQuantity(), price,
+                    orderItemId);
+
             orderDao.saveOrderItem(orderItem);
+            System.out.println(orderItem.toString());
 
             orderItems.add(orderItem);
-
-            totalPrice += orderItem.getPrice() * item.getQuantity();
+            totalPrice += price;
         }
         order.setOrderItems(orderItems);
         order.setTotalPrice(totalPrice);
-
         orderDao.saveOrder(order);
     }
 

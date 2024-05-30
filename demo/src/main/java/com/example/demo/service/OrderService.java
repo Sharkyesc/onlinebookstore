@@ -19,7 +19,7 @@ public interface OrderService {
 
     void updateOrder(Order order);
 
-    public void createOrder(String username, List<Cart> cartItems);
+    public void createOrder(User user, List<Cart> cartItems);
 
     List<BookStatisticsDTO> getStatistics(LocalDateTime start, LocalDateTime end, User user);
 }

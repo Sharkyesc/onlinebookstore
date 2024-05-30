@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, DatePicker, Button, Table, Typography, Row, Col } from 'antd';
+import { Layout, DatePicker, Button, Table, Typography, Row, Col, Divider } from 'antd';
 import NavBar from '../components/navBar';
 import { getBookStatistics } from '../service/statistics';
 import moment from 'moment';
@@ -51,6 +51,7 @@ const StatisticsPage = () => {
             </Header>
             <Content style={{ padding: '0 50px' }}>
                 <Title level={2}>购书统计</Title>
+                <Divider />
                 <Row gutter={16} style={{ marginBottom: 20 }}>
                     <Col span={16}>
                         <RangePicker
@@ -65,7 +66,7 @@ const StatisticsPage = () => {
                     </Col>
                 </Row>
                 <Table columns={columns} dataSource={statistics} rowKey="bookTitle" />
-                <div style={{ marginTop: 20 }}>
+                <div style={{ marginTop: 10 }}>
                     <p>总购书数量: {totalBooks}</p>
                     <p>总购书金额: {totalPrice}元</p>
                 </div>

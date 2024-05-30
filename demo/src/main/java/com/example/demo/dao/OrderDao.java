@@ -20,5 +20,4 @@ public interface OrderDao {
 
     List<Order> findOrdersByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end);
 
-    List<Order> findPriceByBookTitle(entry.getKey());
 }
