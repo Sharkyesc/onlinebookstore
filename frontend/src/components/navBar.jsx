@@ -72,13 +72,14 @@ const NavBar = () => {
       <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/order">我的订单</Link>
       </Menu.Item> 
-      <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
+{/*       <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
         <Input
           placeholder="搜索"
           prefix={<SearchOutlined />}
           style={{ width: 700 }}
         />
-      </Menu.Item>
+      </Menu.Item> */}
+      <Menu.Item style={{ flexGrow: 1 }}></Menu.Item>
       <Menu.Item key="profile" style={{ marginRight: 20, backgroundColor:'transparent' }}>
         <Dropdown overlay={menu} trigger={['click']}>
           <span className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
