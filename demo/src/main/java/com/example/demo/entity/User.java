@@ -23,6 +23,7 @@ public class User {
     private int user_id;
 
     private String nickname, address, phonenumber, email, avatarSrc, role;
+    private boolean enabled;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserAuth userAuth;

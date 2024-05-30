@@ -10,6 +10,6 @@ export async function register(username, nickname, email, password) {
         return response;
     } catch (e) {
         console.log(e);
-        return { success: false, message: '注册失败，请稍后再试' };
+        return { ok: false, message: '注册失败，请稍后再试' };
     }
 }

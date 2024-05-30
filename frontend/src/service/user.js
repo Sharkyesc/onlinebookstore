@@ -41,3 +41,21 @@ export async function updateUserInfo(userInfo) {
         return { success: false, error };
     }
 };
+
+export async function getUsers() {
+    const url = `${PREFIX}/users`;
+    const response = await getJson(url);
+    return response;
+}
+
+export async function disableUser(userId) {
+    const url = `${PREFIX}/users/${userId}/disable`;
+    const response = await put(url);
+    return response;
+}
+
+export async function enableUser(userId) {
+    const url = `${PREFIX}/users/${userId}/enable`;
+    const response = await put(url);
+    return response;
+}

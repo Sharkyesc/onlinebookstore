@@ -13,6 +13,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -70,4 +72,22 @@ public class UserServiceImpl implements UserService {
         userDao.saveUser(user);
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.findAll();
+    }
+
+    @Override
+    public void disableUser(int userId) {
+        User user = userDao.findById(userId);
+        user.setEnabled(false);
+        userDao.saveUser(user);
+    }
+
+    @Override
+    public void enableUser(int userId) {
+        User user = userDao.findById(userId);
+        user.setEnabled(true);
+        userDao.saveUser(user);
+    }
 }

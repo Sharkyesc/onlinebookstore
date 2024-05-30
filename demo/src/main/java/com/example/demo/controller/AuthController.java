@@ -44,15 +44,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         UserAuth userAuth = userAuthRepository.findByUsername(loginRequest.getUsername());
 
+        if (!userAuth.getUser().isEnabled()) {
+            return ResponseEntity.badRequest().body("你的账号已被禁用！");
+        }
         if (userAuth != null && userService.matchesPassword(loginRequest.getPassword(), userAuth.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("user", loginRequest.getUsername());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("登录成功");
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("用户名或密码错误");
         }
     }
 

@@ -8,6 +8,7 @@ import OrderPage from "../pages/order";
 import RegisterPage from "../pages/register";
 import BookListPage from "../pages/booklist";
 import StatisticsPage from "../pages/statistics";
+import UserManagementPage from "../pages/manage";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
@@ -21,6 +22,7 @@ export default function AppRouter() {
             <Route path="/order" element={<ProtectedRoute component={OrderPage} />} />
             <Route path="/book" element={<ProtectedRoute component={BookListPage} />} />
             <Route path="/statistics" element={<ProtectedRoute component={StatisticsPage} />} />
+            <Route path="/manage" element={<ProtectedRoute component={UserManagementPage} />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
         </Routes>

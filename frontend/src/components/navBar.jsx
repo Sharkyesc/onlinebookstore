@@ -10,6 +10,7 @@ import {
     OrderedListOutlined,
     DownOutlined,
     LineChartOutlined,
+    UserOutlined,
     SearchOutlined
 } from '@ant-design/icons';
 
@@ -61,21 +62,25 @@ const NavBar = () => {
 
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-      <Menu.Item key="1" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="home" icon={<HomeOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/home">首页</Link>
       </Menu.Item>
-      <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="book" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/book">书籍</Link>
       </Menu.Item>
-      <Menu.Item key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="cart" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/cart">购物车</Link>
       </Menu.Item>
-      <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="order" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/order">我的订单</Link>
       </Menu.Item> 
-      <Menu.Item key="5" icon={<LineChartOutlined />} style={{backgroundColor: 'transparent'}}>
+      <Menu.Item key="statistics" icon={<LineChartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/statistics">购书统计</Link>
       </Menu.Item> 
+      {(sessionStorage.getItem('username') === 'admin') && 
+      (<Menu.Item key="manage" icon={<UserOutlined />} style={{backgroundColor: 'transparent'}}>
+        <Link to="/manage">用户管理</Link>
+      </Menu.Item> )}
 {/*       <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
         <Input
           placeholder="搜索"
@@ -83,7 +88,7 @@ const NavBar = () => {
           style={{ width: 700 }}
         />
       </Menu.Item> */}
-      <Menu.Item style={{ flexGrow: 1 }}></Menu.Item>
+    <Menu.Item style={{ flexGrow: 1, pointerEvents: 'none' }}></Menu.Item>
       <Menu.Item key="profile" style={{ marginRight: 20, backgroundColor:'transparent' }}>
         <Dropdown overlay={menu} trigger={['click']}>
           <span className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>

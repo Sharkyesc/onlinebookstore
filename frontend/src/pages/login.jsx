@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Form, Input, Button, Checkbox, Card, Flex } from 'antd';
+import { Layout, Form, Input, Button, Checkbox, Card, Flex, message } from 'antd';
 import WindowWidth from '../utils/getWidth';  
 import NavBar from '../components/navBar';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
@@ -28,14 +28,14 @@ const LoginPage = () => {
             console.log(username,password);
             const response = await login(username, password);
             if (response.ok) {
-                alert('登录成功');
+                message.success(response.message);
                 sessionStorage.setItem("username", username);
                 navigate('/home'); 
             } else {
-                alert('用户名或密码错误');
+                message.error(response.message);
             }
         } catch (error) {
-            alert('登录失败，请稍后再试');
+            message.error('登录失败，请稍后再试');
         }
     };
   

@@ -18,7 +18,20 @@ export async function put(url, data) {
       credentials: "include"
   };
   let res = await fetch(url, opts);
-  return res.json();
+  
+  if (res.status === 204 || res.headers.get('content-length') === '0') {
+      return { ok: res.ok };
+  }
+  
+  const contentType = res.headers.get('content-type');
+  let result;
+  if (contentType && contentType.includes('application/json')) {
+      result = await res.json();
+  } else {
+      result = await res.text();
+  }
+
+  return { ok: res.ok, message: result };
 }
 
 export async function del(url, data) {

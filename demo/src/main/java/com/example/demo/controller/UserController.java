@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import java.util.Map;
+import java.util.List;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -107,6 +109,23 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新用户信息时出错: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @PutMapping("/users/{userId}/disable")
+    public ResponseEntity<Void> disableUser(@PathVariable int userId) {
+        userService.disableUser(userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/users/{userId}/enable")
+    public ResponseEntity<Void> enableUser(@PathVariable int userId) {
+        userService.enableUser(userId);
+        return ResponseEntity.ok().build();
     }
 
 }
