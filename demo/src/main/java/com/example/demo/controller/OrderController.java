@@ -113,10 +113,11 @@ public class OrderController {
 
     @GetMapping("/statistics")
     public List<BookStatisticsDTO> getStatistics(
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
-        LocalDateTime start = LocalDateTime.parse(startDate);
-        LocalDateTime end = LocalDateTime.parse(endDate);
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
+        LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
+
         return orderService.getStatistics(start, end, userService.getCurUser());
     }
 

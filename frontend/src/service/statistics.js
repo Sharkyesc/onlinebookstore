@@ -2,8 +2,8 @@ import { PREFIX, getJson } from './common';
 
 export async function getBookStatistics(startDate, endDate) {
     const url = new URL(`${PREFIX}/orders/statistics`);
-    url.searchParams.append('startDate', startDate);
-    url.searchParams.append('endDate', endDate);
+    if (startDate) url.searchParams.append('startDate', startDate);
+    if (endDate) url.searchParams.append('endDate', endDate);
     let res;
     try {
         res = await getJson(url);

@@ -15,7 +15,9 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
         List<Order> findByUser(User user);
 
-        @Query("SELECT o FROM Order o WHERE o.user = :user AND o.orderTime BETWEEN :start AND :end")
+        @Query("SELECT o FROM Order o WHERE o.user = :user AND "
+                        + "(:start IS NULL OR o.orderTime >= :start) AND "
+                        + "(:end IS NULL OR o.orderTime <= :end)")
         List<Order> findByUserAndTimeRange(User user, @Param("start") LocalDateTime start,
                         @Param("end") LocalDateTime end);
 

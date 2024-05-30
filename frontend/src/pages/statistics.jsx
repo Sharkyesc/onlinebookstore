@@ -17,10 +17,10 @@ const StatisticsPage = () => {
     };
 
     const handleFetchStatistics = async () => {
-        const startDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null;
-        const endDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null;
+        const startDate = dateRange ? (dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
+        const endDate = dateRange ? (dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
         const stats = await getBookStatistics(startDate, endDate);
-        setStatistics(stats);
+        setStatistics(stats || []); 
     };
 
     const columns = [
@@ -57,6 +57,7 @@ const StatisticsPage = () => {
                         <RangePicker
                             style={{ width: '100%' }}
                             onChange={handleDateChange}
+                            allowClear
                         />
                     </Col>
                     <Col span={8}>
