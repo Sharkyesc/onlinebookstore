@@ -10,7 +10,8 @@ import com.example.demo.entity.OrderItemId;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.dao.OrderDao;
-import com.example.demo.dao.UserDao;
+import com.example.demo.dao.CartDao;
+import com.example.demo.dao.BookDao;
 import com.example.demo.dto.BookStatisticsDTO;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
 
     @Autowired
-    private UserDao userDao;
+    private CartDao cartDao;
+
+    @Autowired
+    private BookDao bookDao;
 
     @Override
     public List<Order> findOrdersByUser(User user) {
@@ -47,6 +51,10 @@ public class OrderServiceImpl implements OrderService {
         order.setDestination(user.getAddress());
         order.setRecipient(user.getNickname());
         order.setTotalPrice(book.getPrice());
+
+        book.setStocks(book.getStocks() - 1);
+        book.setSalesvolume(book.getSalesvolume() + 1);
+        bookDao.save(book);
 
         OrderItemId id = new OrderItemId(order.getOrderId(), 1);
         OrderItem orderItem = new OrderItem(order, book, 1, book.getPrice(), id);
@@ -81,13 +89,17 @@ public class OrderServiceImpl implements OrderService {
         for (Cart item : cartItems) {
             id++;
             OrderItemId orderItemId = new OrderItemId(order.getOrderId(), id);
+            Book book = item.getBook();
+            book.setStocks(book.getStocks() - item.getQuantity());
+            book.setSalesvolume(book.getSalesvolume() + item.getQuantity());
+            bookDao.save(book);
+
             int price = item.getPrice() * item.getQuantity();
-            OrderItem orderItem = new OrderItem(order, item.getBook(), item.getQuantity(), price,
+            OrderItem orderItem = new OrderItem(order, book, item.getQuantity(), price,
                     orderItemId);
 
             orderDao.saveOrderItem(orderItem);
-            System.out.println(orderItem.toString());
-
+            cartDao.delete(item.getCartId());
             orderItems.add(orderItem);
             totalPrice += price;
         }

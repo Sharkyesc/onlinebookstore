@@ -55,7 +55,7 @@ const CartContent = ({ cartData, onMutate }) => {
     console.log(selectedCartItems);
     createOrder(selectedCartItems)
     .then(response => {
-      alert('Order created successfully');
+      alert(response.message);
       onMutate();
     })
     .catch(error => console.error('There was a problem creating the order:', error));
@@ -129,8 +129,8 @@ const CartContent = ({ cartData, onMutate }) => {
 
     return (
         <div>
-            <h1 style={{marginLeft: 10}}>购物车</h1>
-            <Search placeholder="输入书名搜索" style={{ width: 200, marginBottom: 16, marginLeft: 10 }} />
+            {/* 
+            <Search placeholder="输入书名搜索" style={{ width: 200, marginBottom: 16, marginLeft: 10 }} /> */}
             <Table columns={columns} dataSource={cartData} pagination={{ pageSize: 10 }} />
             
             <Button type="primary" disabled={!selectedItems.length} style={{ marginTop: 16 }} onClick={handleOrder} >

@@ -73,6 +73,11 @@ public class OrderController {
 
         Book book = bookService.findBookById(id);
 
+        if (book.getStocks() < 1) {
+            confirmation.setMessage("该书库存不足，无法购买");
+            return confirmation;
+        }
+
         Order order = orderService.addOrder(book, userService.getCurUser());
         confirmation.setMessage("请确认订单信息：" + order.toString());
 
@@ -82,19 +87,24 @@ public class OrderController {
     }
 
     @PostMapping("/checkoutfromcart")
-    public ResponseEntity<Object> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
+    public Confirmation createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
 
         List<Cart> cartItems = new ArrayList<>();
+        Confirmation confirmation = new Confirmation();
 
         for (CheckoutRequest checkoutRequest : checkoutRequests) {
             Cart cartItem = new Cart(checkoutRequest.getCartId(), checkoutRequest.getBook(),
                     userService.getCurUser(), checkoutRequest.getQuantity());
+            Book book = cartItem.getBook();
+            if (book.getStocks() < cartItem.getQuantity()) {
+                confirmation.setMessage(" 《" + book.getTitle() + "》 的库存不足，无法下单！");
+                return confirmation;
+            }
             cartItems.add(cartItem);
-            System.out.println(cartItem.toString());
         }
-        System.out.println(userService.getCurUser().toString());
         orderService.createOrder(userService.getCurUser(), cartItems);
-        return ResponseEntity.ok("Order created successfully");
+        confirmation.setMessage("已成功下单，可至订单页面查看详情");
+        return confirmation;
 
     }
 

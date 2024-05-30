@@ -61,13 +61,13 @@ const StatisticsPage = () => {
                     </Col>
                     <Col span={8}>
                         <Button type="primary" onClick={handleFetchStatistics}>
-                            获取统计信息
+                            统计
                         </Button>
                     </Col>
                 </Row>
                 <Table columns={columns} dataSource={statistics} rowKey="bookTitle" />
                 <div style={{ marginTop: 10 }}>
-                    <p>总购书数量: {totalBooks}</p>
+                    <p>总购书数量: {totalBooks}本</p>
                     <p>总购书金额: {totalPrice}元</p>
                 </div>
             </Content>

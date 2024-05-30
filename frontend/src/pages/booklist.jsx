@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Card, Row, Col, List, Avatar } from 'antd';
+import { Layout, Input, Card, Row, Col, List, Avatar, Divider, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { searchBooks } from '../service/book';
 import NavBar from '../components/navBar';
 
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
+const { Title } = Typography;
 
 const BookListPage = () => {
     const [books, setBooks] = useState([]);
@@ -29,13 +30,13 @@ const BookListPage = () => {
                 <NavBar />
             </Header>
             <Content style={{ padding: '0 50px' }}>
-                <Card>
-                    <Search
-                        placeholder="请输入书名进行搜索"
-                        size="large"
-                        onSearch={handleSearch}
-                    />
-                </Card>
+                <Title level={2}>书库</Title>
+                <Divider/>
+                <Search
+                    placeholder="请输入书名进行搜索"
+                    size='large'
+                    onSearch={handleSearch}
+                />
                 <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
                     <Col span={24}>
                         <List
