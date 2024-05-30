@@ -31,8 +31,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findOrders() {
-        return orderDao.findAll();
+    public List<Order> findOrders(String bookName, LocalDateTime start, LocalDateTime end, User user) {
+        return orderDao.findOrders(bookName, start, end, user);
     }
 
     @Override

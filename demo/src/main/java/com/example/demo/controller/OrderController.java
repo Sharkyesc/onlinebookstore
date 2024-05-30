@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Order;
@@ -22,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,9 +41,26 @@ public class OrderController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("")
-    public List<OrderDTO> getOrders() {
+    @GetMapping("/all")
+    public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderService.findOrdersByUser(userService.getCurUser());
+        List<OrderDTO> orderDTOs = new ArrayList<>();
+        for (Order order : orders) {
+            orderDTOs.add(convertDTO(order));
+        }
+        return orderDTOs;
+    }
+
+    @GetMapping("")
+    public List<OrderDTO> getOrders(
+            @RequestParam(required = false) String bookName,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
+        LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
+
+        List<Order> orders = orderService.findOrders(bookName, start, end, userService.getCurUser());
+
         List<OrderDTO> orderDTOs = new ArrayList<>();
         for (Order order : orders) {
             orderDTOs.add(convertDTO(order));

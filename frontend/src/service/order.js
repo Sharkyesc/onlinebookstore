@@ -24,8 +24,8 @@ export async function createOrder(cartItems) {
     return res;
 }
 
-export async function getOrders() {
-    const url = `${PREFIX}/orders`;
+export async function getAllOrders() {
+    const url = `${PREFIX}/orders/all`;
     let orders;
     try {
         orders = await getJson(url);
@@ -34,4 +34,21 @@ export async function getOrders() {
         orders = []
     }
     return orders;
+}
+
+
+export async function getOrders(bookName, startDate, endDate) {
+    const url = new URL(`${PREFIX}/orders`);
+    if (bookName) url.searchParams.append('bookName', bookName);
+    if (startDate) url.searchParams.append('startDate', startDate);
+    if (endDate) url.searchParams.append('endDate', endDate);
+    let orders;
+
+    try {
+        orders = await getJson(url);
+        return orders;
+    } catch (error) {
+        console.error('获取订单时出错:', error);
+        return [];
+    }
 }

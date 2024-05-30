@@ -5,12 +5,14 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
-    List<Order> findOrders();
 
     List<Order> findOrdersByUser(User user);
+
+    List<Order> findOrders(String bookName, LocalDateTime start, LocalDateTime end, User user);
 
     Order addOrder(Book book, User user);
 

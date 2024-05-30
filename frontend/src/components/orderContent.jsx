@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Table, Button, Typography, Divider, Modal } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import { Link } from 'react-router-dom';
+import moment from 'moment'
 
-const { Title } = Typography;
 
 const OrderContent = ({ orderInfo }) => {
 
@@ -24,6 +24,7 @@ const OrderContent = ({ orderInfo }) => {
           title: '订单时间',
           dataIndex: 'orderTime',
           key: 'orderTime',
+          render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
         },
         {
           title: '收货地址',
@@ -46,8 +47,6 @@ const OrderContent = ({ orderInfo }) => {
   
   return (
     <div className="site-layout-content">
-      <Title level={2}>订单详情</Title>
-      <Divider />
       <Table columns={columns} dataSource={orderInfo} />
       <div style={{ marginTop: 20 }}>
         <Link to="/home">
@@ -63,7 +62,7 @@ const OrderContent = ({ orderInfo }) => {
         {selectedOrder && (
           <>
             <p>订单编号：{selectedOrder.orderId}</p>
-            <p>订单时间：{selectedOrder.orderTime}</p>
+            <p>订单时间：{moment(selectedOrder.orderTime).format('YYYY-MM-DD HH:mm:ss')}</p>
             <p>收货地址：{selectedOrder.destination}</p>
             <p>总价：{selectedOrder.totalPrice}</p>
             {selectedOrder.orderItems.map((item, index) => (

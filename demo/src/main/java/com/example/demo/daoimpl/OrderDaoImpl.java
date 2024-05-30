@@ -1,5 +1,6 @@
 package com.example.demo.daoimpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> findOrders(String bookName, LocalDateTime start, LocalDateTime end, User user) {
+        return orderRepository.findOrders(bookName, start, end, user);
     }
 
     @Override
