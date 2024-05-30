@@ -20,4 +20,6 @@ public interface OrderDao {
 
     List<Order> findOrdersByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end);
 
+    List<Order> findOrdersByBookAndTimeRange(String bookName, LocalDateTime start, LocalDateTime end);
+
 }

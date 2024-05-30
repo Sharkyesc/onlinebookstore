@@ -43,6 +43,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAllOrders(String bookName, LocalDateTime start, LocalDateTime end) {
+        return orderDao.findOrdersByBookAndTimeRange(bookName, start, end);
+    }
+
+    @Override
     public Order addOrder(Book book, User user) {
         Order order = new Order();
         order.setOrderTime(LocalDateTime.now());

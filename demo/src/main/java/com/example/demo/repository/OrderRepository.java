@@ -28,4 +28,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                         @Param("start") LocalDateTime start,
                         @Param("end") LocalDateTime end, User user);
 
+        @Query("SELECT o FROM Order o JOIN o.orderItems i WHERE " +
+                        "(:bookName IS NULL OR LOWER(i.book.title) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
+                        "(:start IS NULL OR o.orderTime >= :start) AND " +
+                        "(:end IS NULL OR o.orderTime <= :end)" +
+                        "ORDER BY o.orderId")
+        List<Order> findOrdersByBookAndTimeRange(@Param("bookName") String bookName,
+                        @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
 }

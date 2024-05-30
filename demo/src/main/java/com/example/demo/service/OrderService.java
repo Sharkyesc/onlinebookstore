@@ -15,6 +15,8 @@ public interface OrderService {
 
     List<Order> findOrders(String bookName, LocalDateTime start, LocalDateTime end, User user);
 
+    List<Order> findAllOrders(String bookName, LocalDateTime start, LocalDateTime end);
+
     Order addOrder(Book book, User user);
 
     void updateOrder(Order order);

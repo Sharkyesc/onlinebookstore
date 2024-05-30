@@ -48,6 +48,7 @@ public class User {
                 ", phonenumber='" + phonenumber + '\'' +
                 ", email='" + email + '\'' +
                 ", avatarSrc='" + avatarSrc + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 

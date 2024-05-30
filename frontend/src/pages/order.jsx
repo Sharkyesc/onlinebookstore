@@ -28,12 +28,12 @@ const OrderPage = () => {
 
   const handleSearch = (value) => {
     setSearchTerm(value);
-    fetchOrders(value, dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null, dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null);
+    fetchOrders(value, dateRange ? (dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null) : null, dateRange ? (dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null) : null);
   };
 
   const handleDateChange = (dates) => {
     setDateRange(dates);
-    fetchOrders(searchTerm, dates[0] ? dates[0].format('YYYY-MM-DDTHH:mm:ss') : null, dates[1] ? dates[1].format('YYYY-MM-DDTHH:mm:ss') : null);
+    fetchOrders(searchTerm, dates ? (dates[0] ? dates[0].format('YYYY-MM-DDTHH:mm:ss') : null) : null, dates ? (dates[1] ? dates[1].format('YYYY-MM-DDTHH:mm:ss') : null) : null);
   };
 
   return (orders && 
@@ -56,6 +56,7 @@ const OrderPage = () => {
             <RangePicker
               style={{ width: '100%' }}
               onChange={handleDateChange}
+              allowClear
             />
           </Col>
         </Row>

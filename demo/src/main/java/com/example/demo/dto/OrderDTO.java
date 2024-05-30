@@ -12,6 +12,7 @@ public class OrderDTO {
     private int orderId;
     private LocalDateTime orderTime;
     private String destination;
+    private String recipient;
     private int totalPrice;
     private List<OrderItemDTO> orderItems;
 

@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,9 +57,13 @@ public class OrderController {
         LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
 
         List<Order> orders = orderService.findOrders(bookName, start, end, userService.getCurUser());
+        if ("ADMIN".equals(userService.getCurUser().getRole())) {
+            orders = orderService.findAllOrders(bookName, start, end);
+        }
 
         List<OrderDTO> orderDTOs = new ArrayList<>();
         for (Order order : orders) {
+            System.out.println(order.toString());
             orderDTOs.add(convertDTO(order));
         }
         return orderDTOs;
@@ -122,6 +125,7 @@ public class OrderController {
         orderDTO.setDestination(order.getDestination());
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderTime(order.getOrderTime());
+        orderDTO.setRecipient(order.getRecipient());
         orderDTO.setTotalPrice(order.getTotalPrice());
 
         List<OrderItemDTO> orderItemDTOs = order.getOrderItems().stream().map(item -> {

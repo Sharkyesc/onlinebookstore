@@ -39,6 +39,11 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<Order> findOrdersByBookAndTimeRange(String bookName, LocalDateTime start, LocalDateTime end) {
+        return orderRepository.findOrdersByBookAndTimeRange(bookName, start, end);
+    }
+
+    @Override
     public void saveOrder(Order order) {
         orderRepository.save(order);
     }

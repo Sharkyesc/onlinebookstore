@@ -27,6 +27,11 @@ const OrderContent = ({ orderInfo }) => {
           render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
         },
         {
+          title: '收货人',
+          dataIndex: 'recipient',
+          key: 'recipient',
+        },
+        {
           title: '收货地址',
           dataIndex: 'destination',
           key: 'destination',
@@ -63,6 +68,7 @@ const OrderContent = ({ orderInfo }) => {
           <>
             <p>订单编号：{selectedOrder.orderId}</p>
             <p>订单时间：{moment(selectedOrder.orderTime).format('YYYY-MM-DD HH:mm:ss')}</p>
+            <p>收货人：{selectedOrder.recipient}</p>
             <p>收货地址：{selectedOrder.destination}</p>
             <p>总价：{selectedOrder.totalPrice}</p>
             {selectedOrder.orderItems.map((item, index) => (
