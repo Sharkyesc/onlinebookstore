@@ -13,6 +13,7 @@ import com.example.demo.entity.Cart;
 import com.example.demo.entity.Book;
 import com.example.demo.service.CartService;
 import com.example.demo.service.UserService;
+import com.example.demo.service.BookService;
 
 import java.util.List;
 
@@ -26,19 +27,22 @@ public class CartController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BookService bookService;
+
     @GetMapping("")
     public List<Cart> viewCart() {
         return cartService.findCartsByUser(userService.getCurUser());
     }
 
-    @PutMapping
+    @PutMapping("")
     public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
         Confirmation confirmation = new Confirmation();
 
-        cartService.addCartItem(bookId, userService.getCurUser().getUser_id());
-        Book bookAdded = cartService.getBookByBookId(bookId);
+        Book book = bookService.findBookById(bookId);
+        cartService.addCartItem(book, userService.getCurUser());
 
-        confirmation.setMessage("《" + bookAdded.getTitle() + "》已成功加入购物车");
+        confirmation.setMessage("《" + book.getTitle() + "》已成功加入购物车");
 
         return confirmation;
     }

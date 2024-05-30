@@ -2,6 +2,7 @@ package com.example.demo.dao;
 
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
+import com.example.demo.entity.Book;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface CartDao {
 
     Cart findByCartId(int cartId);
 
-    Cart findByBookId(int bookId);
+    Cart findByBookandUser(Book book, User user);
 
     void save(Cart cart);
 

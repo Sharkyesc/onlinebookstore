@@ -7,7 +7,6 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
 import com.example.demo.dao.CartDao;
-import com.example.demo.dao.UserDao;
 
 import java.util.List;
 
@@ -17,20 +16,9 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartDao cartDao;
 
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private BookService bookService;
-
     @Override
     public List<Cart> findCartsByUser(User user) {
         return cartDao.findByUser(user);
-    }
-
-    @Override
-    public Book getBookByBookId(int bookId) {
-        return bookService.findBookById(bookId);
     }
 
     @Override
@@ -39,16 +27,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addCartItem(int bookId, int userId) {
-        Cart cartItem = cartDao.findByBookId(bookId);
+    public void addCartItem(Book book, User user) {
+        Cart cartItem = cartDao.findByBookandUser(book, user);
         if (cartItem != null) {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
             cartDao.save(cartItem);
         } else {
             Cart newCartItem = new Cart();
-            Book book = getBookByBookId(bookId);
             newCartItem.setBook(book);
-            newCartItem.setUser(userDao.findById(userId));
+            newCartItem.setUser(user);
             newCartItem.setPrice(book.getPrice());
             newCartItem.setTitle(book.getTitle());
             newCartItem.setCoverSrc(book.getCoverSrc());
