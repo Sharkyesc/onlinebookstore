@@ -9,6 +9,7 @@ import {
     ShoppingCartOutlined, 
     OrderedListOutlined,
     DownOutlined,
+    LineChartOutlined,
     SearchOutlined
 } from '@ant-design/icons';
 
@@ -71,6 +72,9 @@ const NavBar = () => {
       </Menu.Item>
       <Menu.Item key="4" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/order">我的订单</Link>
+      </Menu.Item> 
+      <Menu.Item key="5" icon={<LineChartOutlined />} style={{backgroundColor: 'transparent'}}>
+        <Link to="/statistics">购书统计</Link>
       </Menu.Item> 
 {/*       <Menu.Item key="search" style={{ flexGrow: 1, backgroundColor:'transparent'}}>
         <Input

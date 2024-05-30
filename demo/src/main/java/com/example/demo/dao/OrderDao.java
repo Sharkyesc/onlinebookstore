@@ -17,4 +17,8 @@ public interface OrderDao {
     void saveOrder(Order order);
 
     void saveOrderItem(OrderItem orderItem);
+
+    List<Order> findOrdersByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end);
+
+    List<Order> findPriceByBookTitle(entry.getKey());
 }

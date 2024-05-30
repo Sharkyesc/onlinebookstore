@@ -13,6 +13,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
+import com.example.demo.dto.BookStatisticsDTO;
 import com.example.demo.dto.CheckoutRequest;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
@@ -108,6 +109,15 @@ public class OrderController {
             }
         }
         return ResponseEntity.status(401).body("User not logged in");
+    }
+
+    @GetMapping("/statistics")
+    public List<BookStatisticsDTO> getStatistics(
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        LocalDateTime start = LocalDateTime.parse(startDate);
+        LocalDateTime end = LocalDateTime.parse(endDate);
+        return orderService.getStatistics(start, end, userService.getCurUser());
     }
 
     private OrderDTO convertDTO(Order order) {

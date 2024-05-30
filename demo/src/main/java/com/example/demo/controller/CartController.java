@@ -40,6 +40,12 @@ public class CartController {
         Confirmation confirmation = new Confirmation();
 
         Book book = bookService.findBookById(bookId);
+
+        if (book.getStocks() < 1) {
+            confirmation.setMessage("《" + book.getTitle() + "》库存数量不足，无法加购！");
+            return confirmation;
+        }
+
         cartService.addCartItem(book, userService.getCurUser());
 
         confirmation.setMessage("《" + book.getTitle() + "》已成功加入购物车");

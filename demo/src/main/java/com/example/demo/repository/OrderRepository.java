@@ -13,14 +13,19 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
-    List<Order> findByUser(User user);
+        List<Order> findByUser(User user);
 
-    @Query("SELECT o FROM Order o JOIN o.orderItems i WHERE " +
-            "(:bookName IS NULL OR LOWER(i.book.title) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
-            "(:start IS NULL OR o.orderTime >= :start) AND " +
-            "(:end IS NULL OR o.orderTime <= :end) AND " +
-            "(:user IS NULL OR o.user = :user)")
-    List<Order> findOrders(@Param("bookName") String bookName,
-            @Param("start") LocalDateTime start,
-            @Param("end") LocalDateTime end, User user);
+        @Query("SELECT o FROM Order o WHERE o.user = :user AND o.orderTime BETWEEN :start AND :end")
+        List<Order> findByUserAndTimeRange(User user, @Param("start") LocalDateTime start,
+                        @Param("end") LocalDateTime end);
+
+        @Query("SELECT o FROM Order o JOIN o.orderItems i WHERE " +
+                        "(:bookName IS NULL OR LOWER(i.book.title) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
+                        "(:start IS NULL OR o.orderTime >= :start) AND " +
+                        "(:end IS NULL OR o.orderTime <= :end) AND " +
+                        "(:user IS NULL OR o.user = :user)")
+        List<Order> findOrders(@Param("bookName") String bookName,
+                        @Param("start") LocalDateTime start,
+                        @Param("end") LocalDateTime end, User user);
+
 }

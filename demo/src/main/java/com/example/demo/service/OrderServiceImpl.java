@@ -11,10 +11,13 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.dao.OrderDao;
 import com.example.demo.dao.UserDao;
+import com.example.demo.dto.BookStatisticsDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -90,5 +93,34 @@ public class OrderServiceImpl implements OrderService {
         order.setTotalPrice(totalPrice);
 
         orderDao.saveOrder(order);
+    }
+
+    @Override
+    public List<BookStatisticsDTO> getStatistics(LocalDateTime start, LocalDateTime end, User user) {
+        List<Order> orders = orderDao.findOrdersByUserAndTimeRange(user, start, end);
+        List<BookStatisticsDTO> res = new ArrayList<>();
+        for (Order order : orders) {
+            for (OrderItem orderItem : order.getOrderItems()) {
+                res.add(new BookStatisticsDTO(
+                        orderItem.getBook().getTitle(),
+                        orderItem.getQuantity(),
+                        orderItem.getQuantity() * orderItem.getBook().getPrice()));
+
+            }
+        }
+
+        Map<String, BookStatisticsDTO> bookStatsMap = new HashMap<>();
+
+        for (BookStatisticsDTO bookStat : res) {
+            if (bookStatsMap.containsKey(bookStat.getBookTitle())) {
+                BookStatisticsDTO existingStat = bookStatsMap.get(bookStat.getBookTitle());
+                existingStat.setTotalQuantity(existingStat.getTotalQuantity() + bookStat.getTotalQuantity());
+                existingStat.setTotalPrice(existingStat.getTotalPrice() + bookStat.getTotalPrice());
+            } else {
+                bookStatsMap.put(bookStat.getBookTitle(), bookStat);
+            }
+        }
+
+        return new ArrayList<>(bookStatsMap.values());
     }
 }
