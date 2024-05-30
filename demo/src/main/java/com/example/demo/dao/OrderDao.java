@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.BookSalesDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.entity.OrderItem;
@@ -21,5 +23,9 @@ public interface OrderDao {
     List<Order> findOrdersByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end);
 
     List<Order> findOrdersByBookAndTimeRange(String bookName, LocalDateTime start, LocalDateTime end);
+
+    List<BookSalesDTO> findBookSales(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<UserPurchaseDTO> findUserPurchases(LocalDateTime startDate, LocalDateTime endDate);
 
 }

@@ -12,7 +12,9 @@ import com.example.demo.entity.OrderItem;
 import com.example.demo.dao.OrderDao;
 import com.example.demo.dao.CartDao;
 import com.example.demo.dao.BookDao;
+import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -141,4 +143,15 @@ public class OrderServiceImpl implements OrderService {
 
         return new ArrayList<>(bookStatsMap.values());
     }
+
+    @Override
+    public List<BookSalesDTO> getBookSales(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderDao.findBookSales(startDate, endDate);
+    }
+
+    @Override
+    public List<UserPurchaseDTO> getUserPurchases(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderDao.findUserPurchases(startDate, endDate);
+    }
+
 }

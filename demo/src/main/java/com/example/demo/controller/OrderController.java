@@ -12,10 +12,12 @@ import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
+import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
 import com.example.demo.dto.CheckoutRequest;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -143,4 +145,15 @@ public class OrderController {
         return orderDTO;
     }
 
+    @GetMapping("/booksales")
+    public List<BookSalesDTO> getBookSales(@RequestParam LocalDateTime startDate,
+            @RequestParam LocalDateTime endDate) {
+        return orderService.getBookSales(startDate, endDate);
+    }
+
+    @GetMapping("/userpurchases")
+    public List<UserPurchaseDTO> getUserPurchases(@RequestParam LocalDateTime startDate,
+            @RequestParam LocalDateTime endDate) {
+        return orderService.getUserPurchases(startDate, endDate);
+    }
 }

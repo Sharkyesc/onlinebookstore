@@ -13,3 +13,15 @@ export async function getBookStatistics(startDate, endDate) {
     }
     return res;
 }
+
+export async function getBookSales(startDate, endDate) {
+    const url = `${PREFIX}/orders/booksales?startDate=${startDate}&endDate=${endDate}`;
+    const response = await getJson(url);
+    return response;
+}
+
+export async function getUserPurchases(startDate, endDate) {
+    const url = `${PREFIX}/orders/userpurchases?startDate=${startDate}&endDate=${endDate}`;
+    const response = await getJson(url);
+    return response;
+}

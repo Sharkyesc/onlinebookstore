@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.dto.BookSalesDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 
@@ -37,5 +39,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                         "ORDER BY o.orderId")
         List<Order> findOrdersByBookAndTimeRange(@Param("bookName") String bookName,
                         @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+        @Query("SELECT new com.example.demo.dto.BookSalesDTO(b.title, SUM(i.quantity)) " +
+                        "FROM Order o JOIN o.orderItems i JOIN i.book b " +
+                        "WHERE o.orderTime BETWEEN :startDate AND :endDate " +
+                        "GROUP BY b.title " +
+                        "ORDER BY SUM(i.quantity) DESC")
+        List<BookSalesDTO> findBookSales(@Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate);
+
+        @Query("SELECT new com.example.demo.dto.UserPurchaseDTO(u.nickname, SUM(o.totalPrice)) " +
+                        "FROM Order o JOIN o.user u " +
+                        "WHERE o.orderTime BETWEEN :startDate AND :endDate " +
+                        "GROUP BY u.nickname " +
+                        "ORDER BY SUM(o.totalPrice) DESC")
+        List<UserPurchaseDTO> findUserPurchases(@Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate);
 
 }

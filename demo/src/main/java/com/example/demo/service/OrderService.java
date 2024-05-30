@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Order;
+import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
@@ -24,4 +26,8 @@ public interface OrderService {
     public void createOrder(User user, List<Cart> cartItems);
 
     List<BookStatisticsDTO> getStatistics(LocalDateTime start, LocalDateTime end, User user);
+
+    List<BookSalesDTO> getBookSales(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<UserPurchaseDTO> getUserPurchases(LocalDateTime startDate, LocalDateTime endDate);
 }

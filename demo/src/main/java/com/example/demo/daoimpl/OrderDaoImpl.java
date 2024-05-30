@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.OrderDao;
+import com.example.demo.dto.BookSalesDTO;
+import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.User;
@@ -56,6 +58,16 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public List<Order> findOrdersByUserAndTimeRange(User user, LocalDateTime start, LocalDateTime end) {
         return orderRepository.findByUserAndTimeRange(user, start, end);
+    }
+
+    @Override
+    public List<BookSalesDTO> findBookSales(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.findBookSales(startDate, endDate);
+    }
+
+    @Override
+    public List<UserPurchaseDTO> findUserPurchases(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.findUserPurchases(startDate, endDate);
     }
 
 }
