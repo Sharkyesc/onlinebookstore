@@ -22,7 +22,7 @@ public class User {
     @Column(name = "user_id")
     private int user_id;
 
-    private String nickname, address, phonenumber, email, avatarSrc;
+    private String nickname, address, phonenumber, email, avatarSrc, role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserAuth userAuth;

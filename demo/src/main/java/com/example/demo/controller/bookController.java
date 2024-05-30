@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,15 +19,19 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public Book findBook(@PathVariable("id") Integer id) {
         System.out.println("Searching Book: " + id);
         return bookService.findBookById(id);
     }
 
-    @GetMapping(value = "")
-    public List<Book> getAllBooks() {
-        return bookService.findAllBooks();
+    @GetMapping("")
+    public List<Book> getBooks(@RequestParam(required = false) String search) {
+        if (search == null || search.isEmpty()) {
+            return bookService.findAllBooks();
+        } else {
+            return bookService.findByTitle(search);
+        }
     }
 
 }

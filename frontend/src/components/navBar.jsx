@@ -64,7 +64,7 @@ const NavBar = () => {
         <Link to="/home">首页</Link>
       </Menu.Item>
       <Menu.Item key="2" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
-        书籍
+        <Link to="/book">书籍</Link>
       </Menu.Item>
       <Menu.Item key="3" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/cart">购物车</Link>

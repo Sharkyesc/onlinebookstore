@@ -14,4 +14,6 @@ public interface BookDao {
     void update(Book book);
 
     void delete(Integer id);
+
+    List<Book> findByTitle(String search);
 }

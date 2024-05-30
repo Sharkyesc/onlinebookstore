@@ -14,4 +14,6 @@ public interface BookService {
     void updateBook(Book book);
 
     void deleteBook(Integer id);
+
+    List<Book> findByTitle(String search);
 }

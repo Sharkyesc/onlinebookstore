@@ -23,3 +23,15 @@ export async function getAllBooks() {
     }
     return books;
 }
+
+export async function searchBooks(query) {
+    const url = `${PREFIX}/books?search=${encodeURIComponent(query)}`;
+    let books;
+    try {
+        books = await getJson(url);
+        return books;
+    } catch (error) {
+        console.error('获取书籍列表时出错:', error);
+        return [];
+    }
+}
