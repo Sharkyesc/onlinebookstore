@@ -72,7 +72,7 @@ const NavBar = () => {
         <Link to="/cart">购物车</Link>
       </Menu.Item>
       <Menu.Item key="order" icon={<OrderedListOutlined />} style={{backgroundColor: 'transparent'}}>
-        <Link to="/order">我的订单</Link>
+        <Link to="/order">订单</Link>
       </Menu.Item> 
       <Menu.Item key="statistics" icon={<LineChartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/statistics">购书统计</Link>
