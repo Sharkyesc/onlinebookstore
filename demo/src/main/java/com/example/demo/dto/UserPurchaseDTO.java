@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserPurchaseDTO {
     private String nickname;
-    private int totalAmount;
+    private Long totalAmount;
 }

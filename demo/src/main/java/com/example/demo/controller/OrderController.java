@@ -146,14 +146,21 @@ public class OrderController {
     }
 
     @GetMapping("/booksales")
-    public List<BookSalesDTO> getBookSales(@RequestParam LocalDateTime startDate,
-            @RequestParam LocalDateTime endDate) {
-        return orderService.getBookSales(startDate, endDate);
+    public List<BookSalesDTO> getBookSales(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
+        LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
+
+        return orderService.getBookSales(start, end);
     }
 
     @GetMapping("/userpurchases")
-    public List<UserPurchaseDTO> getUserPurchases(@RequestParam LocalDateTime startDate,
-            @RequestParam LocalDateTime endDate) {
-        return orderService.getUserPurchases(startDate, endDate);
+    public List<UserPurchaseDTO> getUserPurchases(@RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+        LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
+        LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
+
+        return orderService.getUserPurchases(start, end);
     }
 }

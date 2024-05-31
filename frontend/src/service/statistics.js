@@ -15,13 +15,29 @@ export async function getBookStatistics(startDate, endDate) {
 }
 
 export async function getBookSales(startDate, endDate) {
-    const url = `${PREFIX}/orders/booksales?startDate=${startDate}&endDate=${endDate}`;
-    const response = await getJson(url);
-    return response;
+    const url = new URL(`${PREFIX}/orders/booksales`);
+    if (startDate) url.searchParams.append('startDate', startDate);
+    if (endDate) url.searchParams.append('endDate', endDate);
+    let res;
+    try {
+        res = await getJson(url);
+    } catch (error) {
+        console.error('获取书籍销量信息时出错:', error);
+        res = [];
+    }
+    return res;
 }
 
 export async function getUserPurchases(startDate, endDate) {
-    const url = `${PREFIX}/orders/userpurchases?startDate=${startDate}&endDate=${endDate}`;
-    const response = await getJson(url);
-    return response;
+    const url = new URL(`${PREFIX}/orders/userpurchases`);
+    if (startDate) url.searchParams.append('startDate', startDate);
+    if (endDate) url.searchParams.append('endDate', endDate);
+    let res;
+    try {
+        res = await getJson(url);
+    } catch (error) {
+        console.error('获取用户消费信息时出错:', error);
+        res = [];
+    }
+    return res;
 }

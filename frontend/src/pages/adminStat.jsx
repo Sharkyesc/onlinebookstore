@@ -12,25 +12,28 @@ const AdminStatisticsPage = () => {
     const [bookSales, setBookSales] = useState([]);
     const [userPurchases, setUserPurchases] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
+    const [currentView, setCurrentView] = useState(null);
 
     const handleDateChange = (dates) => {
         setDateRange(dates);
     };
 
     const handleFetchBookSales = async () => {
-        const startDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null;
-        const endDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null;
+        const startDate = dateRange ? (dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
+        const endDate = dateRange ? (dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
         const sales = await getBookSales(startDate, endDate);
-        console.log(sales);
         setBookSales(sales);
+        setUserPurchases([]); 
+        setCurrentView('bookSales');
     };
 
     const handleFetchUserPurchases = async () => {
-        const startDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null;
-        const endDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null;
+        const startDate = dateRange ? (dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
+        const endDate = dateRange ? (dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:mm:ss') : null) : null;
         const purchases = await getUserPurchases(startDate, endDate);
-        console.log(purchases);
         setUserPurchases(purchases);
+        setBookSales([]); 
+        setCurrentView('userPurchases');
     };
 
     const bookSalesConfig = {
@@ -105,11 +108,18 @@ const AdminStatisticsPage = () => {
                     </Col>
                 </Row>
                 <Divider />
-                <Title level={3}>书籍销量统计</Title>
-                <Column {...bookSalesConfig} />
-                <Divider />
-                <Title level={3}>用户消费统计</Title>
-                <Column {...userPurchasesConfig} />
+                {currentView === 'bookSales' && bookSales.length > 0 && (
+                    <>
+                        <Title level={3}>书籍销量统计</Title>
+                        <Column {...bookSalesConfig} />
+                    </>
+                )}
+                {currentView === 'userPurchases' && userPurchases.length > 0 && (
+                    <>
+                        <Title level={3}>用户消费统计</Title>
+                        <Column {...userPurchasesConfig} />
+                    </>
+                )}
             </Content>
             <Footer style={{ textAlign: 'center' }}>©2024</Footer>
         </Layout>
