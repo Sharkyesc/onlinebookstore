@@ -60,9 +60,7 @@ public class OrderController {
         LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
         LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
 
-        System.out.println("getorders");
         List<Order> orders = orderService.findOrders(bookName, start, end, userService.getCurUser());
-        System.out.println("getorders");
         if ("ADMIN".equals(userService.getCurUser().getRole())) {
             orders = orderService.findAllOrders(bookName, start, end);
         }

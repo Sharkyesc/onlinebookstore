@@ -66,7 +66,10 @@ const NavBar = () => {
         <Link to="/home">首页</Link>
       </Menu.Item>
       <Menu.Item key="book" icon={<BookOutlined />} style={{backgroundColor: 'transparent'}}>
-        <Link to="/book">书籍</Link>
+        { (sessionStorage.getItem('username') !== 'admin') && 
+                <Link to="/book">书籍</Link> }
+        { (sessionStorage.getItem('username') === 'admin') && 
+                <Link to="/bookManage">书籍管理</Link> }
       </Menu.Item>
       <Menu.Item key="cart" icon={<ShoppingCartOutlined />} style={{backgroundColor: 'transparent'}}>
         <Link to="/cart">购物车</Link>
@@ -75,7 +78,10 @@ const NavBar = () => {
         <Link to="/order">订单</Link>
       </Menu.Item> 
       <Menu.Item key="statistics" icon={<LineChartOutlined />} style={{backgroundColor: 'transparent'}}>
-        <Link to="/statistics">购书统计</Link>
+        { (sessionStorage.getItem('username') !== 'admin') && 
+                <Link to="/userstatistics">购书统计</Link> }
+        { (sessionStorage.getItem('username') === 'admin') && 
+                <Link to="/statistics">统计</Link> }
       </Menu.Item> 
       {(sessionStorage.getItem('username') === 'admin') && 
       (<Menu.Item key="manage" icon={<UserOutlined />} style={{backgroundColor: 'transparent'}}>

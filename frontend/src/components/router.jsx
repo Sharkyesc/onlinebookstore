@@ -23,15 +23,11 @@ export default function AppRouter() {
             <Route path="/cart" element={<ProtectedRoute component={CartPage} />} />
             <Route path="/user" element={<ProtectedRoute component={UserPage} />} />
             <Route path="/order" element={<ProtectedRoute component={OrderPage} />} />
-            { (sessionStorage.getItem('username') !== 'admin') &&
-                <Route path="/book" element={<ProtectedRoute component={BookListPage} />} /> }
-            { (sessionStorage.getItem('username') === 'admin') &&
-                <Route path="/book" element={<ProtectedRoute component={BookManagePage} />} /> }
-            { (sessionStorage.getItem('username') !== 'admin') && 
-                <Route path="/statistics" element={<ProtectedRoute component={StatisticsPage} />} /> }
-             <Route path="/manage" element={<ProtectedRoute component={UserManagementPage} />} />
-            { (sessionStorage.getItem('username') === 'admin') &&
-                <Route path="/statistics" element={<ProtectedRoute component={AdminStatisticsPage} />} /> }
+            <Route path="/book" element={<ProtectedRoute component={BookListPage} />} />
+            <Route path="/bookManage" element={<ProtectedRoute component={BookManagePage} />} /> 
+            <Route path="/userstatistics" element={<ProtectedRoute component={StatisticsPage} />} /> 
+            <Route path="/manage" element={<ProtectedRoute component={UserManagementPage} />} />
+            <Route path="/statistics" element={<ProtectedRoute component={AdminStatisticsPage} />} /> }
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
         </Routes>
