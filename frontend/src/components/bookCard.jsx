@@ -18,7 +18,7 @@ const BookCard = ({ id, coverSrc, title, price }) => {
       cover={<img alt="Book Cover" src={coverSrc} style={{ height: 250 }} />}
       onClick={handleClick}
     >
-      <Meta title={title} description={`价格：${price} 元`} />
+      <Meta title={title} description={`价格：${(price / 100.00).toFixed(2)} 元`} />
     </Card>
   );
 };

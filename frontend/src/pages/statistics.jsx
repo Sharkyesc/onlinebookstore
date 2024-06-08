@@ -38,6 +38,10 @@ const StatisticsPage = () => {
             title: '总价',
             dataIndex: 'totalPrice',
             key: 'totalPrice',
+            render: (text, record) => {
+                const priceInYuan = record.totalPrice / 100.00;
+                return `${priceInYuan.toFixed(2)} 元`;
+            },
         },
     ];
 
@@ -68,8 +72,8 @@ const StatisticsPage = () => {
                 </Row>
                 <Table columns={columns} dataSource={statistics} rowKey="bookTitle" />
                 <div style={{ marginTop: 10 }}>
-                    <p>总购书数量: {totalBooks}本</p>
-                    <p>总购书金额: {totalPrice}元</p>
+                    <p>总购书数量: {totalBooks} 本</p>
+                    <p>总购书金额: {`${(totalPrice / 100.00).toFixed(2)} 元`}</p>
                 </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>©2024</Footer>

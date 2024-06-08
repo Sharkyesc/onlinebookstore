@@ -102,7 +102,7 @@ const CartContent = ({ cartData, onMutate }) => {
         title: '单价',
         dataIndex: 'book.price',
         key: 'price',
-        render: (text, record) => record.book.price,
+        render: (text, record) => `${(record.book.price / 100.00).toFixed(2)} 元`,
       },
       {
         title: '数量',
@@ -121,7 +121,7 @@ const CartContent = ({ cartData, onMutate }) => {
         title: '金额',
         dataIndex: 'total',
         key: 'total',
-        render: (text, record) => record.quantity * record.book.price, 
+        render: (text, record) => `${(record.quantity * record.book.price / 100.00).toFixed(2)} 元`, 
       },
       {
         title: '操作',

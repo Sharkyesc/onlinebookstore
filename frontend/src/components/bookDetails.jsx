@@ -43,7 +43,7 @@ const BookDetail = ({ bookInfo }) => {
     {
       key: '5',
       attribute: '价格',
-      content: `${bookInfo.price} 元`,
+      content: `${(bookInfo.price / 100.00).toFixed(2)} 元`,
     },
     {
       key: '6',
