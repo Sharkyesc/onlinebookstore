@@ -1,14 +1,16 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "orderitems")
 public class OrderItem {
 
@@ -22,15 +24,12 @@ public class OrderItem {
     private Order order;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     private int quantity;
     private int price;
-
-    public OrderItem() {
-    }
 
     public OrderItem(Order order, Book book, int quantity, int price, OrderItemId id) {
         this.order = order;
@@ -56,14 +55,4 @@ public class OrderItem {
         }
     }
 
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "id=" + id +
-                ", orderId=" + id.getOrderId() +
-                ", bookId=" + book.getId() +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                '}';
-    }
 }

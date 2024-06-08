@@ -35,10 +35,11 @@ public class CartServiceImpl implements CartService {
         } else {
             Cart newCartItem = new Cart();
             newCartItem.setBook(book);
-            newCartItem.setUser(user);
-            newCartItem.setPrice(book.getPrice());
-            newCartItem.setTitle(book.getTitle());
-            newCartItem.setCoverSrc(book.getCoverSrc());
+            newCartItem.setUser(user);/*
+                                       * newCartItem.setPrice(book.getPrice());
+                                       * newCartItem.setTitle(book.getTitle());
+                                       * newCartItem.setCoverSrc(book.getCoverSrc());
+                                       */
             newCartItem.setQuantity(1);
             cartDao.save(newCartItem);
         }

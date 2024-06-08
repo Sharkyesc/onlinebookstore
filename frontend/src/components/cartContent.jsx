@@ -88,19 +88,21 @@ const CartContent = ({ cartData, onMutate }) => {
       },
       {
         title: '封面',
-        dataIndex: 'coverSrc',
+        dataIndex: 'book.coverSrc',
         key: 'coverSrc',
-        render: (coverSrc) => <img src={coverSrc} alt="Cover" style={{ width: 80 }} />,
+        render: (text, record) => <img src={record.book.coverSrc} alt="Cover" style={{ width: 80 }} />,
       },
       {
         title: '标题',
-        dataIndex: 'title',
+        dataIndex: 'book.title',
         key: 'title',
+        render: (text, record) => record.book.title,
       },
       {
         title: '单价',
-        dataIndex: 'price',
+        dataIndex: 'book.price',
         key: 'price',
+        render: (text, record) => record.book.price,
       },
       {
         title: '数量',
@@ -119,7 +121,7 @@ const CartContent = ({ cartData, onMutate }) => {
         title: '金额',
         dataIndex: 'total',
         key: 'total',
-        render: (text, record) => record.quantity * record.price, 
+        render: (text, record) => record.quantity * record.book.price, 
       },
       {
         title: '操作',

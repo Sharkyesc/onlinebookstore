@@ -7,16 +7,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "cart")
 public class Cart {
 
@@ -30,46 +32,8 @@ public class Cart {
     private User user;
     private int quantity;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
-
-    private String title, coverSrc;
-    private int price;
-
-    public Cart() {
-    }
-
-    public Cart(int cartId, Book book, User user, int quantity) {
-        this.cartId = cartId;
-        this.book = book;
-        this.user = user;
-        this.quantity = quantity;
-        this.title = book.getTitle();
-        this.price = book.getPrice();
-        this.coverSrc = book.getCoverSrc();
-    }
-
-    @Override
-    public String toString() {
-        return "Cart{" +
-                "cartId=" + cartId +
-                ", bookId=" + book.getId() +
-                ", userId=" + user.getUser_id() +
-                ", quantity=" + quantity +
-                '}';
-    }
-
-    public void setTitle() {
-        this.title = book.getTitle();
-    }
-
-    public void setPrice() {
-        this.price = book.getPrice();
-    }
-
-    public void setCoverSrc() {
-        this.coverSrc = book.getCoverSrc();
-    }
 
 }
