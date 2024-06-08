@@ -14,6 +14,7 @@ import BookManagePage from "../pages/managebook";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
+    console.log(sessionStorage.getItem('username'));
     return <BrowserRouter>
         <Routes>
             <Route index element={<LoginPage />} />

@@ -1,12 +1,12 @@
 import { React, useState } from 'react';
-import { InputNumber } from 'antd';
-import { Input, Table, Space, Button, Modal, Checkbox } from 'antd';
+import { InputNumber, message } from 'antd';
+import { Table, Space, Button, Modal, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
 import { debounce } from 'lodash';
 import { createOrder } from '../service/order';
-
-const { Search } = Input;
+/* 
+const { Search } = Input; */
 const { confirm } = Modal;
 
 
@@ -14,14 +14,21 @@ const CartContent = ({ cartData, onMutate }) => {
   
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleDelete = (id) => {
-    deleteCartItem(id)
-    .then(response => {
-      alert(response.message); 
-      onMutate();
-    })
-    .catch(error => console.error('There was a problem with deleting item from cart:', error));
+  const handleDelete = async (id) => {
+    try {
+      const response = await deleteCartItem(id);
+      if (response.ok) {
+        message.success(response.message); 
+        onMutate();
+      } else {
+        message.error(response.message);
+      } 
+    } catch(error) {
+      console.error('There was a problem with deleting item from cart');
+    }
   };
+
+ 
   
   const handleQuantityChange = debounce((id, value) => {
     changeCartItemNumber(id, value)

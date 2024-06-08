@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,40 +37,33 @@ public class CartController {
     }
 
     @PutMapping("")
-    public Confirmation addCartItem(@RequestParam("bookId") int bookId) {
-        Confirmation confirmation = new Confirmation();
+    public ResponseEntity<String> addCartItem(@RequestParam("bookId") int bookId) {
 
         Book book = bookService.findBookById(bookId);
 
         if (book.getStocks() < 1) {
-            confirmation.setMessage("《" + book.getTitle() + "》库存数量不足，无法加购！");
-            return confirmation;
+            return ResponseEntity.badRequest().body("《" + book.getTitle() + "》库存数量不足，无法加购！");
         }
 
         cartService.addCartItem(book, userService.getCurUser());
 
-        confirmation.setMessage("《" + book.getTitle() + "》已成功加入购物车");
+        return ResponseEntity.ok("《" + book.getTitle() + "》已成功加入购物车");
 
-        return confirmation;
     }
 
     @PutMapping("/{id}")
-    public Confirmation changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
-        Confirmation confirmation = new Confirmation();
+    public ResponseEntity<String> changeCartItemNumber(@PathVariable("id") int id, @RequestParam("number") int number) {
         cartService.changeCartItemNumber(id, number);
         Book bookChanged = cartService.getByCartId(id).getBook();
-        confirmation.setMessage("《" + bookChanged.getTitle() + "》加购数量已更新为：" + number + "本");
 
-        return confirmation;
+        return ResponseEntity.ok("《" + bookChanged.getTitle() + "》加购数量已更新为：" + number + "本");
     }
 
     @DeleteMapping("/{id}")
-    public Confirmation deleteCartItem(@PathVariable int id) {
-        Confirmation confirmation = new Confirmation();
+    public ResponseEntity<String> deleteCartItem(@PathVariable int id) {
         cartService.deleteCartItem(id);
 
-        confirmation.setMessage("已删除！");
-        return confirmation;
+        return ResponseEntity.ok("已删除！");
     }
 
 }
