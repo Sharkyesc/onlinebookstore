@@ -98,8 +98,8 @@ public class OrderController {
         Confirmation confirmation = new Confirmation();
 
         for (CheckoutRequest checkoutRequest : checkoutRequests) {
-            Cart cartItem = new Cart(checkoutRequest.getCartId(), checkoutRequest.getBook(),
-                    userService.getCurUser(), checkoutRequest.getQuantity());
+            Cart cartItem = new Cart(checkoutRequest.getCartId(), userService.getCurUser(),
+                    checkoutRequest.getQuantity(), checkoutRequest.getBook());
             Book book = cartItem.getBook();
             if (book.getStocks() < cartItem.getQuantity()) {
                 confirmation.setMessage(" 《" + book.getTitle() + "》 的库存不足，无法下单！");

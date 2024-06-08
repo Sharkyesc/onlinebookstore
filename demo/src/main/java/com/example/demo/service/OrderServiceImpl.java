@@ -64,13 +64,12 @@ public class OrderServiceImpl implements OrderService {
         bookDao.save(book);
 
         OrderItemId id = new OrderItemId(order.getOrderId(), 1);
-        OrderItem orderItem = new OrderItem(order, book, 1, book.getPrice(), id);
+        OrderItem orderItem = new OrderItem(id, order, book, 1, book.getPrice());
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
         order.setOrderItems(orderItems);
 
         orderDao.saveOrder(order);
-        orderDao.saveOrderItem(orderItem);
         return order;
     }
 
@@ -101,11 +100,9 @@ public class OrderServiceImpl implements OrderService {
             book.setSalesvolume(book.getSalesvolume() + item.getQuantity());
             bookDao.save(book);
 
-            int price = item.getPrice() * item.getQuantity();
-            OrderItem orderItem = new OrderItem(order, book, item.getQuantity(), price,
-                    orderItemId);
+            int price = item.getBook().getPrice() * item.getQuantity();
+            OrderItem orderItem = new OrderItem(orderItemId, order, book, item.getQuantity(), price);
 
-            orderDao.saveOrderItem(orderItem);
             cartDao.delete(item.getCartId());
             orderItems.add(orderItem);
             totalPrice += price;

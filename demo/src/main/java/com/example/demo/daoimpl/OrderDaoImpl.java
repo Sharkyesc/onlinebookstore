@@ -10,20 +10,15 @@ import com.example.demo.dao.OrderDao;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Order;
-import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.User;
 
 import com.example.demo.repository.OrderRepository;
-import com.example.demo.repository.OrderItemRepository;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
     @Autowired
     OrderRepository orderRepository;
-
-    @Autowired
-    OrderItemRepository orderItemRepository;
 
     @Override
     public List<Order> findByUser(User user) {
@@ -48,11 +43,6 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public void saveOrder(Order order) {
         orderRepository.save(order);
-    }
-
-    @Override
-    public void saveOrderItem(OrderItem orderItem) {
-        orderItemRepository.save(orderItem);
     }
 
     @Override

@@ -6,12 +6,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "orders")
 public class Order {
     @Id
@@ -20,6 +22,7 @@ public class Order {
     private int orderId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -29,20 +32,6 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> orderItems;
-
-    public Order() {
-    }
-
-    public Order(int orderId, User user, int totalPrice, LocalDateTime orderTime,
-            String recipient, String contactPhone, String destination) {
-        this.orderId = orderId;
-        this.user = user;
-        this.totalPrice = totalPrice;
-        this.orderTime = orderTime;
-        this.recipient = recipient;
-        this.contactPhone = contactPhone;
-        this.destination = destination;
-    }
 
     public void setTotalPrice() {
         int totalPrice = 0;
