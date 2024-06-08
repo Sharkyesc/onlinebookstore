@@ -36,7 +36,16 @@ export async function put(url, data) {
 
 export async function del(url, data) {
   let res = await fetch(url, { method: "DELETE", credentials: "include", body: JSON.stringify(data) });
-  return res.json();
+
+  const contentType = res.headers.get('content-type');
+  let result;
+  if (contentType && contentType.includes('application/json')) {
+      result = await res.json();
+  } else {
+      result = await res.text();
+  }
+
+  return { ok: res.ok, message: result };
 }
 
 

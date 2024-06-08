@@ -51,7 +51,7 @@ const UserPage = () => {
 
     const handleSave = async () => {
         const response = await updateUserInfo(userInfo);
-        if (response.success) {
+        if (response.ok) {
             message.success('用户信息更新成功');
         } else {
             message.error('用户信息更新失败');

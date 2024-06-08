@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,44 +76,38 @@ public class OrderController {
     }
 
     @PostMapping("/checkout")
-    public Confirmation checkout(@RequestBody int id) {
-
-        Confirmation confirmation = new Confirmation();
+    public ResponseEntity<String> checkout(@RequestBody int id) {
 
         Book book = bookService.findBookById(id);
 
         if (book.getStocks() < 1) {
-            confirmation.setMessage("该书库存不足，无法购买");
-            return confirmation;
+            return ResponseEntity.badRequest().body("《" + book.getTitle() + "》库存不足，无法购买");
         }
 
         Order order = orderService.addOrder(book, userService.getCurUser());
-        confirmation.setMessage("请确认订单信息：" + order.toString());
 
         System.out.println("订单信息：" + order);
 
-        return confirmation;
+        return ResponseEntity.ok("请确认订单信息：" + order.toString());
     }
 
     @PostMapping("/checkoutfromcart")
-    public Confirmation createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
+    public ResponseEntity<String> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
 
         List<Cart> cartItems = new ArrayList<>();
-        Confirmation confirmation = new Confirmation();
 
         for (CheckoutRequest checkoutRequest : checkoutRequests) {
             Cart cartItem = new Cart(checkoutRequest.getCartId(), userService.getCurUser(),
                     checkoutRequest.getQuantity(), checkoutRequest.getBook());
             Book book = cartItem.getBook();
             if (book.getStocks() < cartItem.getQuantity()) {
-                confirmation.setMessage(" 《" + book.getTitle() + "》 的库存不足，无法下单！");
-                return confirmation;
+                return ResponseEntity.badRequest()
+                        .body(" 《" + book.getTitle() + "》 的库存不足" + cartItem.getQuantity() + " 本，无法下单！");
             }
             cartItems.add(cartItem);
         }
         orderService.createOrder(userService.getCurUser(), cartItems);
-        confirmation.setMessage("已成功下单，可至订单页面查看详情");
-        return confirmation;
+        return ResponseEntity.ok("已成功下单，可至订单页面查看详情");
 
     }
 

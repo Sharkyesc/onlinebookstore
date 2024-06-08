@@ -74,7 +74,7 @@ const OrderContent = ({ orderInfo }) => {
             <p>订单时间：{moment(selectedOrder.orderTime).format('YYYY-MM-DD HH:mm:ss')}</p>
             <p>收货人：{selectedOrder.recipient}</p>
             <p>收货地址：{selectedOrder.destination}</p>
-            <p>总价：{selectedOrder.totalPrice}</p>
+            <p>总价：{`${(selectedOrder.totalPrice / 100.00).toFixed(2)} 元`}</p>
             {selectedOrder.orderItems.map((item, index) => (
                 <div key={index}>
                     <h4>订单项编号: {item.itemId}</h4>

@@ -26,7 +26,9 @@ public class User {
     private int user_id;
 
     private String nickname, address, phonenumber, email, avatarSrc, role;
-    private boolean enabled;
+
+    @Column(name = "enabled", nullable = false, columnDefinition = "bit default 1")
+    private boolean enabled = true;
 
     @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

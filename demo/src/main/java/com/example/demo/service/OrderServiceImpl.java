@@ -87,8 +87,6 @@ public class OrderServiceImpl implements OrderService {
         order.setContactPhone(user.getPhonenumber());
         order.setDestination(user.getAddress());
 
-        orderDao.saveOrder(order);
-
         int id = 0;
         List<OrderItem> orderItems = new ArrayList<>();
         for (Cart item : cartItems) {

@@ -1,4 +1,4 @@
-import { PREFIX, getJson, put } from "./common";
+import { PREFIX, getJson, put, DUMMY_RESPONSE } from "./common";
 
 export async function getUserInfo() {
     const url = `${PREFIX}/userinfo`;
@@ -30,16 +30,11 @@ export async function updateUserInfo(userInfo) {
     let response;
     try {
         response = await put(url, userInfo);
-        if (response.ok) {
-            const data = await response.json();
-            return { success: true, data };
-        } else {
-            return { success: false };
-        }
-    } catch (error) {
-        console.error('更新用户信息时出错:', error);
-        return { success: false, error };
+    } catch (e) {
+        console.log(e);
+        response = DUMMY_RESPONSE;
     }
+    return response;
 };
 
 export async function getUsers() {
