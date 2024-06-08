@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.UserAuth;
-import com.example.demo.repository.UserAuthRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.entity.User;
 import com.example.demo.dto.UserDTO;
@@ -34,7 +34,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    private UserAuthRepository userAuthRepository;
+    UserRepository userRepository;
 
     @GetMapping("/current")
     public ResponseEntity<Object> getCurrentUser() {
@@ -55,7 +55,7 @@ public class UserController {
         if (session != null) {
             String username = (String) session.getAttribute("user");
             if (username != null) {
-                UserAuth userAuth = userAuthRepository.findByUsername(username);
+                UserAuth userAuth = userRepository.findUserAuthByUsername(username);
                 if (userAuth != null) {
                     User user = userAuth.getUser();
                     if (user != null) {

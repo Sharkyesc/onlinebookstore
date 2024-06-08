@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.UserAuth;
-import com.example.demo.repository.UserAuthRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
 @RestController
@@ -23,7 +23,7 @@ import com.example.demo.service.UserService;
 public class AuthController {
 
     @Autowired
-    private UserAuthRepository userAuthRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -31,7 +31,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
-            if (userAuthRepository.findByUsername(registerRequest.getUsername()) != null)
+            if (userRepository.findUserAuthByUsername(registerRequest.getUsername()) != null)
                 return ResponseEntity.status(500).body("用户名不可用！");
 
             userService.registerUser(registerRequest.getNickname(), registerRequest.getUsername(),
@@ -45,7 +45,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
-        UserAuth userAuth = userAuthRepository.findByUsername(loginRequest.getUsername());
+        UserAuth userAuth = userRepository.findUserAuthByUsername(loginRequest.getUsername());
 
         if (!userAuth.getUser().isEnabled()) {
             return ResponseEntity.badRequest().body("你的账号已被禁用！");

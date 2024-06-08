@@ -46,13 +46,13 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setNickname(name);
         user.setEmail(email);
-        userDao.saveUser(user);
 
         UserAuth userAuth = new UserAuth();
         userAuth.setUser(user);
         userAuth.setUsername(username);
         userAuth.setPassword(encodePassword(password));
-        userDao.saveAuth(userAuth);
+        user.setUserAuth(userAuth);
+        userDao.saveUser(user);
     }
 
     @Autowired

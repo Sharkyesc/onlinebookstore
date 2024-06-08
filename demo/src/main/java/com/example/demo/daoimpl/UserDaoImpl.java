@@ -3,7 +3,6 @@ package com.example.demo.daoimpl;
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserAuth;
-import com.example.demo.repository.UserAuthRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,9 +15,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserAuthRepository userAuthRepository;
-
     @Override
     public User findById(int id) {
         return userRepository.findById(id).orElse(null);
@@ -26,18 +22,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByUsername(String username) {
-        UserAuth userAuth = userAuthRepository.findByUsername(username);
+        UserAuth userAuth = userRepository.findUserAuthByUsername(username);
         return userAuth != null ? userAuth.getUser() : null;
     }
 
     @Override
     public void saveUser(User user) {
+        if (user.getUserAuth() != null) {
+            user.getUserAuth().setUser(user);
+        }
         userRepository.save(user);
-    }
-
-    @Override
-    public void saveAuth(UserAuth userAuth) {
-        userAuthRepository.save(userAuth);
     }
 
     @Override

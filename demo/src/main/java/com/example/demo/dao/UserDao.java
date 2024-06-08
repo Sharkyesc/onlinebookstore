@@ -1,7 +1,6 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.User;
-import com.example.demo.entity.UserAuth;
 
 import java.util.List;
 
@@ -14,5 +13,4 @@ public interface UserDao {
 
     void saveUser(User user);
 
-    void saveAuth(UserAuth userAuth);
 }

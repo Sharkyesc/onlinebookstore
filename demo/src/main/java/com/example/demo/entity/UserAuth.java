@@ -3,12 +3,14 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "userauth")
 public class UserAuth {
     @Id
@@ -24,13 +26,4 @@ public class UserAuth {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public UserAuth() {
-    }
-
-    public UserAuth(int user_id, String username, String password, User user) {
-        this.user_id = user_id;
-        this.username = username;
-        this.password = password;
-        this.user = user;
-    }
 }
