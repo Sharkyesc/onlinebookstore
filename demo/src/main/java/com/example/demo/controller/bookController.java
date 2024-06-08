@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,13 +32,15 @@ public class BookController {
         return bookService.findBookById(id);
     }
 
+    @GetMapping("/all")
+    public List<Book> getAllBooks() {
+        return bookService.findAllBooks();
+    }
+
     @GetMapping("")
-    public List<Book> getBooks(@RequestParam(required = false) String search) {
-        if (search == null || search.isEmpty()) {
-            return bookService.findAllBooks();
-        } else {
-            return bookService.findByTitle(search);
-        }
+    public Page<Book> getBooks(@RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        return bookService.findByTitle(search, page, size);
     }
 
     @PostMapping("")

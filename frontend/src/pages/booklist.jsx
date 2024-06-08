@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Input, Card, Row, Col, List, Avatar, Divider, Typography } from 'antd';
+import { Layout, Input, Card, Row, Col, List, Avatar, Divider, Typography, Pagination } from 'antd';
 import { Link } from 'react-router-dom';
 import { searchBooks } from '../service/book';
 import NavBar from '../components/navBar';
@@ -10,18 +10,28 @@ const { Title } = Typography;
 
 const BookListPage = () => {
     const [books, setBooks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const result = await searchBooks(searchTerm);
-            setBooks(result);
+            const result = await searchBooks(searchTerm, currentPage - 1, pageSize);
+            setBooks(result.content);
+            setTotal(result.totalElements);
         };
         fetchBooks();
-    }, [searchTerm]);
+    }, [searchTerm, currentPage, pageSize]);
 
     const handleSearch = value => {
         setSearchTerm(value);
+        setCurrentPage(1); 
+    };
+
+    const handlePageChange = (page, size) => {
+        setCurrentPage(page);
+        setPageSize(size);
     };
 
     return (
@@ -37,8 +47,6 @@ const BookListPage = () => {
                     size='large'
                     onSearch={handleSearch}
                 />
-                <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
-                    <Col span={24}>
                         <List
                             itemLayout="horizontal"
                             dataSource={books}
@@ -60,8 +68,15 @@ const BookListPage = () => {
                                 </List.Item>
                             )}
                         />
-                    </Col>
-                </Row>
+                        <Pagination
+                            current={currentPage}
+                            pageSize={pageSize}
+                            total={total}
+                            onChange={handlePageChange}
+                            showSizeChanger
+                            showQuickJumper
+                            style={{ marginTop: '20px', textAlign: 'center' }}
+                        />
             </Content>
             <Footer style={{ textAlign: 'center' }}>©2024</Footer>
         </Layout>

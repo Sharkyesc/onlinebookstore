@@ -4,7 +4,10 @@ import com.example.demo.dao.BookDao;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -60,7 +63,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findByTitle(String search) {
-        return bookDao.findByTitle(search);
+    public Page<Book> findByTitle(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookDao.findByTitle(search, pageable);
     }
 }

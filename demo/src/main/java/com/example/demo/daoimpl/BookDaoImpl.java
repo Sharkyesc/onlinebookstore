@@ -5,6 +5,8 @@ import com.example.demo.entity.Book;
 import com.example.demo.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> findByTitle(String search) {
-        return bookRepository.findByTitleContainingIgnoreCase(search);
+    public Page<Book> findByTitle(String search, Pageable pageable) {
+        return bookRepository.findByTitleContainingIgnoreCase(search, pageable);
     }
 }

@@ -13,7 +13,7 @@ export async function getBookById(id) {
 }
 
 export async function getAllBooks() {
-    const url = `${PREFIX}/books`;
+    const url = `${PREFIX}/books/all`;
     let books;
     try {
         books = await getJson(url);
@@ -24,15 +24,15 @@ export async function getAllBooks() {
     return books;
 }
 
-export async function searchBooks(query) {
-    const url = `${PREFIX}/books?search=${encodeURIComponent(query)}`;
+export async function searchBooks(query, page = 0, size = 10) {
+    const url = `${PREFIX}/books?search=${encodeURIComponent(query)}&page=${page}&size=${size}`;
     let books;
     try {
         books = await getJson(url);
         return books;
     } catch (error) {
         console.error('获取书籍列表时出错:', error);
-        return [];
+        return { content: [], totalElements: 0 };
     }
 }
 

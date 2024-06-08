@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Divider, Typography, Form, Modal, Row, Col, Button, Input } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Layout, Divider, Typography, Form, Modal, Row, Col, Button, Input, Pagination } from 'antd';
 import { searchBooks, updateBook, deleteBook, addBook } from '../service/book';
 import NavBar from '../components/navBar';
 import BookList from '../components/bookList';
@@ -11,22 +11,38 @@ const { Search } = Input;
 
 const BookManagePage = () => {
     const [books, setBooks] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [editingBook, setEditingBook] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = Form.useForm();
 
-    const fetchBooks = async (searchTerm = '') => {
-        const result = await searchBooks(searchTerm);
-        setBooks(Array.isArray(result) ? result : []);
-    };
+ 
+    const fetchBooks = useCallback(async () => {
+        try {
+            const result = await searchBooks(searchTerm, currentPage - 1, pageSize);
+            setBooks(result.content);
+            setTotal(result.totalElements);
+        } catch (error) {
+            console.error('Failed to fetch books:', error);
+        }
+    }, [searchTerm, currentPage, pageSize]);
+
 
     useEffect(() => {
-        fetchBooks(searchTerm);
-    }, [searchTerm]);
+        fetchBooks();
+    }, [fetchBooks]);
 
     const handleSearch = value => {
         setSearchTerm(value);
+        setCurrentPage(1); 
+    };
+    
+    const handlePageChange = (page, size) => {
+        setCurrentPage(page);
+        setPageSize(size);
     };
 
     const showEditModal = (book) => {
@@ -69,7 +85,7 @@ const BookManagePage = () => {
         } else {
             await addBook(values);
         }
-        fetchBooks(searchTerm); 
+        fetchBooks(); 
         form.resetFields();
         setIsModalOpen(false);
     };
@@ -107,6 +123,15 @@ const BookManagePage = () => {
                     onCancel={handleCancel}
                     form={form}
                     editingBook={editingBook}
+                />                       
+                <Pagination
+                    current={currentPage}
+                    pageSize={pageSize}
+                    total={total}
+                    onChange={handlePageChange}
+                    showSizeChanger
+                    showQuickJumper
+                    style={{ marginTop: '20px', textAlign: 'center' }}
                 />
             </Content>
             <Footer style={{ textAlign: 'center' }}>©2024</Footer>

@@ -5,6 +5,8 @@ import com.example.demo.dto.BookDTO;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 public interface BookService {
     List<Book> findAllBooks();
 
@@ -16,5 +18,5 @@ public interface BookService {
 
     void deleteBook(Integer id);
 
-    List<Book> findByTitle(String search);
+    Page<Book> findByTitle(String search, int page, int size);
 }
