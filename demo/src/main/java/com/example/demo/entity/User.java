@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -27,6 +28,7 @@ public class User {
     private String nickname, address, phonenumber, email, avatarSrc, role;
     private boolean enabled;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserAuth userAuth;
 

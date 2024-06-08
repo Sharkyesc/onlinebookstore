@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Order;
+import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.Book;
 import com.example.demo.service.BookService;
@@ -58,7 +59,9 @@ public class OrderController {
         LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;
         LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
 
+        System.out.println("getorders");
         List<Order> orders = orderService.findOrders(bookName, start, end, userService.getCurUser());
+        System.out.println("getorders");
         if ("ADMIN".equals(userService.getCurUser().getRole())) {
             orders = orderService.findAllOrders(bookName, start, end);
         }
@@ -129,17 +132,23 @@ public class OrderController {
         orderDTO.setOrderId(order.getOrderId());
         orderDTO.setOrderTime(order.getOrderTime());
         orderDTO.setRecipient(order.getRecipient());
-        orderDTO.setTotalPrice(order.getTotalPrice());
+        int totalPrice = 0;
 
         List<OrderItemDTO> orderItemDTOs = order.getOrderItems().stream().map(item -> {
             OrderItemDTO itemDTO = new OrderItemDTO();
             itemDTO.setItemId(item.getId().getItemId());
             itemDTO.setBookName(item.getBook().getTitle());
             itemDTO.setQuantity(item.getQuantity());
-            itemDTO.setPrice(item.getPrice());
+            int price = item.getBook().getPrice() * item.getQuantity();
+            itemDTO.setPrice(price);
             return itemDTO;
         }).collect(Collectors.toList());
 
+        for (OrderItem orderItem : order.getOrderItems()) {
+            totalPrice += (orderItem.getBook().getPrice() * orderItem.getQuantity());
+        }
+
+        orderDTO.setTotalPrice(totalPrice);
         orderDTO.setOrderItems(orderItemDTOs);
 
         return orderDTO;

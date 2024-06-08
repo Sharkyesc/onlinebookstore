@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,6 +19,7 @@ public class OrderItem {
     private OrderItemId id;
 
     @JsonIgnore
+    @ToString.Exclude
     @MapsId("orderId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
@@ -28,7 +30,6 @@ public class OrderItem {
     private Book book;
 
     private int quantity;
-    private int price;
 
     @PrePersist
     public void prePersist() {

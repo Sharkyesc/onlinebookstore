@@ -18,6 +18,7 @@ const OrderPage = () => {
 
   const fetchOrders = async (bookName, startDate, endDate) => {
     let orders = await getOrders(bookName, startDate, endDate);
+    console.log(orders);
     setOrders(orders);
     setFilteredOrders(orders);
   };

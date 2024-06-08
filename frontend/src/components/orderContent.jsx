@@ -80,7 +80,7 @@ const OrderContent = ({ orderInfo }) => {
                     <h4>订单项编号: {item.itemId}</h4>
                     <p>书籍: 《{item.bookName}》</p>
                     <p>数量: {item.quantity}</p>
-                    <p>单项总价: `${(item.price / 100.00).toFixed(2)} 元`</p>
+                    <p>单项总价: {`${(item.price / 100.00).toFixed(2)} 元`}</p>
                 </div>
             ))}
 

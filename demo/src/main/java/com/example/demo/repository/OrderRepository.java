@@ -48,11 +48,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
         List<BookSalesDTO> findBookSales(@Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 
-        @Query("SELECT new com.example.demo.dto.UserPurchaseDTO(u.nickname, SUM(o.totalPrice)) " +
-                        "FROM Order o JOIN o.user u " +
+        @Query("SELECT new com.example.demo.dto.UserPurchaseDTO(u.nickname, SUM(oi.quantity * b.price)) " +
+                        "FROM Order o " +
+                        "JOIN o.user u " +
+                        "JOIN o.orderItems oi " +
+                        "JOIN oi.book b " +
                         "WHERE o.orderTime BETWEEN :startDate AND :endDate " +
                         "GROUP BY u.nickname " +
-                        "ORDER BY SUM(o.totalPrice) DESC")
+                        "ORDER BY SUM(oi.quantity * b.price) DESC")
         List<UserPurchaseDTO> findUserPurchases(@Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 
