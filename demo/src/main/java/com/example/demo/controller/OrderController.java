@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("")
 public class OrderController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class OrderController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/all")
+    @GetMapping("/api/orders/all")
     public List<OrderDTO> getAllOrders() {
         List<Order> orders = orderService.findOrdersByUser(userService.getCurUser());
         List<OrderDTO> orderDTOs = new ArrayList<>();
@@ -52,7 +52,7 @@ public class OrderController {
         return orderDTOs;
     }
 
-    @GetMapping("")
+    @GetMapping("/api/orders")
     public List<OrderDTO> getOrders(
             @RequestParam(required = false) String bookName,
             @RequestParam(required = false) String startDate,
@@ -61,7 +61,7 @@ public class OrderController {
         LocalDateTime end = endDate != null ? LocalDateTime.parse(endDate) : null;
 
         List<Order> orders = orderService.findOrders(bookName, start, end, userService.getCurUser());
-        if ("ADMIN".equals(userService.getCurUser().getRole())) {
+        if ("admin".equals(userService.getCurUser().getNickname())) {
             orders = orderService.findAllOrders(bookName, start, end);
         }
 
@@ -73,7 +73,7 @@ public class OrderController {
         return orderDTOs;
     }
 
-    @PostMapping("/checkout")
+    @PostMapping("/api/orders/checkout")
     public ResponseEntity<String> checkout(@RequestBody int id) {
 
         Book book = bookService.findBookById(id);
@@ -89,7 +89,7 @@ public class OrderController {
         return ResponseEntity.ok("请确认订单信息：" + order.toString());
     }
 
-    @PostMapping("/checkoutfromcart")
+    @PostMapping("/api/orders/checkoutfromcart")
     public ResponseEntity<String> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
 
         List<Cart> cartItems = new ArrayList<>();
@@ -109,7 +109,7 @@ public class OrderController {
 
     }
 
-    @GetMapping("/statistics")
+    @GetMapping("/api/orders/statistics")
     public List<BookStatisticsDTO> getStatistics(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
@@ -147,7 +147,7 @@ public class OrderController {
         return orderDTO;
     }
 
-    @GetMapping("/booksales")
+    @GetMapping("/admin/orders/booksales")
     public List<BookSalesDTO> getBookSales(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
@@ -157,7 +157,7 @@ public class OrderController {
         return orderService.getBookSales(start, end);
     }
 
-    @GetMapping("/userpurchases")
+    @GetMapping("/admin/orders/userpurchases")
     public List<UserPurchaseDTO> getUserPurchases(@RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate) {
         LocalDateTime start = startDate != null ? LocalDateTime.parse(startDate) : null;

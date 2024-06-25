@@ -27,7 +27,7 @@ export default function AppRouter() {
             <Route path="/bookManage" element={<ProtectedRoute component={BookManagePage} />} /> 
             <Route path="/userstatistics" element={<ProtectedRoute component={StatisticsPage} />} /> 
             <Route path="/manage" element={<ProtectedRoute component={UserManagementPage} />} />
-            <Route path="/statistics" element={<ProtectedRoute component={AdminStatisticsPage} />} /> }
+            <Route path="/statistics" element={<ProtectedRoute component={AdminStatisticsPage} />} /> 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
         </Routes>

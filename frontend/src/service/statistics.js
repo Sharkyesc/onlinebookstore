@@ -1,4 +1,4 @@
-import { PREFIX, getJson } from './common';
+import { ADMINPREFIX, PREFIX, getJson } from './common';
 
 export async function getBookStatistics(startDate, endDate) {
     const url = new URL(`${PREFIX}/orders/statistics`);
@@ -15,7 +15,7 @@ export async function getBookStatistics(startDate, endDate) {
 }
 
 export async function getBookSales(startDate, endDate) {
-    const url = new URL(`${PREFIX}/orders/booksales`);
+    const url = new URL(`${ADMINPREFIX}/orders/booksales`);
     if (startDate) url.searchParams.append('startDate', startDate);
     if (endDate) url.searchParams.append('endDate', endDate);
     let res;
@@ -29,7 +29,7 @@ export async function getBookSales(startDate, endDate) {
 }
 
 export async function getUserPurchases(startDate, endDate) {
-    const url = new URL(`${PREFIX}/orders/userpurchases`);
+    const url = new URL(`${ADMINPREFIX}/orders/userpurchases`);
     if (startDate) url.searchParams.append('startDate', startDate);
     if (endDate) url.searchParams.append('endDate', endDate);
     let res;

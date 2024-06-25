@@ -77,6 +77,7 @@ export async function post(url, data) {
 
 export const BASEURL = 'http://localhost:8080';
 export const PREFIX = `${BASEURL}/api`;
+export const ADMINPREFIX = `${BASEURL}/admin`;
 export const API_DOCS_URL = `${BASEURL}/api-docs`;
 export const IMAGE_PREFIX = `${BASEURL}/images`;
 export const DUMMY_RESPONSE = {

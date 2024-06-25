@@ -1,4 +1,4 @@
-import { PREFIX, getJson, put, DUMMY_RESPONSE } from "./common";
+import { PREFIX, ADMINPREFIX, getJson, put, DUMMY_RESPONSE } from "./common";
 
 export async function getUserInfo() {
     const url = `${PREFIX}/userinfo`;
@@ -38,19 +38,29 @@ export async function updateUserInfo(userInfo) {
 };
 
 export async function getUsers() {
-    const url = `${PREFIX}/users`;
-    const response = await getJson(url);
+    const url = `${ADMINPREFIX}/users`;
+    let response;
+    try {
+        response = await getJson(url);
+        if (response.status === 403) {
+          console.error('访问被拒绝:', response);
+          return [];
+        }
+    } catch (error) {
+        console.error('获取用户信息时出错:', error);
+        response = [];
+    }
     return response;
 }
 
 export async function disableUser(userId) {
-    const url = `${PREFIX}/users/${userId}/disable`;
+    const url = `${ADMINPREFIX}/users/${userId}/disable`;
     const response = await put(url);
     return response;
 }
 
 export async function enableUser(userId) {
-    const url = `${PREFIX}/users/${userId}/enable`;
+    const url = `${ADMINPREFIX}/users/${userId}/enable`;
     const response = await put(url);
     return response;
 }

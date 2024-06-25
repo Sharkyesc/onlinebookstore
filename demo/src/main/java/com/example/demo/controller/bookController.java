@@ -20,36 +20,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("")
 public class BookController {
 
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/api/books/{id}")
     public Book findBook(@PathVariable("id") Integer id) {
         System.out.println("Searching Book: " + id);
         return bookService.findBookById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/api/books/all")
     public List<Book> getAllBooks() {
         return bookService.findAllBooks();
     }
 
-    @GetMapping("")
+    @GetMapping("/api/books")
     public Page<Book> getBooks(@RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
         return bookService.findByTitle(search, page, size);
     }
 
-    @PostMapping("")
+    @GetMapping("/admin/books")
+    public Page<Book> getBooks_admin(@RequestParam(required = false) String search,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "8") int size) {
+        return bookService.findByTitle(search, page, size);
+    }
+
+    @PostMapping("/api/books")
     public ResponseEntity<Book> addBook(@RequestBody BookDTO bookDTO) {
         Book createdBook = bookService.addBook(bookDTO);
         return ResponseEntity.ok(createdBook);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/api/books/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable int id, @RequestBody BookDTO bookDTO) {
         Book updatedBook = bookService.updateBook(id, bookDTO);
         if (updatedBook != null) {
@@ -59,7 +65,7 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/books/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
         return ResponseEntity.ok().build();

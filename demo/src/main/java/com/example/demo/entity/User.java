@@ -25,7 +25,7 @@ public class User {
     @Column(name = "user_id")
     private int user_id;
 
-    private String nickname, address, phonenumber, email, avatarSrc, role;
+    private String nickname, address, phonenumber, email, avatarSrc;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bit default 1")
     private boolean enabled = true;

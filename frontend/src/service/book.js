@@ -1,4 +1,4 @@
-import { PREFIX, getJson, put, del, post, DUMMY_RESPONSE } from "./common";
+import { PREFIX, ADMINPREFIX, getJson, put, del, post, DUMMY_RESPONSE } from "./common";
 
 export async function getBookById(id) {
     const url = `${PREFIX}/books/${id}`;
@@ -26,6 +26,18 @@ export async function getAllBooks() {
 
 export async function searchBooks(query, page = 0, size = 10) {
     const url = `${PREFIX}/books?search=${encodeURIComponent(query)}&page=${page}&size=${size}`;
+    let books;
+    try {
+        books = await getJson(url);
+        return books;
+    } catch (error) {
+        console.error('获取书籍列表时出错:', error);
+        return { content: [], totalElements: 0 };
+    }
+}
+
+export async function searchBookstoManage(query, page = 0, size = 10) {
+    const url = `${ADMINPREFIX}/books?search=${encodeURIComponent(query)}&page=${page}&size=${size}`;
     let books;
     try {
         books = await getJson(url);

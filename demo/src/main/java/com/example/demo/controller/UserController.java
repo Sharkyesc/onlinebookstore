@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("")
 public class UserController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping("/current")
+    @GetMapping("/api/current")
     public ResponseEntity<Object> getCurrentUser() {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.status(401).body("No user logged in");
     }
 
-    @GetMapping("/userinfo")
+    @GetMapping("/api/userinfo")
     public ResponseEntity<Object> getUserInfo() {
         HttpSession session = request.getSession(false);
         Map<String, String> response = new HashMap<>();
@@ -74,7 +74,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/usercompleteinfo")
+    @GetMapping("/api/usercompleteinfo")
     public ResponseEntity<Object> getUserCompleteInfo() {
         User user = userService.getCurUser();
         if (user != null) {
@@ -91,7 +91,7 @@ public class UserController {
         return ResponseEntity.status(401).body("User not logged in");
     }
 
-    @PutMapping("/updateuserinfo")
+    @PutMapping("/api/updateuserinfo")
     public ResponseEntity<String> updateUserInfo(@RequestBody UserDTO userDetails) {
         try {
             User user = userService.getCurUser();
@@ -111,18 +111,18 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/users/{userId}/disable")
+    @PutMapping("/admin/users/{userId}/disable")
     public ResponseEntity<Void> disableUser(@PathVariable int userId) {
         userService.disableUser(userId);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/users/{userId}/enable")
+    @PutMapping("/admin/users/{userId}/enable")
     public ResponseEntity<Void> enableUser(@PathVariable int userId) {
         userService.enableUser(userId);
         return ResponseEntity.ok().build();

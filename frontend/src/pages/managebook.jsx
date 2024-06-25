@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Layout, Divider, Typography, Form, Modal, Row, Col, Button, Input, Pagination } from 'antd';
-import { searchBooks, updateBook, deleteBook, addBook } from '../service/book';
+import { searchBookstoManage, updateBook, deleteBook, addBook } from '../service/book';
 import NavBar from '../components/navBar';
 import BookList from '../components/bookList';
 import BookFormModal from '../components/bookFormModal';
@@ -22,7 +22,7 @@ const BookManagePage = () => {
  
     const fetchBooks = useCallback(async () => {
         try {
-            const result = await searchBooks(searchTerm, currentPage - 1, pageSize);
+            const result = await searchBookstoManage(searchTerm, currentPage - 1, pageSize);
             setBooks(result.content);
             setTotal(result.totalElements);
         } catch (error) {

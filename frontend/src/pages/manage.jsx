@@ -15,8 +15,12 @@ const UserManagementPage = () => {
   }, []);
 
   const fetchUsers = async () => {
-    const result = await getUsers();
-    setUsers(result);
+    try {
+      const result = await getUsers();
+      setUsers(result);
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
   };
 
   const handleDisable = async (userId) => {
