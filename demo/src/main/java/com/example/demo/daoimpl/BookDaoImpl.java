@@ -25,7 +25,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        return bookRepository.findFirst15();
     }
 
     @Override
@@ -40,7 +40,13 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void delete(Integer id) {
-        bookRepository.deleteById(id);
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isPresent()) {
+            Book bookToDelete = book.get();
+            bookToDelete.setStocks(-1);
+            bookRepository.save(bookToDelete);
+            bookRepository.delete(bookToDelete);
+        }
     }
 
     @Override

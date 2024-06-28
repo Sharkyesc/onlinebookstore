@@ -8,9 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 
 import com.example.demo.entity.Book;
+import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-    @Query("SELECT b FROM Book b WHERE :search IS NULL OR b.title LIKE %:search%")
+    @Query("SELECT b FROM Book b WHERE (:search IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :search, '%'))) AND b.stocks >= 0")
     Page<Book> findByTitleContainingIgnoreCase(@Param("search") String search, Pageable pageable);
+
+    @Query("SELECT b FROM Book b WHERE (b.id >= 1 AND b.id <= 15)")
+    List<Book> findFirst15();
+
 }

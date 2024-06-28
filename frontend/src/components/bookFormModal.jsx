@@ -21,14 +21,16 @@ const BookFormModal = ({ visible, onOk, onCancel, form, editingBook }) => (
             <Form.Item name="isbn" label="ISBN编号" rules={[{ required: true, message: '请输入ISBN编号' }]}>
                 <Input />
             </Form.Item>
-            <Form.Item name="price" label="价格（元）" rules={[{ required: true, message: '请输入价格' }]}>
+            <Form.Item name="price" label="价格（分）" rules={[{ required: true, message: '请输入价格' }]}>
                 <Input type="number" />
             </Form.Item>
             <Form.Item name="stocks" label="库存量" rules={[{ required: true, message: '请输入库存量' }]}>
                 <Input type="number" />
             </Form.Item>
             <Form.Item name="description" label="简介">
-                <Input />
+                <Input.TextArea 
+                    autoSize={true}
+                />
             </Form.Item>
         </Form>
     </Modal>
