@@ -15,7 +15,7 @@ const BookCard = ({ id, coverSrc, title, price }) => {
     <Card
       hoverable
       style={{ width: 250, marginBottom: 5, marginRight: 2 }}
-      cover={<img alt="Book Cover" src={coverSrc} style={{ height: 250 }} />}
+      cover={<img alt="Book Cover" src={`http://localhost:8080/Data/BookCover/${id}.jpg`} style={{ height: 250 }} />}
       onClick={handleClick}
     >
       <Meta title={title} description={`价格：${(price / 100.00).toFixed(2)} 元`} />

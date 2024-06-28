@@ -59,7 +59,7 @@ public class UserController {
                 if (userAuth != null) {
                     User user = userAuth.getUser();
                     if (user != null) {
-                        response.put("avatarSrc", user.getAvatarSrc());
+                        response.put("avatarSrc", "http://localhost:8080/Data/Avatar/" + user.getUser_id() + ".jpg");
                         response.put("nickname", user.getNickname());
                         System.out.println(user.getNickname());
                         System.out.println(user.getAvatarSrc());

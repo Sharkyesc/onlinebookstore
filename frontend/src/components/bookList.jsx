@@ -16,7 +16,7 @@ const BookList = ({ books, onEdit, onDelete }) => (
                 <List.Item.Meta
                     avatar={
                         <Link to={`/book/${book.id}`}>
-                            <Avatar src={book.coverSrc} shape="square" size={64} />
+                            <Avatar src={`http://localhost:8080/Data/BookCover/${book.id}.jpg`} shape="square" size={64} />
                         </Link>
                     }
                     title={

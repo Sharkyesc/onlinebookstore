@@ -90,7 +90,7 @@ const CartContent = ({ cartData, onMutate }) => {
         title: '封面',
         dataIndex: 'book.coverSrc',
         key: 'coverSrc',
-        render: (text, record) => <img src={record.book.coverSrc} alt="Cover" style={{ width: 80 }} />,
+        render: (text, record) => <img src={`http://localhost:8080/Data/BookCover/${record.book.id}.jpg`} alt="Cover" style={{ width: 80 }} />,
       },
       {
         title: '标题',

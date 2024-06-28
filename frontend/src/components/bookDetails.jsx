@@ -75,7 +75,7 @@ const BookDetail = ({ bookInfo }) => {
           style={{backgroundColor: '#000000', color: 'white', marginBottom: 15, marginLeft: '3%'}}>返回</Button>
         <div className="book-content">
           <div className="book-image">
-            <img alt="Book Cover" src={bookInfo.coverSrc} style={{ width: '100%' }} />
+            <img alt="Book Cover" src={`http://localhost:8080/Data/BookCover/${bookInfo.id}.jpg`} style={{ width: '100%' }} />
           </div>
           <div className="book-info">
             <Table columns={columns} dataSource={data} pagination={false} showHeader={false}/>
