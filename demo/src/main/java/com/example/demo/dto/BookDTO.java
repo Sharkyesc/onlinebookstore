@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class BookDTO {
     private int stocks, price;
-    private String isbn, title, coverSrc, author, description;
+    private String isbn, title, author, description;
 }

@@ -1,4 +1,4 @@
-import { PREFIX, ADMINPREFIX, getJson, put, del, post, DUMMY_RESPONSE } from "./common";
+import { PREFIX, ADMINPREFIX, getJson, put, del, post, postFile, DUMMY_RESPONSE } from "./common";
 
 export async function getBookById(id) {
     const url = `${PREFIX}/books/${id}`;
@@ -95,4 +95,16 @@ export async function getBookUrl(id) {
         res = DUMMY_RESPONSE;
     }
     return res;
+}
+
+export async function uploadBookCover(id, data) {
+    const url = `http://localhost:8080/upload/${id}`;
+    let response;
+    try {
+        response = await postFile(url, data);
+    } catch (e) {
+        console.log(e);
+        response = DUMMY_RESPONSE;
+    }
+    return response;
 }

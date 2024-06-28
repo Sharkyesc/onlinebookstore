@@ -46,7 +46,6 @@ public class BookServiceImpl implements BookService {
     public Book updateBook(int id, BookDTO bookDTO) {
         Book book = bookDao.findOne(id);
         book.setAuthor(bookDTO.getAuthor());
-        book.setCoverSrc(bookDTO.getCoverSrc());
         book.setDescription(bookDTO.getDescription());
         book.setIsbn(bookDTO.getIsbn());
         book.setPrice(bookDTO.getPrice());

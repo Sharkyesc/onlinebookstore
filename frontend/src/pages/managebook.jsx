@@ -111,9 +111,10 @@ const BookManagePage = () => {
                         />
                     </Col>
                     <Col span={4} style={{ textAlign: 'right' }}>
+                        {sessionStorage.getItem("username") === "admin" &&
                         <Button type="primary" size='large' style={{ marginRight: 15 }} onClick={showAddModal}>
                             添加新书
-                        </Button>
+                        </Button>}
                     </Col>
                 </Row>
                 <BookList books={books} onEdit={showEditModal} onDelete={showDeleteConfirm} />

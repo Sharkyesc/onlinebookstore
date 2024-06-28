@@ -8,8 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +97,34 @@ public class BookController {
         }
 
         return response;
+    }
+
+    private static String UploadDir = "/Data/BookCover/";
+
+    @PostMapping("/upload/{id}")
+    public ResponseEntity<String> updateBook(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        System.out.println(file.getOriginalFilename());
+
+        if (file.isEmpty() || !file.getContentType().equals("image/jpeg")) {
+            return ResponseEntity.badRequest().body("");
+        }
+
+        try {
+            byte[] bytes = file.getBytes();
+            String filename = id + ".jpg";
+
+            System.out.println(filename);
+
+            Path path = Paths.get(UploadDir + filename);
+            Files.createDirectories(path.getParent());
+            Files.write(path, bytes);
+
+            String fileUrl = UploadDir + filename;
+            return ResponseEntity.ok().body(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("");
+        }
     }
 
 }
