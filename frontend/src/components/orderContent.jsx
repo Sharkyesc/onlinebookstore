@@ -2,17 +2,27 @@ import React, { useState } from 'react';
 import { Table, Button, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment'
+import { getBookUrl } from '../service/book';
 
 
 const OrderContent = ({ orderInfo }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [bookUrls, setBookUrls] = useState({});
 
-    const handleViewDetails = (order) => {
+    const handleViewDetails = async (order) => {
         setSelectedOrder(order);
         setModalVisible(true);
-      };
+
+        const urls = {};
+        for (const item of order.orderItems) {
+            const res = await getBookUrl(item.bookId);
+            urls[item.bookId] = res.url;
+        }
+        setBookUrls(urls);
+    };
+    
     
       const columns = [
         {
@@ -75,10 +85,11 @@ const OrderContent = ({ orderInfo }) => {
             <p>收货人：{selectedOrder.recipient}</p>
             <p>收货地址：{selectedOrder.destination}</p>
             <p>总价：{`${(selectedOrder.totalPrice / 100.00).toFixed(2)} 元`}</p>
+            {console.log(selectedOrder)}
             {selectedOrder.orderItems.map((item, index) => (
                 <div key={index}>
                     <h4>订单项编号: {item.itemId}</h4>
-                    <p>书籍: 《{item.bookName}》</p>
+                    <p>书籍: <Link to={bookUrls[item.bookId] || '#'}>《{item.bookName}》</Link></p>
                     <p>数量: {item.quantity}</p>
                     <p>单项总价: {`${(item.price / 100.00).toFixed(2)} 元`}</p>
                 </div>

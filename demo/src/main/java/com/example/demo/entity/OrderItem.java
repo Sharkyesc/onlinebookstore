@@ -25,11 +25,21 @@ public class OrderItem {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    /*
+     * @ManyToOne(fetch = FetchType.EAGER)
+     * 
+     * @JoinColumn(name = "book_id", nullable = false)
+     * private Book book;
+     */
 
     private int quantity;
+
+    @Column(name = "book_id")
+    private int bookId;
+
+    private String bookTitle;
+
+    private int price;
 
     @PrePersist
     public void prePersist() {

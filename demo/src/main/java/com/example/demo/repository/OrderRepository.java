@@ -24,7 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                         @Param("end") LocalDateTime end);
 
         @Query("SELECT o FROM Order o JOIN o.orderItems i WHERE " +
-                        "(:bookName IS NULL OR LOWER(i.book.title) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
+                        "(:bookName IS NULL OR LOWER(i.bookTitle) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
                         "(:start IS NULL OR o.orderTime >= :start) AND " +
                         "(:end IS NULL OR o.orderTime <= :end) AND " +
                         "(:user IS NULL OR o.user = :user)")
@@ -33,29 +33,28 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                         @Param("end") LocalDateTime end, User user);
 
         @Query("SELECT o FROM Order o JOIN o.orderItems i WHERE " +
-                        "(:bookName IS NULL OR LOWER(i.book.title) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
+                        "(:bookName IS NULL OR LOWER(i.bookTitle) LIKE LOWER(CONCAT('%', :bookName, '%'))) AND " +
                         "(:start IS NULL OR o.orderTime >= :start) AND " +
                         "(:end IS NULL OR o.orderTime <= :end)" +
                         "ORDER BY o.orderId")
         List<Order> findOrdersByBookAndTimeRange(@Param("bookName") String bookName,
                         @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
-        @Query("SELECT new com.example.demo.dto.BookSalesDTO(b.title, SUM(i.quantity)) " +
-                        "FROM Order o JOIN o.orderItems i JOIN i.book b " +
+        @Query("SELECT new com.example.demo.dto.BookSalesDTO(i.bookTitle, SUM(i.quantity)) " +
+                        "FROM Order o JOIN o.orderItems i " +
                         "WHERE o.orderTime BETWEEN :startDate AND :endDate " +
-                        "GROUP BY b.title " +
+                        "GROUP BY i.bookTitle " +
                         "ORDER BY SUM(i.quantity) DESC")
         List<BookSalesDTO> findBookSales(@Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 
-        @Query("SELECT new com.example.demo.dto.UserPurchaseDTO(u.nickname, SUM(oi.quantity * b.price)) " +
+        @Query("SELECT new com.example.demo.dto.UserPurchaseDTO(u.nickname, SUM(oi.price)) " +
                         "FROM Order o " +
                         "JOIN o.user u " +
                         "JOIN o.orderItems oi " +
-                        "JOIN oi.book b " +
                         "WHERE o.orderTime BETWEEN :startDate AND :endDate " +
                         "GROUP BY u.nickname " +
-                        "ORDER BY SUM(oi.quantity * b.price) DESC")
+                        "ORDER BY SUM(oi.price) DESC")
         List<UserPurchaseDTO> findUserPurchases(@Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 

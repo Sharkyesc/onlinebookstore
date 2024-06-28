@@ -84,3 +84,15 @@ export async function addBook(data) {
     }
     return response;
 }
+
+export async function getBookUrl(id) {
+    const url = `${PREFIX}/books/url/${id}`;
+    let res;
+    try {
+        res = await getJson(url, id);
+    } catch (e) {
+        console.log(e);
+        res = DUMMY_RESPONSE;
+    }
+    return res;
+}

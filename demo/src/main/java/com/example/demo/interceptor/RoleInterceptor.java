@@ -15,22 +15,16 @@ public class RoleInterceptor implements HandlerInterceptor {
         String username = (String) request.getSession().getAttribute("user");
 
         String uri = request.getRequestURI();
-        System.out.print(uri);
-        System.out.println(" + " + username);
 
         if (username == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Please login first");
-            System.out.print(1);
             return false;
         }
 
         if (uri.startsWith("/admin") && !username.equals("admin")) {
-            System.out.print(2);
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "not allowed to view this page");
             return false;
         }
-
-        System.out.print(3);
 
         return true;
     }

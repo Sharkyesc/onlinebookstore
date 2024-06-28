@@ -11,6 +11,7 @@ import StatisticsPage from "../pages/statistics";
 import UserManagementPage from "../pages/manage";
 import AdminStatisticsPage from "../pages/adminStat";
 import BookManagePage from "../pages/managebook";
+import NotFoundPage from "../pages/notFoundBook";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
@@ -28,6 +29,7 @@ export default function AppRouter() {
             <Route path="/userstatistics" element={<ProtectedRoute component={StatisticsPage} />} /> 
             <Route path="/manage" element={<ProtectedRoute component={UserManagementPage} />} />
             <Route path="/statistics" element={<ProtectedRoute component={AdminStatisticsPage} />} /> 
+            <Route path="/book/notfound" element={<ProtectedRoute component={NotFoundPage} />} /> 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
         </Routes>

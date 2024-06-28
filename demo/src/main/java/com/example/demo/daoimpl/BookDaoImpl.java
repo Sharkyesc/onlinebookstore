@@ -40,13 +40,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void delete(Integer id) {
-        Optional<Book> book = bookRepository.findById(id);
-        if (book.isPresent()) {
-            Book bookToDelete = book.get();
-            bookToDelete.setStocks(-1);
-            bookRepository.save(bookToDelete);
-            bookRepository.delete(bookToDelete);
-        }
+        bookRepository.deleteById(id);
     }
 
     @Override

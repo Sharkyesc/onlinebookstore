@@ -130,15 +130,16 @@ public class OrderController {
         List<OrderItemDTO> orderItemDTOs = order.getOrderItems().stream().map(item -> {
             OrderItemDTO itemDTO = new OrderItemDTO();
             itemDTO.setItemId(item.getId().getItemId());
-            itemDTO.setBookName(item.getBook().getTitle());
+            itemDTO.setBookId(item.getBookId());
+            itemDTO.setBookName(item.getBookTitle());
             itemDTO.setQuantity(item.getQuantity());
-            int price = item.getBook().getPrice() * item.getQuantity();
-            itemDTO.setPrice(price);
+            itemDTO.setPrice(item.getPrice());
+
             return itemDTO;
         }).collect(Collectors.toList());
 
         for (OrderItem orderItem : order.getOrderItems()) {
-            totalPrice += (orderItem.getBook().getPrice() * orderItem.getQuantity());
+            totalPrice += (orderItem.getPrice());
         }
 
         orderDTO.setTotalPrice(totalPrice);

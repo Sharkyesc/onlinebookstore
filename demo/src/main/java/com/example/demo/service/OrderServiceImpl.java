@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         bookDao.save(book);
 
         OrderItemId id = new OrderItemId(order.getOrderId(), 1);
-        OrderItem orderItem = new OrderItem(id, order, book, 1);
+        OrderItem orderItem = new OrderItem(id, order, 1, book.getId(), book.getTitle(), book.getPrice());
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem);
         order.setOrderItems(orderItems);
@@ -97,7 +97,8 @@ public class OrderServiceImpl implements OrderService {
             book.setSalesvolume(book.getSalesvolume() + item.getQuantity());
             bookDao.save(book);
 
-            OrderItem orderItem = new OrderItem(orderItemId, order, book, item.getQuantity());
+            OrderItem orderItem = new OrderItem(orderItemId, order, item.getQuantity(), book.getId(), book.getTitle(),
+                    book.getPrice() * item.getQuantity());
 
             cartDao.delete(item.getCartId());
             orderItems.add(orderItem);
@@ -112,10 +113,11 @@ public class OrderServiceImpl implements OrderService {
         List<BookStatisticsDTO> res = new ArrayList<>();
         for (Order order : orders) {
             for (OrderItem orderItem : order.getOrderItems()) {
+                int price = bookDao.findOne(orderItem.getBookId()).getPrice();
                 res.add(new BookStatisticsDTO(
-                        orderItem.getBook().getTitle(),
+                        orderItem.getBookTitle(),
                         orderItem.getQuantity(),
-                        orderItem.getQuantity() * orderItem.getBook().getPrice()));
+                        orderItem.getQuantity() * price));
 
             }
         }

@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import com.example.demo.entity.Book;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.service.BookService;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,6 +29,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @GetMapping("/api/books/{id}")
     public Book findBook(@PathVariable("id") Integer id) {
@@ -69,6 +76,21 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable int id) {
         bookService.deleteBook(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/api/books/url/{id}")
+    public Map<String, String> getUrl(@PathVariable int id) {
+        Optional<Book> book = bookRepository.findById(id);
+        String url = "/book/";
+        Map<String, String> response = new HashMap<>();
+
+        if (book.isPresent()) {
+            response.put("url", url + id);
+        } else {
+            response.put("url", url + "notfound");
+        }
+
+        return response;
     }
 
 }
