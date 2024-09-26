@@ -5,7 +5,17 @@ export async function getJson(url) {
 
 export async function get(url) {
   let res = await fetch(url, { method: "GET", credentials: "include" });
-  return res;
+
+  const contentType = res.headers.get('content-type');
+  let result;
+  if (contentType && contentType.includes('application/json')) {
+      result = await res.json();
+  } else {
+      result = await res.text();
+  }
+
+  return { ok: res.ok, message: result };
+
 }
 
 export async function put(url, data) {

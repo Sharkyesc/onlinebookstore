@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,9 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.UserAuth;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import com.example.demo.service.TimerService;
 
+@Scope("prototype")
 @RestController
 @RequestMapping("/api")
 public class AuthController {
@@ -27,6 +31,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TimerService timerService;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody RegisterRequest registerRequest) {
@@ -47,12 +54,18 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         UserAuth userAuth = userRepository.findUserAuthByUsername(loginRequest.getUsername());
 
+        if (userAuth == null)
+            return ResponseEntity.badRequest().body("该用户不存在");
+
         if (!userAuth.getUser().isEnabled()) {
             return ResponseEntity.badRequest().body("你的账号已被禁用！");
         }
         if (userAuth != null && userService.matchesPassword(loginRequest.getPassword(), userAuth.getPassword())) {
             HttpSession session = request.getSession();
             session.setAttribute("user", loginRequest.getUsername());
+
+            timerService.startTimer();
+
             return ResponseEntity.ok("登录成功");
         } else {
             return ResponseEntity.badRequest().body("用户名或密码错误");
@@ -60,11 +73,16 @@ public class AuthController {
     }
 
     @GetMapping("logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+
+        long elapsedTime = timerService.stopTimer();
+        System.out.println(elapsedTime + "ms");
+
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        response.setStatus(HttpServletResponse.SC_OK);
+
+        return ResponseEntity.ok("Logout successful. Time: " + elapsedTime + " ms.");
     }
 }

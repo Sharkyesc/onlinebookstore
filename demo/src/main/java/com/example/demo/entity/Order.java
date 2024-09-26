@@ -34,4 +34,20 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n订单号: ").append(orderId).append("\n");
+        sb.append("下单时间: ").append(orderTime).append("\n");
+        sb.append("收件人: ").append(recipient).append("\n");
+        sb.append("联系电话: ").append(contactPhone).append("\n");
+        sb.append("收货地址: ").append(destination).append("\n");
+        sb.append("订单明细:\n");
+        for (OrderItem item : orderItems) {
+            sb.append(" - ").append(item.getQuantity()).append(" 本 《").append(item.getBookTitle()).append("》，单价: ¥")
+                    .append(String.format("%.2f", item.getPrice() / 100.00)).append("\n");
+        }
+        return sb.toString();
+    }
+
 }

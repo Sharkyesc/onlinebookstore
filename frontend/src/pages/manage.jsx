@@ -69,17 +69,22 @@ const UserManagementPage = () => {
       title: '状态',
       dataIndex: 'enabled',
       key: 'enabled',
-      render: (text, record) => (record.enabled ? '启用' : '禁用'),
+      render: (text, record) => 
+        record.userAuth.username === 'admin' ? '管理员' : (record.enabled ? '启用' : '禁用'),
     },
     {
       title: '操作',
       key: 'action',
       render: (text, record) => (
         <>
-          {record.enabled ? (
-            <Button danger onClick={() => showDisableConfirm(record.user_id)}>禁用</Button>
-          ) : (
-            <Button type="primary" onClick={() => handleEnable(record.user_id)}>解禁</Button>
+          {record.userAuth.username !== 'admin' && (
+            <>
+              {record.enabled ? (
+                <Button danger onClick={() => showDisableConfirm(record.user_id)}>禁用</Button>
+              ) : (
+                <Button type="primary" onClick={() => handleEnable(record.user_id)}>解禁</Button>
+              )}
+            </>
           )}
         </>
       ),

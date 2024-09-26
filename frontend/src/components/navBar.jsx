@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Menu, Dropdown, Avatar, Input } from 'antd';
+import { Menu, Dropdown, Avatar, Input, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { logout } from '../service/logout';
 import { getUserInfo } from '../service/user';
@@ -34,19 +34,16 @@ const NavBar = () => {
         const response = await logout();
         if (response.ok) { 
             sessionStorage.removeItem('username');
-            alert('已登出');
-            const redirectUrl = response.headers.get('Location');
-            if (redirectUrl) {
-                window.location.href = redirectUrl; 
-            } else {
-                window.location.href = '/login'; 
-            }
+            console.log(response);
+            alert(response.message);
+            window.location.href = '/login'; 
+            
         } else {
-            alert('登出失败');
+          message.error('登出失败');
         }
     } catch (error) {
         console.error('Logout Error:', error);
-        alert('登出失败');
+        message.error('登出失败');
     }
   };
 
