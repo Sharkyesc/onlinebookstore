@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.kafka.core.KafkaTemplate;
 
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
@@ -18,7 +21,9 @@ import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
 import com.example.demo.dto.CheckoutRequest;
 import com.example.demo.dto.OrderDTO;
+import com.example.demo.dto.Kafka_OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
+import com.example.demo.dto.Kafka_OrderItemDTO;
 import com.example.demo.dto.UserPurchaseDTO;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +46,43 @@ public class OrderController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private KafkaTemplate<String, Kafka_OrderDTO> kafkaTemplate;
+
+    @PostMapping("/api/orders/checkoutfromcart")
+    public ResponseEntity<String> placeOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
+        try {
+            LocalDateTime orderTime = LocalDateTime.now();
+
+            List<Kafka_OrderItemDTO> orderItems = checkoutRequests.stream().map(checkoutRequest -> {
+                Kafka_OrderItemDTO orderItemDTO = new Kafka_OrderItemDTO();
+                orderItemDTO.setCartId(checkoutRequest.getCartId());
+                orderItemDTO.setBookId(checkoutRequest.getBook().getId());
+                orderItemDTO.setBookName(checkoutRequest.getBook().getTitle());
+                orderItemDTO.setQuantity(checkoutRequest.getQuantity());
+                orderItemDTO.setPrice(checkoutRequest.getBook().getPrice());
+
+                return orderItemDTO;
+            }).collect(Collectors.toList());
+
+            int totalPrice = orderItems.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum();
+
+            Kafka_OrderDTO orderDTO = new Kafka_OrderDTO();
+            orderDTO.setUserId(userService.getCurUser().getUser_id());
+            orderDTO.setOrderTime(orderTime);
+            orderDTO.setTotalPrice(totalPrice);
+            orderDTO.setOrderItems(orderItems);
+
+            kafkaTemplate.send("orderTopic", orderDTO);
+
+            return ResponseEntity.ok("Order placed successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to place order: " + e.getMessage());
+        }
+    }
 
     @GetMapping("/api/orders/all")
     public List<OrderDTO> getAllOrders() {
@@ -85,29 +127,33 @@ public class OrderController {
         Order order = orderService.addOrder(book, userService.getCurUser());
 
         System.out.println("订单信息：" + order);
-
         return ResponseEntity.ok("请确认订单信息：" + order.toString());
     }
 
-    @PostMapping("/api/orders/checkoutfromcart")
-    public ResponseEntity<String> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
-
-        List<Cart> cartItems = new ArrayList<>();
-
-        for (CheckoutRequest checkoutRequest : checkoutRequests) {
-            Cart cartItem = new Cart(checkoutRequest.getCartId(), userService.getCurUser(),
-                    checkoutRequest.getQuantity(), checkoutRequest.getBook());
-            Book book = cartItem.getBook();
-            if (book.getStocks() < cartItem.getQuantity()) {
-                return ResponseEntity.badRequest()
-                        .body(" 《" + book.getTitle() + "》 的库存不足" + cartItem.getQuantity() + " 本，无法下单！");
-            }
-            cartItems.add(cartItem);
-        }
-        orderService.createOrder(userService.getCurUser(), cartItems);
-        return ResponseEntity.ok("已成功下单，可至订单页面查看详情");
-
-    }
+    /*
+     * @PostMapping("/api/orders/checkoutfromcart")
+     * public ResponseEntity<String> createOrder(@RequestBody List<CheckoutRequest>
+     * checkoutRequests) {
+     * 
+     * List<Cart> cartItems = new ArrayList<>();
+     * 
+     * for (CheckoutRequest checkoutRequest : checkoutRequests) {
+     * Cart cartItem = new Cart(checkoutRequest.getCartId(),
+     * userService.getCurUser(),
+     * checkoutRequest.getQuantity(), checkoutRequest.getBook());
+     * Book book = cartItem.getBook();
+     * if (book.getStocks() < cartItem.getQuantity()) {
+     * return ResponseEntity.badRequest()
+     * .body(" 《" + book.getTitle() + "》 的库存不足" + cartItem.getQuantity() +
+     * " 本，无法下单！");
+     * }
+     * cartItems.add(cartItem);
+     * }
+     * orderService.createOrder(userService.getCurUser(), cartItems);
+     * return ResponseEntity.ok("已成功下单，可至订单页面查看详情");
+     * 
+     * }
+     */
 
     @GetMapping("/api/orders/statistics")
     public List<BookStatisticsDTO> getStatistics(

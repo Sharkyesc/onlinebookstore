@@ -21,7 +21,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import com.example.demo.service.TimerService;
 
-@Scope("prototype")
+@Scope("session")
 @RestController
 @RequestMapping("/api")
 public class AuthController {
