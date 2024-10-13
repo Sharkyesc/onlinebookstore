@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Cart;
@@ -196,9 +198,11 @@ public class OrderServiceImpl implements OrderService {
             System.out.println(order.toString());
 
             orderResponse.setStatus("SUCCESS");
-            orderResponse.setMessage("Order processed and message sent to Kafka successfully");
+            orderResponse.setUserId(orderDTO.getUserId());
+            orderResponse.setMessage("下订单成功！可至订单页面查看详情");
         } catch (Exception e) {
             orderResponse.setStatus("FAILURE");
+            orderResponse.setUserId(orderDTO.getUserId());
             orderResponse.setMessage("Order processing failed: " + e.getMessage());
         }
         return orderResponse;

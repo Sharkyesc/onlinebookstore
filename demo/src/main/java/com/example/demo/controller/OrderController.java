@@ -76,11 +76,11 @@ public class OrderController {
 
             kafkaTemplate.send("orderTopic", orderDTO);
 
-            return ResponseEntity.ok("Order placed successfully");
+            return ResponseEntity.ok("Order created successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to place order: " + e.getMessage());
+                    .body("Failed to create order: " + e.getMessage());
         }
     }
 
