@@ -41,20 +41,22 @@ public class OrderItem {
 
     private int price;
 
-    @PrePersist
-    public void prePersist() {
-        if (id == null) {
-            id = new OrderItemId();
-        }
-        id.setOrderId(order.getOrderId());
-
-        if (id.getItemId() == 0) {
-            int maxItemId = order.getOrderItems().stream()
-                    .mapToInt(item -> item.getId().getItemId())
-                    .max()
-                    .orElse(0);
-            id.setItemId(maxItemId + 1);
-        }
-    }
+    /*
+     * @PrePersist
+     * public void prePersist() {
+     * if (id == null) {
+     * id = new OrderItemId();
+     * }
+     * id.setOrderId(order.getOrderId());
+     * 
+     * if (id.getItemId() == 0) {
+     * int maxItemId = order.getOrderItems().stream()
+     * .mapToInt(item -> item.getId().getItemId())
+     * .max()
+     * .orElse(0);
+     * id.setItemId(maxItemId + 1);
+     * }
+     * }
+     */
 
 }

@@ -41,4 +41,12 @@ public class OrderItemId implements Serializable {
     public int hashCode() {
         return Objects.hash(orderId, itemId);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n订单号: ").append(orderId).append("\n");
+        sb.append("订单项: ").append(itemId);
+        return sb.toString();
+    }
 }

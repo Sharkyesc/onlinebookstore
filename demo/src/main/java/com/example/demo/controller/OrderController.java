@@ -70,6 +70,7 @@ public class OrderController {
 
             Kafka_OrderDTO orderDTO = new Kafka_OrderDTO();
             orderDTO.setUserId(userService.getCurUser().getUser_id());
+            orderDTO.setUsername(userService.getCurUser().getUserAuth().getUsername());
             orderDTO.setOrderTime(orderTime);
             orderDTO.setTotalPrice(totalPrice);
             orderDTO.setOrderItems(orderItems);

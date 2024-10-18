@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 public class Kafka_OrderDTO {
     private int userId;
+    private String username;
     private LocalDateTime orderTime;
     private int totalPrice;
     private List<Kafka_OrderItemDTO> orderItems;

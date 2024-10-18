@@ -16,6 +16,7 @@ import com.example.demo.dao.OrderDao;
 import com.example.demo.dao.CartDao;
 import com.example.demo.dao.BookDao;
 import com.example.demo.dao.UserDao;
+import com.example.demo.dao.OrderItemDao;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
 import com.example.demo.dto.Kafka_OrderItemDTO;
@@ -43,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private OrderItemDao orderItemDao;
 
     @Override
     public List<Order> findOrdersByUser(User user) {
@@ -158,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponseDTO processOrder(Kafka_OrderDTO orderDTO) {
         OrderResponseDTO orderResponse = new OrderResponseDTO();
         try {
@@ -168,6 +173,8 @@ public class OrderServiceImpl implements OrderService {
             order.setRecipient(user.getNickname());
             order.setDestination(user.getAddress());
             order.setContactPhone(user.getPhonenumber());
+
+            orderDao.saveOrder(order);
 
             int id = 0;
 
@@ -183,6 +190,7 @@ public class OrderServiceImpl implements OrderService {
                 bookDao.save(book);
 
                 OrderItemId orderItemId = new OrderItemId(order.getOrderId(), id);
+                System.out.println("+++" + orderItemId.toString());
                 OrderItem orderItem = new OrderItem(orderItemId, order, orderItemDTO.getQuantity(),
                         book.getId(), book.getTitle(),
                         book.getPrice() * orderItemDTO.getQuantity());
@@ -191,19 +199,21 @@ public class OrderServiceImpl implements OrderService {
 
                 cartDao.delete(orderItemDTO.getCartId());
                 orderItems.add(orderItem);
+                orderItemDao.saveOrderItem(orderItem);
             }
             order.setOrderItems(orderItems);
-            orderDao.saveOrder(order);
+            // orderDao.saveOrder(order);
 
             System.out.println(order.toString());
 
             orderResponse.setStatus("SUCCESS");
-            orderResponse.setUserId(orderDTO.getUserId());
+            orderResponse.setUsername(orderDTO.getUsername());
             orderResponse.setMessage("下订单成功！可至订单页面查看详情");
         } catch (Exception e) {
             orderResponse.setStatus("FAILURE");
-            orderResponse.setUserId(orderDTO.getUserId());
+            orderResponse.setUsername(orderDTO.getUsername());
             orderResponse.setMessage("Order processing failed: " + e.getMessage());
+            throw (e);
         }
         return orderResponse;
     }
