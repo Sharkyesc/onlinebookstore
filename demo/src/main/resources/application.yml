@@ -45,3 +45,11 @@ spring:
     # 监听器配置
     listener:
       ack-mode: MANUAL_IMMEDIATE # 手动确认消费
+
+  data:
+    redis:
+      host: localhost         # Redis服务器主机
+      port: 6379              # Redis端口号，默认6379
+      password:               # Redis密码（如果有的话）
+      database: 0             # Redis数据库索引（默认为0）
+      timeout: 300ms          # 连接超时时间

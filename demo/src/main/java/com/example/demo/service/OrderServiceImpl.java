@@ -174,8 +174,6 @@ public class OrderServiceImpl implements OrderService {
             order.setDestination(user.getAddress());
             order.setContactPhone(user.getPhonenumber());
 
-            orderDao.saveOrder(order);
-
             int id = 0;
 
             List<OrderItem> orderItems = new ArrayList<>();
@@ -199,10 +197,9 @@ public class OrderServiceImpl implements OrderService {
 
                 cartDao.delete(orderItemDTO.getCartId());
                 orderItems.add(orderItem);
-                orderItemDao.saveOrderItem(orderItem);
             }
             order.setOrderItems(orderItems);
-            // orderDao.saveOrder(order);
+            orderDao.saveOrder(order);
 
             System.out.println(order.toString());
 
