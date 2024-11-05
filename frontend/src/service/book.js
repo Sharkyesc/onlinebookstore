@@ -1,4 +1,4 @@
-import { PREFIX, ADMINPREFIX, getJson, put, del, post, DUMMY_RESPONSE } from "./common";
+import { PREFIX, BASEURL, ADMINPREFIX, getJson, put, del, post, DUMMY_RESPONSE } from "./common";
 
 export async function getBookById(id) {
     const url = `${PREFIX}/books/${id}`;
@@ -90,6 +90,18 @@ export async function getBookUrl(id) {
     let res;
     try {
         res = await getJson(url, id);
+    } catch (e) {
+        console.log(e);
+        res = DUMMY_RESPONSE;
+    }
+    return res;
+}
+
+export async function getBookAuthorByTitle(name) {
+    const url = `${BASEURL}/author/${name}`;
+    let res;
+    try {
+        res = await getJson(url, name);
     } catch (e) {
         console.log(e);
         res = DUMMY_RESPONSE;

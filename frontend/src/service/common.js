@@ -85,7 +85,7 @@ export async function post(url, data) {
   return { ok: res.ok, message: result };
 }
 
-export const BASEURL = 'http://localhost:8080';
+export const BASEURL = 'http://localhost:8888';
 export const PREFIX = `${BASEURL}/api`;
 export const ADMINPREFIX = `${BASEURL}/admin`;
 export const API_DOCS_URL = `${BASEURL}/api-docs`;

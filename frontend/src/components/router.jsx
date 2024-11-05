@@ -12,6 +12,7 @@ import UserManagementPage from "../pages/manage";
 import AdminStatisticsPage from "../pages/adminStat";
 import BookManagePage from "../pages/managebook";
 import NotFoundPage from "../pages/notFoundBook";
+import BookAuthorSearchPage from "../pages/authorSearch";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
@@ -32,6 +33,7 @@ export default function AppRouter() {
             <Route path="/book/notfound" element={<ProtectedRoute component={NotFoundPage} />} /> 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/author" element={<BookAuthorSearchPage />} />
         </Routes>
     </BrowserRouter>
 }
