@@ -21,6 +21,7 @@
 		<module>gateway</module>
 		<module>author-service</module>
 		<module>bookstore</module>
+        <module>price-service</module>
 	</modules>
 
     <properties>

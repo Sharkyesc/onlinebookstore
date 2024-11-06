@@ -12,13 +12,15 @@ import com.example.demo.interceptor.RoleInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3001")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowCredentials(true);
-    }
+    /*
+     * @Override
+     * public void addCorsMappings(CorsRegistry registry) {
+     * registry.addMapping("/**")
+     * .allowedOrigins("http://localhost:3001")
+     * .allowedMethods("GET", "POST", "PUT", "DELETE")
+     * .allowCredentials(true);
+     * }
+     */
 
     @Autowired
     private LoginInterceptor loginInterceptor;

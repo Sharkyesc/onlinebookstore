@@ -28,6 +28,7 @@ import com.example.demo.dto.UserPurchaseDTO;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ public class OrderController {
     private BookService bookService;
 
     @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
     private KafkaTemplate<String, Kafka_OrderDTO> kafkaTemplate;
 
     @PostMapping("/api/orders/checkoutfromcart")
@@ -66,7 +70,18 @@ public class OrderController {
                 return orderItemDTO;
             }).collect(Collectors.toList());
 
-            int totalPrice = orderItems.stream().mapToInt(item -> item.getQuantity() * item.getPrice()).sum();
+            // int totalPrice = orderItems.stream().mapToInt(item -> item.getQuantity() *
+            // item.getPrice()).sum();
+
+            int totalPrice = orderItems.stream()
+                    .map(orderItemDTO -> {
+                        Integer[] response = restTemplate.postForObject(
+                                "http://localhost:8888/bookPrice",
+                                new Integer[] { orderItemDTO.getPrice(), orderItemDTO.getQuantity() },
+                                Integer[].class);
+                        return (response != null && response.length > 0) ? response[0] : 0;
+                    })
+                    .reduce(0, Integer::sum);
 
             Kafka_OrderDTO orderDTO = new Kafka_OrderDTO();
             orderDTO.setUserId(userService.getCurUser().getUser_id());

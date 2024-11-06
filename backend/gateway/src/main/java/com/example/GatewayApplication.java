@@ -28,6 +28,8 @@ public class GatewayApplication {
                 .route(r -> r.path("/author/**")
                         .filters(f -> f.rewritePath("/author", ""))
                         .uri("lb://AUTHOR-SERVICE"))
+                .route(r -> r.path("/bookPrice")
+                        .uri("lb://PRICE-SERVICE"))
                 .route(r -> r.path("/**")
                         .uri("lb://MAIN-SERVICE"))
                 .build();
