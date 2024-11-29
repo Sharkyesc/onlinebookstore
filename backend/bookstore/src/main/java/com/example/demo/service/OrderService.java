@@ -3,8 +3,6 @@ package com.example.demo.service;
 import com.example.demo.entity.Order;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
-import com.example.demo.dto.Kafka_OrderDTO;
-import com.example.demo.dto.OrderResponseDTO;
 import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
@@ -33,5 +31,4 @@ public interface OrderService {
 
     List<UserPurchaseDTO> getUserPurchases(LocalDateTime startDate, LocalDateTime endDate);
 
-    public OrderResponseDTO processOrder(Kafka_OrderDTO orderDTO);
 }

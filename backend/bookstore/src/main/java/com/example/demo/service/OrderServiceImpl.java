@@ -2,26 +2,18 @@ package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.User;
-
 import com.example.demo.entity.OrderItemId;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.dao.OrderDao;
 import com.example.demo.dao.CartDao;
 import com.example.demo.dao.BookDao;
-import com.example.demo.dao.UserDao;
-import com.example.demo.dao.OrderItemDao;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
-import com.example.demo.dto.Kafka_OrderItemDTO;
-import com.example.demo.dto.Kafka_OrderDTO;
-import com.example.demo.dto.OrderResponseDTO;
 import com.example.demo.dto.UserPurchaseDTO;
 
 import java.time.LocalDateTime;
@@ -41,12 +33,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private BookDao bookDao;
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private OrderItemDao orderItemDao;
 
     @Override
     public List<Order> findOrdersByUser(User user) {
@@ -159,60 +145,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<UserPurchaseDTO> getUserPurchases(LocalDateTime startDate, LocalDateTime endDate) {
         return orderDao.findUserPurchases(startDate, endDate);
-    }
-
-    @Override
-    @Transactional
-    public OrderResponseDTO processOrder(Kafka_OrderDTO orderDTO) {
-        OrderResponseDTO orderResponse = new OrderResponseDTO();
-        try {
-            Order order = new Order();
-            User user = userDao.findById(orderDTO.getUserId());
-            order.setUser(user);
-            order.setOrderTime(orderDTO.getOrderTime());
-            order.setRecipient(user.getNickname());
-            order.setDestination(user.getAddress());
-            order.setContactPhone(user.getPhonenumber());
-
-            int id = 0;
-
-            List<OrderItem> orderItems = new ArrayList<>();
-            for (Kafka_OrderItemDTO orderItemDTO : orderDTO.getOrderItems()) {
-                id++;
-                Book book = bookDao.findOne(orderItemDTO.getBookId());
-                if (book.getStocks() < orderItemDTO.getQuantity()) {
-                    throw new RuntimeException("Insufficient stock for book: " + book.getTitle());
-                }
-                book.setStocks(book.getStocks() - orderItemDTO.getQuantity());
-                book.setSalesvolume(book.getSalesvolume() + orderItemDTO.getQuantity());
-                bookDao.save(book);
-
-                OrderItemId orderItemId = new OrderItemId(order.getOrderId(), id);
-                System.out.println("+++" + orderItemId.toString());
-                OrderItem orderItem = new OrderItem(orderItemId, order, orderItemDTO.getQuantity(),
-                        book.getId(), book.getTitle(),
-                        book.getPrice() * orderItemDTO.getQuantity());
-
-                System.out.println(orderItem.toString());
-
-                cartDao.delete(orderItemDTO.getCartId());
-                orderItems.add(orderItem);
-            }
-            order.setOrderItems(orderItems);
-            orderDao.saveOrder(order);
-
-            System.out.println(order.toString());
-
-            orderResponse.setStatus("SUCCESS");
-            orderResponse.setUsername(orderDTO.getUsername());
-            orderResponse.setMessage("下订单成功！可至订单页面查看详情");
-        } catch (Exception e) {
-            orderResponse.setStatus("FAILURE");
-            orderResponse.setUsername(orderDTO.getUsername());
-            orderResponse.setMessage("Order processing failed: " + e.getMessage());
-            throw (e);
-        }
-        return orderResponse;
     }
 
 }
