@@ -2,7 +2,9 @@ package com.example.demo.daoimpl;
 
 import com.example.demo.dao.BookDao;
 import com.example.demo.entity.Book;
+import com.example.demo.entity.BookDetail;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.BookDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,9 @@ public class BookDaoImpl implements BookDao {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookDetailsRepository bookDetailsRepository;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -38,6 +43,15 @@ public class BookDaoImpl implements BookDao {
                 Optional<Book> optionalBook = bookRepository.findById(id);
                 book = optionalBook.orElse(null);
 
+                Optional<BookDetail> detail = bookDetailsRepository.findByBookName(book.getTitle());
+                if (detail.isPresent()){
+                    System.out.println("Not Null " + id);
+                    book.setDescription(detail.get().getDescription());
+                } else {
+                    book.setDescription(null);
+                    System.out.println("It's Null");
+                }
+
                 if (book != null) {
                     redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(book));
                     System.out.println("Book: " + id + " has been cached in Redis");
@@ -50,6 +64,14 @@ public class BookDaoImpl implements BookDao {
             System.out.println("Redis unavailable. Fallback to DB for Book: " + id);
             e.printStackTrace();
             book = bookRepository.findById(id).orElse(null);
+            Optional<BookDetail> detail = bookDetailsRepository.findByBookName(book.getTitle());
+            if (detail.isPresent()){
+                System.out.println("Not Null " + id);
+                book.setDescription(detail.get().getDescription());
+            } else {
+                book.setDescription(null);
+                System.out.println("It's Null");
+            }
         }
         return book;
     }

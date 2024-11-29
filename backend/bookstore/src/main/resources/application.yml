@@ -24,31 +24,6 @@ spring:
     resources:
       static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources,file:D:/projects/onlinebookstore/demo/Data/s
 
-  kafka:
-    bootstrap-servers: localhost:9092 # Kafka集群地址
-    # 生产者配置
-    producer:
-      retries: 3 # 重试次数
-      batch-size: 16384 # 批量处理大小
-      buffer-memory: 33554432 # 缓存大小
-      acks: 1
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # 使用JsonSerializer来序列化OrderDTO
-    # 消费者配置
-    consumer:
-      group-id: TestGroup # 消费者组ID
-      enable-auto-commit: false # 禁用自动提交
-      auto-offset-reset: earliest # 处理偏移策略
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer # 使用ErrorHandlingDeserializer处理错误
-      properties:
-        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer # 使用JsonDeserializer反序列化
-        spring.json.value.default.type: com.example.demo.dto.Kafka_OrderDTO # 反序列化的目标类型
-        spring.json.trusted.packages: com.example.demo.dto
-    # 监听器配置
-    listener:
-      ack-mode: MANUAL_IMMEDIATE # 手动确认消费
-
   data:
     redis:
       host: localhost         # Redis服务器主机
@@ -56,6 +31,12 @@ spring:
       password:               # Redis密码（如果有的话）
       database: 0             # Redis数据库索引（默认为0）
       timeout: 300ms          # 连接超时时间
+
+    mongodb:
+      host: localhost
+      port: 27017
+      database: onlinebookstore
+      auto-index-creation: true
 
 eureka:
   client:
