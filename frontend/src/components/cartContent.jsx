@@ -1,12 +1,10 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import { InputNumber, message } from 'antd';
 import { Table, Space, Button, Modal, Checkbox } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { changeCartItemNumber, deleteCartItem } from '../service/cart';
 import { debounce } from 'lodash';
 import { createOrder } from '../service/order';
-import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
 /* 
 const { Search } = Input; */
 const { confirm } = Modal;
@@ -15,32 +13,6 @@ const { confirm } = Modal;
 const CartContent = ({ cartData, onMutate }) => {
   
   const [selectedItems, setSelectedItems] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
-
-  useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws');
-    const stompClient = Stomp.over(socket);
-    const username = sessionStorage.getItem('username');
-    console.log("username:" + username);
-
-    stompClient.connect({}, function (frame) {
-      console.log('Connected: ' + frame);
-
-      stompClient.subscribe('/topic/order-status/' + username, function (message) {
-        const orderStatus = message.body;
-        alert('订单状态更新: ' + orderStatus);
-        onMutate();
-      });
-    });
-
-    setStompClient(stompClient);
-
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect();
-      }
-    };
-  }, []);
 
   const handleDelete = async (id) => {
     try {
@@ -89,8 +61,9 @@ const CartContent = ({ cartData, onMutate }) => {
     const selectedCartItems = cartData.filter(item => selectedItems.includes(item.cartId));
     console.log(selectedCartItems);
     createOrder(selectedCartItems)
-    .then(() => {
-      alert("正在创建订单，请耐心等候");
+    .then(response => {
+      alert(response.message);
+      onMutate();
     })
     .catch(error => console.error('There was a problem creating the order:', error));
   }
