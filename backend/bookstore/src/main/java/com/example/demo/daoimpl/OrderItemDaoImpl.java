@@ -17,7 +17,7 @@ public class OrderItemDaoImpl implements OrderItemDao {
     OrderItemRepository orderItemRepository;
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void saveOrderItem(OrderItem orderItem) {
         // int result = 10 / 0;
         orderItemRepository.save(orderItem);

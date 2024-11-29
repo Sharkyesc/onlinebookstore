@@ -53,6 +53,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         UserAuth userAuth = userRepository.findUserAuthByUsername(loginRequest.getUsername());
+            System.out.println("++++++++++++++++++" + timerService);
 
         if (userAuth == null)
             return ResponseEntity.badRequest().body("该用户不存在");
@@ -74,6 +75,8 @@ public class AuthController {
 
     @GetMapping("logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
+        System.out.println("++++++++++++++++++" + timerService);
+
 
         long elapsedTime = timerService.stopTimer();
         System.out.println(elapsedTime + "ms");

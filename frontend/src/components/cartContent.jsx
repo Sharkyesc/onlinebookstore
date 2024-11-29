@@ -29,6 +29,7 @@ const CartContent = ({ cartData, onMutate }) => {
       stompClient.subscribe('/topic/order-status/' + username, function (message) {
         const orderStatus = message.body;
         alert('订单状态更新: ' + orderStatus);
+        onMutate();
       });
     });
 
