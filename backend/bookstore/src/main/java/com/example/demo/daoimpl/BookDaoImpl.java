@@ -1,20 +1,20 @@
 package com.example.demo.daoimpl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.alibaba.fastjson2.JSON;
 import com.example.demo.dao.BookDao;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookDetail;
-import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.BookDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.redis.core.RedisTemplate;
-
-import com.alibaba.fastjson2.JSON;
-
-import java.util.List;
-import java.util.Optional;
+import com.example.demo.repository.BookRepository;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -32,47 +32,19 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book findOne(Integer id) {
-        String redisKey = BOOK_KEY_PREFIX + id;
-        System.out.println("Searching Book: " + id + " in Redis");
-
         Book book;
-        try {
-            String bookJson = redisTemplate.opsForValue().get(redisKey);
-            if (bookJson == null) {
-                System.out.println("Book: " + id + " not found in Redis, searching in DB");
-                Optional<Book> optionalBook = bookRepository.findById(id);
-                book = optionalBook.orElse(null);
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        book = optionalBook.orElse(null);
 
-                Optional<BookDetail> detail = bookDetailsRepository.findByBookName(book.getTitle());
-                if (detail.isPresent()){
-                    System.out.println("Not Null " + id);
-                    book.setDescription(detail.get().getDescription());
-                } else {
-                    book.setDescription(null);
-                    System.out.println("It's Null");
-                }
-
-                if (book != null) {
-                    redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(book));
-                    System.out.println("Book: " + id + " has been cached in Redis");
-                }
-            } else {
-                book = JSON.parseObject(bookJson, Book.class);
-                System.out.println("Book: " + id + " found in Redis");
-            }
-        } catch (Exception e) {
-            System.out.println("Redis unavailable. Fallback to DB for Book: " + id);
-            e.printStackTrace();
-            book = bookRepository.findById(id).orElse(null);
-            Optional<BookDetail> detail = bookDetailsRepository.findByBookName(book.getTitle());
-            if (detail.isPresent()){
-                System.out.println("Not Null " + id);
-                book.setDescription(detail.get().getDescription());
-            } else {
-                book.setDescription(null);
-                System.out.println("It's Null");
-            }
+        Optional<BookDetail> detail = bookDetailsRepository.findByBookName(book.getTitle());
+        if (detail.isPresent()){
+            System.out.println("Not Null " + id);
+            book.setDescription(detail.get().getDescription());
+        } else {
+            book.setDescription(null);
+            System.out.println("It's Null");
         }
+
         return book;
     }
 
