@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.entity.Book;
+import com.example.demo.entity.BookTag;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,8 @@ public interface BookDao {
     void delete(Integer id);
 
     Page<Book> findByTitle(String search, Pageable pageable);
+
+    List<String> searchByTag(String tag);
+
+    List<Book> findByTag(List<String> tags);
 }

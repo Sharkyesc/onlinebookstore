@@ -93,4 +93,10 @@ public class BookController {
         return response;
     }
 
+    @GetMapping("/api/books/tag/{tagName}")
+    public List<Book> getBooksByTag(@PathVariable String tagName) {
+        System.out.println("controller:" + tagName);
+        return bookService.searchByTag(tagName);
+    }
+
 }

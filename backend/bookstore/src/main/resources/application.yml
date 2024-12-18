@@ -37,6 +37,11 @@ spring:
       port: 27017
       database: onlinebookstore
       auto-index-creation: true
+      
+    neo4j:
+      uri: bolt://localhost:7687
+      username: neo4j
+      password: luoyiyu599
 
 eureka:
   client:

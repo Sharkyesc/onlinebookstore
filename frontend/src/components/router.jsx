@@ -13,6 +13,7 @@ import AdminStatisticsPage from "../pages/adminStat";
 import BookManagePage from "../pages/managebook";
 import NotFoundPage from "../pages/notFoundBook";
 import BookAuthorSearchPage from "../pages/authorSearch";
+import TagSearchPage from "../pages/tagSearch";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
@@ -34,6 +35,7 @@ export default function AppRouter() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/author" element={<BookAuthorSearchPage />} />
+            <Route path="/tag" element={<TagSearchPage />} />
         </Routes>
     </BrowserRouter>
 }

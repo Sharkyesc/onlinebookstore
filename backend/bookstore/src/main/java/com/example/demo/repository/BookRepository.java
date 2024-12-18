@@ -18,4 +18,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT b FROM Book b WHERE (b.id >= 1 AND b.id <= 15)")
     List<Book> findFirst15();
 
+    List<Book> findByTag(String tag);
+
 }

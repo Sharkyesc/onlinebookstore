@@ -108,3 +108,15 @@ export async function getBookAuthorByTitle(name) {
     }
     return res;
 }
+
+export async function getBooksByTag(tag) {
+    const url = `${PREFIX}/books/tag/${tag}`;
+    let res;
+    try {
+        res = await getJson(url, tag);
+    } catch (e) {
+        console.log(e);
+        res = DUMMY_RESPONSE;
+    }
+    return res;
+}

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Book;
 import com.example.demo.dto.BookDTO;
+import com.example.demo.entity.BookTag;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface BookService {
     void deleteBook(Integer id);
 
     Page<Book> findByTitle(String search, int page, int size);
+
+    List<Book> searchByTag(String tag);
 }

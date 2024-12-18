@@ -17,7 +17,7 @@ public class Book {
     private int id;
 
     private int stocks, salesvolume, price;
-    private String isbn, title, coverSrc, author, press, description;
+    private String isbn, title, coverSrc, author, press, description, tag;
     private Date pubTime;
 
     public Book() {

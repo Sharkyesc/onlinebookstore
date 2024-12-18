@@ -2,6 +2,7 @@ package com.example.demo.daoimpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,8 +13,10 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson2.JSON;
 import com.example.demo.dao.BookDao;
 import com.example.demo.entity.Book;
+import com.example.demo.entity.BookTag;
 import com.example.demo.entity.BookDetail;
 import com.example.demo.repository.BookDetailsRepository;
+import com.example.demo.repository.BookTagRepository;
 import com.example.demo.repository.BookRepository;
 
 @Repository
@@ -21,6 +24,9 @@ public class BookDaoImpl implements BookDao {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired 
+    private BookTagRepository bookTagRepository;
 
     @Autowired
     private BookDetailsRepository bookDetailsRepository;
@@ -80,6 +86,24 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Page<Book> findByTitle(String search, Pageable pageable) {
         return bookRepository.findByTitleContainingIgnoreCase(search, pageable);
+    }
+
+    @Override
+    public List<String> searchByTag(String tag) {
+        return bookTagRepository.findRelatedTags(tag);
+    }
+
+    @Override
+    public List<Book> findByTag(List<String> tags) {
+        List<Book> allBooks = new ArrayList<>();
+
+        for (String tag : tags) {
+            List<Book> books = bookRepository.findByTag(tag);
+            System.out.println("dao:" + tag);
+            allBooks.addAll(books);
+        }
+
+        return allBooks;
     }
 
 }
