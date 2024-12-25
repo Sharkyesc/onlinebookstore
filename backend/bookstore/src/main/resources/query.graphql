@@ -1,0 +1,7 @@
+query bookDetails {
+  bookByTitle(String: "绝叫") {
+    id
+    title
+    author
+  }
+}

@@ -1,27 +1,29 @@
 package com.example.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.Page;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.demo.entity.Book;
-import com.example.demo.repository.BookRepository;
-import com.example.demo.dto.BookDTO;
-import com.example.demo.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.BookDTO;
+import com.example.demo.entity.Book;
+import com.example.demo.repository.BookRepository;
+import com.example.demo.service.BookService;
 
 @RestController
 @RequestMapping("")
@@ -97,6 +99,14 @@ public class BookController {
     public List<Book> getBooksByTag(@PathVariable String tagName) {
         System.out.println("controller:" + tagName);
         return bookService.searchByTag(tagName);
+    }
+
+    @QueryMapping
+    public Book bookByTitle(@Argument String title) {
+        List<Book> books = bookService.findByTitle(title, 0, 5).getContent();
+        return books.stream()
+                .findFirst()
+                .orElse(null);
     }
 
 }

@@ -14,6 +14,7 @@ import BookManagePage from "../pages/managebook";
 import NotFoundPage from "../pages/notFoundBook";
 import BookAuthorSearchPage from "../pages/authorSearch";
 import TagSearchPage from "../pages/tagSearch";
+import BookByTitlePage from "../pages/bookByTitlePage";
 import ProtectedRoute from "./protectedRoute"
 
 export default function AppRouter() {
@@ -36,6 +37,7 @@ export default function AppRouter() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/author" element={<BookAuthorSearchPage />} />
             <Route path="/tag" element={<TagSearchPage />} />
+            <Route path="/bookbytitle" element={<BookByTitlePage />} />
         </Routes>
     </BrowserRouter>
 }

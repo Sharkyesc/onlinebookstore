@@ -43,6 +43,10 @@ spring:
       username: neo4j
       password: luoyiyu599
 
+  graphql:
+    graphiql:
+      enabled: true
+
 eureka:
   client:
     service-url:
