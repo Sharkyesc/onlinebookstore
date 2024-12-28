@@ -1,33 +1,32 @@
 package com.example.demo.controller;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Order;
-import com.example.demo.entity.OrderItem;
-import com.example.demo.entity.Cart;
-import com.example.demo.entity.Book;
-import com.example.demo.service.BookService;
-import com.example.demo.service.OrderService;
-import com.example.demo.service.UserService;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.BookStatisticsDTO;
 import com.example.demo.dto.CheckoutRequest;
 import com.example.demo.dto.OrderDTO;
 import com.example.demo.dto.OrderItemDTO;
 import com.example.demo.dto.UserPurchaseDTO;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.example.demo.entity.Book;
+import com.example.demo.entity.Cart;
+import com.example.demo.entity.Order;
+import com.example.demo.entity.OrderItem;
+import com.example.demo.service.BookService;
+import com.example.demo.service.OrderService;
+import com.example.demo.service.UserService;
 
 @RestController
 @RequestMapping("")
@@ -91,7 +90,7 @@ public class OrderController {
 
     @PostMapping("/api/orders/checkoutfromcart")
     public ResponseEntity<String> createOrder(@RequestBody List<CheckoutRequest> checkoutRequests) {
-
+        System.out.println("checkoutRequest");
         List<Cart> cartItems = new ArrayList<>();
 
         for (CheckoutRequest checkoutRequest : checkoutRequests) {

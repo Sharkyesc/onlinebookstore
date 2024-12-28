@@ -5,15 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.dao.OrderDao;
 import com.example.demo.dto.BookSalesDTO;
 import com.example.demo.dto.UserPurchaseDTO;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
-
 import com.example.demo.repository.OrderRepository;
 
 @Repository
@@ -43,7 +40,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
     public void saveOrder(Order order) {
         // int result = 10 / 0;
         orderRepository.save(order);

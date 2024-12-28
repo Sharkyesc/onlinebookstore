@@ -1,5 +1,5 @@
 query bookDetails {
-  bookByTitle(String: "绝叫") {
+  bookByTitle(title: "绝叫") {
     id
     title
     author
