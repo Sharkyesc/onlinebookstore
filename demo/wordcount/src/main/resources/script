@@ -1,0 +1,1 @@
+D:/spark-3.5.4-bin-hadoop3/bin/spark-submit --class "com.example.WordCountApp" --master spark://10.180.149.154:7077 target/wordcount-1.0-SNAPSHOT.jar
